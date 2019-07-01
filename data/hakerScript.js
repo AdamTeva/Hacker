@@ -19,13 +19,13 @@ global_object: {
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
-        G.mgmt.stageNumber = 1; //the stage number to begin
-        G.mgmt.stageNames = ["",'getIp','firewall','password','server','virus']
-        G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]
+        G.mgmt.stageNumber = 2; //the stage number to begin
+        G.mgmt.stageNames = ["",'getIp','firewall','password','server','virus'];
+        G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
-        G.mgmt.isQuestion = false
+        G.mgmt.isQuestion = false;
         G.mgmt.isHolo = false// is the holo up
-        G.mgmt.maxIpsTofind = 6
+        G.mgmt.maxIpsTofind = 6;
         G.mgmt.isFinalAnsInChapter = false;
         G.divs = {};
         G.hacks = {};
@@ -748,7 +748,8 @@ function setQuestion (num) {
 
 }
 function IpadGrahpic (type0) {
-    var answeris = ''; var isFinishing = false
+
+    var answeris = ''; var isFinishing = false;
     canvasDefs:
         type0 = type0  || G.hacks.current;
         if (G.hacks.current == 'firewall' && type0 == 'firewall'){G.hacks.numOfsuccess = 0}
@@ -827,7 +828,6 @@ function IpadGrahpic (type0) {
 
     }
     function getIp (){
-
         function consoleFoundIp() {
             G.mgmt.isFinalAnsInChapter = false;
             let tb = Id('textBlock2');
@@ -947,7 +947,6 @@ function IpadGrahpic (type0) {
 
           G.hacks.ipMapLocation = G.hacks.ipMapLocation || [randomMapX,randomMapY]
           // maximum values for green map G.hacks.ipMapLocation  = [-1300,-350]
-
           G.divs.ipadContent = Elm ('ipadContent','img');
           var img = G.divs.ipadContent;
           img.src = "data/map.svg"
@@ -1022,46 +1021,35 @@ function IpadGrahpic (type0) {
 
 
         }
-
-
-
-        console.log ("fiewall")
         function drawFireWallIpad () {
-          let randomMapX = -190 // 1300 * -1
-          let randomMapY = -20// 350 * -1
-          G.hacks.ipMapLocation = G.hacks.ipMapLocation || [randomMapX,randomMapY]
-          G.divs.ipadContent = Elm ('ipadContent','img');
-          //var canvasBG = Id ('ipad');
-          //canvasBG.style.backgroundImage= "url('data/board1.jpg')";
-         // console.log (canvasBG.style.background);
-          var img = G.divs.ipadContent;
-          img.src = "data/bluefirewall.jpg"
-          var FWimg = G.divs.ipadContent;
-          FWimg.src = "data/board1.jpg"
-          img.onload = function() {
-              //ctx.drawImage(img, G.hacks.ipMapLocation [0],  G.hacks.ipMapLocation [1]);
-              console.log (img, G.hacks.ipMapLocation [0],  G.hacks.ipMapLocation [1]);
-              ctx.font = "7vmin Miriam";
-              ctx.fillStyle = "white";
-              let text =   " זיהוי חומת אש "
-              let partOfFWsize = 50
-              //FWimg.onload = function() {ctx.drawImage(FWimg, randomMapX + partOfFWsize, randomMapY + partOfFWsize, partOfFWsize,partOfFWsize);}
-
-              ctx.save();
-              ctx.shadowOffsetY = 4;
-              ctx.shadowOffsetX = 4;
-              ctx.shadowColor = "rgba(0,0,0,0.9)";
-              ctx.shadowBlur = 3;
-              ctx.fillText(text,w / 5, h -(h /30));
-              ctx.restore();
-              let ips = 5;
-              G.hacks.rightIp = getRandomInt(ips)
-
-              //for (n = 1; n <= G.hacks.numOfsuccess; n++ ){
-                //  if (G.hacks.numOfsuccess == 0) { break};
 
 
-          }
+
+              let randomMapX = getRandomInt (1300) * -1
+              let randomMapY = getRandomInt (350) * -1
+
+              G.hacks.ipMapLocation = G.hacks.ipMapLocation || [randomMapX,randomMapY]
+              // maximum values for green map G.hacks.ipMapLocation  = [-1300,-350]
+              G.divs.ipadContent = Elm ('ipadContent','img');
+              var img = G.divs.ipadContent;
+              // god files jpg: 2,3, 8 png: 2, // 4 best
+              let num = 1
+              let srcurl =  "data/mother-board (" + num + ").png"
+              img.src = srcurl //'data/firewall2 edit.png'
+              img.onload = function() {
+                  ctx.drawImage(img, G.hacks.ipMapLocation [0],  G.hacks.ipMapLocation [1]);
+                  ctx.font = "7vmin Miriam";
+                  ctx.fillStyle = "white";
+                  let text =   'זיהוי חומת אש'
+                  ctx.save();
+                  ctx.shadowOffsetY = 4;
+                  ctx.shadowOffsetX = 4;
+                  ctx.shadowColor = "rgba(0,0,0,0.9)";
+                  ctx.shadowBlur = 3;
+                  ctx.fillText(text,w / 5, h -(h /30));
+                  ctx.restore();
+              }
+
     }
 
         drawFireWallIpad ()
