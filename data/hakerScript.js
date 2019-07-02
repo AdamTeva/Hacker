@@ -462,6 +462,7 @@ function buildBoard (){
     drone.innerHTML = "";
     G.divs.pagecontainer = Elm ('pagecontainer');
     G.divs.ipadContainer = Elm ('ipadContainer');
+    G.divs.ipadCover = Elm ('ipadCover');
     G.divs.ipad = Elm ('ipad','canvas');
     G.divs.holoSurface = Elm ('div','holoSurface');
     G.divs.holoContainer = Elm ('div','holoContainer');
@@ -562,6 +563,15 @@ function buildBoard (){
             'border': '0.5vmin solid black',
             "borderRadius": "4vmin",
             "resize": "both",})
+    stl (G.divs.ipadCover, {
+        'position': 'relative',
+        'zIndex': 40,
+        'backgroundColor': 'red',
+        'height':'105%',
+        'width':'100%',
+    //    'border': '0.5vmin solid black',
+        //"borderRadius": "4vmin",
+        "resize": "both",})
     stl (G.divs.ipad , myStyle('text'), {
                 'position':'absolute',
                 'left':'3.7%',
@@ -651,6 +661,7 @@ function buildBoard (){
     G.divs.textBlock.appendChild (G.divs.infoText);
     G.divs.textBlock.appendChild (G.divs.question);
     G.divs.ipadContainer.appendChild (G.divs.ipad);
+    G.divs.ipadContainer.appendChild (G.divs.ipadCover);
     pagecontainer.appendChild (G.divs.holoContainer);
     G.divs.holoContainer.appendChild (G.divs.holoSurface);
     G.divs.holoContainer.appendChild (G.divs.holoScreen)
