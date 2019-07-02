@@ -31,7 +31,8 @@ global_object: {
         G.hacks = {};
         G.hacks.ipLocations = [];
       }
-general_functions: {
+util_functions: {
+
     function test (typ){
         switch (typ) {
             case 'holo':
@@ -562,16 +563,8 @@ function buildBoard (){
             'width':'18%',
             'border': '0.5vmin solid black',
             "borderRadius": "4vmin",
+
             "resize": "both",})
-    stl (G.divs.ipadCover, {
-        'position': 'relative',
-        'zIndex': 40,
-        'backgroundColor': 'red',
-        'height':'105%',
-        'width':'100%',
-    //    'border': '0.5vmin solid black',
-        //"borderRadius": "4vmin",
-        "resize": "both",})
     stl (G.divs.ipad , myStyle('text'), {
                 'position':'absolute',
                 'left':'3.7%',
@@ -635,8 +628,6 @@ function buildBoard (){
             "left" : "71.9%",
             'cursor': "url('data/favicon-16x16.png'), auto"
         })
-
-
     stl (G.divs.led,{
         "position": "relative",
         //"background" : "url(data/led.png)",
@@ -666,6 +657,21 @@ function buildBoard (){
     G.divs.holoContainer.appendChild (G.divs.holoSurface);
     G.divs.holoContainer.appendChild (G.divs.holoScreen)
 
+    let ipadComputedWidth = G.divs.ipad.clientWidth
+    let ipadComputedHeight = G.divs.ipad.clientHeight
+    setTimeout(()=>{console.log (G.divs.ipad.clientWidth, ipadComputedHeight)},400);
+
+    stl (G.divs.ipadCover, { //current
+        'position': 'relative',
+        'zIndex': 40,
+        'backgroundColor': 'red',
+        'top': ipadComputedHeight * -0.09 + 'px',
+        'left':ipadComputedWidth * -0.14 + 'px',
+
+        'height':ipadComputedHeight  + 'px',
+       'width':ipadComputedWidth + 'px',
+        "resize": "both",})
+
     for (let i = 1; i < maxAnswers; i ++){
         let ansId = 'ans' + i;
         G.divs.ans[i] = Elm (ansId);
@@ -679,6 +685,7 @@ function buildBoard (){
     G.divs.led.addEventListener('mouseover',ledEvent,true)
     G.divs.led.addEventListener('mouseout',ledEvent,true);
     G.divs.led.addEventListener('click',ledEvent,true);
+
 }
 function setQuestion (num) {
     function blinkCursor(){
