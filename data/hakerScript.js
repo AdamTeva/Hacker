@@ -29,6 +29,7 @@ global_object: {
         G.mgmt.isFinalAnsInChapter = false;
         G.divs = {};
         G.hacks = {};
+        G.hacks.current = 'firewall'
         G.hacks.ipLocations = [];
       }
 util_functions: {
@@ -157,34 +158,73 @@ util_functions: {
             b: parseInt(result[3], 16)
         } : null;
     }
-}
-function myStyle (style) {
-    let obj = {}
-    switch (style) {
-        case 'text':
-        obj = {
-            'fontSize': '4vmax',
-            'fontSize': '4vmin',
-            'fontFamily':G.css.font_0,
-            'textAlign': 'right',
-             'direction': 'rtl',
-            'color': G.css.textcolor,
-            'fontWeight':'',
+    function myStyle (style) {
+        let obj = {}
+        switch (style) {
+            case 'text':
+            obj = {
+                'fontSize': '4vmax',
+                'fontSize': '4vmin',
+                'fontFamily':G.css.font_0,
+                'textAlign': 'right',
+                 'direction': 'rtl',
+                'color': G.css.textcolor,
+                'fontWeight':'',
+
+            }
+            break;
+            case 1:
+            obj = {
+                "backgroundSize": "100%",
+                "backgroundRepeat": "no-repeat",
+                'overflow':'hidden',
+                'opacity': '1',
+            }
+            break;
 
         }
-        break;
-        case 1:
-        obj = {
-            "backgroundSize": "100%",
-            "backgroundRepeat": "no-repeat",
-            'overflow':'hidden',
-            'opacity': '1',
-        }
-        break;
-
+        return obj
     }
-    return obj
+    function StylelFader (element,ms = 30,fadeIn = false)  {
+
+        var op = 1;  // initial opacity
+        console.log (element.style.opacity)
+        let finOp = 0.001
+        if (!fadeIn) {
+            var timerOut = setInterval(function () {
+
+
+                let real = Is(element);
+                if ((op <= finOp) || (!real)){clearInterval(timerOut) ;console.log (element.style.opacity);return}
+
+                element.style.opacity = op;
+                element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+
+                op -= 0.1;
+
+            }, ms);
+
+
+        }
+        else {
+            op = 0.1
+            var timerIn = setInterval(function () {
+                let real = Is(element);
+
+                if (op >= 1 || (!real)){
+                    clearInterval(timerIn);
+                }
+                element.style.opacity = op;
+                element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+                op += 0.05 ;
+                }, ms);
+
+        }
+    }
+
+
 }
+
 function clickAnswer (elem){
     function wrongAnswerAnimation (num) {
 
@@ -239,9 +279,9 @@ function clickAnswer (elem){
             if (op > 0){setTimeout(()=>{fadeOut ()}, time)} else if (!G.mgmt.isFinalAnsInChapter){
 
                 if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.mgmt.lastqNumber};
-                console.log ("next",G.mgmt.qNumber)
+
             setQuestion(G.mgmt.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
-                console.log ("finish chapter",G.mgmt.qNumber)
+
                 G.mgmt.isFinalAnsInChapter = false; IpadGrahpic ('finishChaper')}
         }
         fadeOut ()
@@ -304,7 +344,7 @@ function holoMenu () { // creats the menue inside the holo;
 
             }
             ;
-            console.log ( tr)
+
          }
     function addOption (text) {
          var option = Elm (text);
@@ -659,8 +699,6 @@ function buildBoard (){
 
     let ipadComputedWidth = G.divs.ipad.clientWidth
     let ipadComputedHeight = G.divs.ipad.clientHeight
-    setTimeout(()=>{console.log (G.divs.ipad.clientWidth, ipadComputedHeight)},400);
-
     stl (G.divs.ipadCover, { //current
         'position': 'relative',
         'zIndex': 40,
@@ -766,11 +804,12 @@ function setQuestion (num) {
 
 }
 function IpadGrahpic (type0) {
-
-    var answeris = ''; var isFinishing = false;
-    canvasDefs:
+    canvasDefs: {
+        var answeris = ''; var isFinishing = false;
         type0 = type0  || G.hacks.current;
+
         if (G.hacks.current == 'firewall' && type0 == 'firewall'){G.hacks.numOfsuccess = 0}
+
         if (type0 == 'right' || type0 == 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}
         if (type0 == 'finishChaper'){type0 = G.hacks.current; isFinishing = true}
         var canvas = Id ('ipad');
@@ -793,6 +832,8 @@ function IpadGrahpic (type0) {
         }
         canvas.style.color = 'white';
         var ctx = canvas.getContext("2d");
+
+    }
     function clickCanvas (e) {
         let x0  = e.clientX
         let y0 = e.clientY
@@ -1019,91 +1060,68 @@ function IpadGrahpic (type0) {
         if (!isFinishing) {drawIpIpad ()} else {consoleFoundIp()}
     }
     function fireWall (){
-        if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
+
         function setFirewallPieces (numOfFWPieces) {
             G.hacks.piecesOfFirewall = []
             for (i = 1; i < numOfFWPieces; i++) {
+
+                let randomX = getRandomInt (1300) * -1
+                let randomY = getRandomInt (350) * -1
                 G.hacks.piecesOfFirewall[i] = {};
-                G.hacks.piecesOfFirewall[i].randX = getRandomInt(450) -130;
-                G.hacks.piecesOfFirewall[i].randY = getRandomInt(400) -180;
-                G.hacks.piecesOfFirewall[i].startClipX = - 90 + G.hacks.piecesOfFirewall[i].randX  // The x coordinate where to start clipping
-                G.hacks.piecesOfFirewall[i].startClipY = -120  + G.hacks.piecesOfFirewall[i].randY// The y coordinate where to start clipping
-                G.hacks.piecesOfFirewall[i].clipedWidth = 350  // The Width of the clipped image
-                G.hacks.piecesOfFirewall[i].clipedHeight = G.hacks.piecesOfFirewall[i].randX // The height of the clipped image
-                G.hacks.piecesOfFirewall[i].xOfImg = G.hacks.piecesOfFirewall[i].randX // -250 // The x coordinate where to place the image on the canvas
-                G.hacks.piecesOfFirewall[i].yOfImg = G.hacks.piecesOfFirewall[i].randY // The y coordinate where to place the image on the canvas
-                G.hacks.piecesOfFirewall[i].imgWidth =  500 //  The width of the image to use (stretch or reduce the image)
-                G.hacks.piecesOfFirewall[i].imgHeight = 400  // The height of the image to use (stretch or reduce the image)
+                G.hacks.piecesOfFirewall[i].randX = randomX ;
+                G.hacks.piecesOfFirewall[i].randY = randomY ;
 
             }
-
-
         }
+        function addFirewallClue (){G.hacks.numOfsuccess++;}
         function drawFireWallIpad () {
+            let ipadCover = Id ('ipadCover')
+            stl (ipadCover,myStyle ('text'),{
+                'backgroundColor': 'rgba(80,80,80, 0.95)',
+                'fontFamily': 'ariel', 'textAlign': 'center'
+            });
+            ipadCover.innerHTML = '<br><br> &nbsp' + 'זיהוי חומת אש'
+            let randomMapX = getRandomInt (1300) * -1
+            let randomMapY = getRandomInt (350) * -1
+            G.hacks.ipMapLocation = G.hacks.ipMapLocation || [randomMapX,randomMapY]
+            // maximum values for green map G.hacks.ipMapLocation  = [-1300,-350]
+            G.divs.ipadContent = Elm ('ipadContent','img');
+            var img = G.divs.ipadContent;
+            // god files jpg: 2,3, 8 png: 2, // 4 best
+            let num = 1
+            let srcurl =  "data/mother-board (" + num + ").png"
+            img.src = srcurl //'data/firewall2 edit.png'
+            let i = 1
+            img.onload = function() {
+                function showChips (num) {
+                    ctx.drawImage(img, G.hacks.piecesOfFirewall[num].randX,  G.hacks.piecesOfFirewall[num].randY);
+                    if (num + 1 < G.hacks.numOfsuccess) {
+                        setTimeout(()=>{showChips (num+1)},500 )};
+                }
+                showChips (num)
+                //  for (i = 1; i < G.hacks.numOfsuccess; i++){
+                // setTimeout(()=>{
+                //     console.log (i)
+                // ctx.drawImage(img, G.hacks.piecesOfFirewall[i].randX,  G.hacks.piecesOfFirewall[i].randY);
+                //     }, 200 * i);
+                // }
 
 
 
-              let randomMapX = getRandomInt (1300) * -1
-              let randomMapY = getRandomInt (350) * -1
-
-              G.hacks.ipMapLocation = G.hacks.ipMapLocation || [randomMapX,randomMapY]
-              // maximum values for green map G.hacks.ipMapLocation  = [-1300,-350]
-              G.divs.ipadContent = Elm ('ipadContent','img');
-              var img = G.divs.ipadContent;
-              // god files jpg: 2,3, 8 png: 2, // 4 best
-              let num = 1
-              let srcurl =  "data/mother-board (" + num + ").png"
-              img.src = srcurl //'data/firewall2 edit.png'
-              img.onload = function() {
-                  ctx.drawImage(img, G.hacks.ipMapLocation [0],  G.hacks.ipMapLocation [1]);
-                  ctx.font = "7vmin Miriam";
-                  ctx.fillStyle = "white";
-                  let text =   'זיהוי חומת אש'
-                  ctx.save();
-                  ctx.shadowOffsetY = 4;
-                  ctx.shadowOffsetX = 4;
-                  ctx.shadowColor = "rgba(0,0,0,0.9)";
-                  ctx.shadowBlur = 3;
-                  ctx.fillText(text,w / 5, h -(h /30));
-                  ctx.restore();
               }
-
-    }
-
+        }
+        if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
         drawFireWallIpad ()
         if (answeris === 'right') {
-            var img = G.divs.ipadContent;
-            img.src = "data/bluefirewall.jpg"
- /*  context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);   */
-    var randX = getRandomInt(450) -130;
-    var randY = getRandomInt(400) -180;
-    var startClipX = - 90 + randX  // The x coordinate where to start clipping
-    var startClipY = -120  + randY// The y coordinate where to start clipping
-    var clipedWidth = 350  // The Width of the clipped image
-    var clipedHeight = 380 // The height of the clipped image
-    var xOfImg = randX // -250 // The x coordinate where to place the image on the canvas
-    var yOfImg = randY // The y coordinate where to place the image on the canvas
-    var imgWidth =  500 //  The width of the image to use (stretch or reduce the image)
-    var imgHeight = 400  // The height of the image to use (stretch or reduce the image)
+            let ipadCover = Id ('ipadCover')
+            StylelFader(ipadCover, 300);
+            console.log (ipadCover.style.opacity)
 
-
-   img.onload = function() {
-       let i = 1;
-       //G.hacks.numOfsuccess++
-       ctx.drawImage(img,G.hacks.piecesOfFirewall[i].startClipX,G.hacks.piecesOfFirewall[i].startClipY,
-       G.hacks.piecesOfFirewall[i].clipedWidth,G.hacks.piecesOfFirewall[i].clipedHeight
-       ,G.hacks.piecesOfFirewall[i].xOfImg,G.hacks.piecesOfFirewall[i].yOfImg,
-       G.hacks.piecesOfFirewall[i].imgWidth,G.hacks.piecesOfFirewall[i].imgHeight)
-       //drawImage(img,startClipX,startClipY,clipedWidth,clipedHeight,xOfImg,yOfImg,imgWidth,imgHeight)
-    // drawImage (img,-90, -120, 350,380,-50,-120,300,490)
-   }
-
-
+            addFirewallClue ()
 
         }
 
     }
-
     switch( type0) {
         case 'getIp':
         G.hacks.current = 'getIp';
@@ -1116,7 +1134,6 @@ function IpadGrahpic (type0) {
 
 
     }
-
 }
 // main:
 buildBoard ();
