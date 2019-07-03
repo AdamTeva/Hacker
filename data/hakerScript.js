@@ -3,9 +3,6 @@ global_object: {
  var G = {} //
         "use strict";
         G.Q = A_; // question object
-        G.L = function () {
-            return this
-        }
         G.css = {};
         G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
         G.css.typeSolution = "";
@@ -39,33 +36,58 @@ util_functions: {
     function L (...args){
         let txtcolor1 = 'black';
         let txtcolor2 = 'blue';
+        let colorForText = 'green';
+        let colorForNumber = 'purple';
         let colors = ['#FAF1E1','#F2EAC1','#F5EAD1', '#F1FFDA ', '#DFEFFF','#E4DFFF', '#FDDFCD', '#FFEAEF']
         let rnd = getRandomInt(colors.length) -1;
         var styles = ['background:' + colors [rnd], 'color: black', 'font-size:14px', 'line-height: 14px', 'font-weight: regular', ' display: inline-block' , 'border: 0px solid ' + colors [rnd], 'position:fixed', 'left:300px'].join(';');
         var style1 = styles + '; color:' + txtcolor1;
         var style2 = styles + '; color:' + txtcolor2;
-        let t = []; for (i = 0; i < 40; i ++){t[i]=''}
+        var styleText = styles + '; color:' + colorForText;
+        let t = [] ;  let  specialStyle = [] ; let objects_array = [];
+        for (i = 0; i < 40; i ++){t[i]=''; specialStyle[i]= ''}
         let n = 0;
-        fullTxtArry = []
         args.forEach((a)=>{
-            t[n] = '%c'+ a + ' = '; n++
-            let evl = '%c bb';
-            try {evl = '%c' + eval(a)+ ' '}
-            catch {}
+            if (a === undefined){a = 'undefined'}
+            if (typeof a === 'object' || typeof a === 'function') {objects_array.push(a)  ;return}
+
+            t[n] = '%c'+ a ; n++
+            let evl = '%c, ';
+            try { if (typeof a === 'number') {throw 'd'}
+                evl = '%c = '  + eval(a)+ ', '}
+            catch { if (typeof a === 'string' && a !== '') {
+                specialStyle[n-1] = styleText;
+            } }
             t[n] = evl;
             ;n++
         });
         let fulltxt = t.join('')
         let cssN = n;
         for (i = 0; i < (cssN); i +=2){
-            t[i] = style1;
+            if (specialStyle[i] === ''){t[i] = style1;} else { t[i] = specialStyle[i]}
             t[i + 1] = style2
         }
-        console.log (fulltxt,t[0],t[1],t[2],t[3],t[4],t[5],t[6],t[7],t[8],t[9],t[10],t[11],t[12],t[12],t[14]);
+
+        console.group (fulltxt,t[0],t[1],t[2],t[3],t[4],t[5],t[6],t[7],t[8],t[9],t[10],t[11],t[12],t[12],t[14]);
+        objects_array.forEach((a)=>{
+            let inf = ''
+            let stl = ''
+            if (Array.isArray(a)){inf = '%c【】%o'; stl = styleText + '; font-size:17px; color: blue'} else
+            if (typeof a === 'function'){inf = '%c ➡️ %o'; stl = styleText + '; font-size:14px'} else
+            if (typeof a === 'object'){inf = '%c 🅾 %o'; stl = styleText + '; font-size:14px'}
+
+
+
+            console.log (inf,stl,a)
+        })
+        console.groupEnd('');
+
+
+        //console.log('%c this is texxt %o',styleText, {a:'1', 'sss': 2})
+
 
 
     }
-
     function test (typ){
         switch (typ) {
             case 'holo':
@@ -217,8 +239,8 @@ util_functions: {
         }
         return obj
     }
-
     function StylelFader (element,ms = 30,fadeIn = false)  {
+        L('element.fadeProccess')
         if (fadeIn) {element.fadeProccess = 'fadeIn'} else if (!fadeIn) {element.fadeProccess = 'fadeOut' }
 
         var op = 1;  // initial opacity
@@ -1195,5 +1217,7 @@ setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu(); //test ('holo')
 //L('asdf','fasdf', 'sdfsd',1,3,4)
-L('G.css.textcolor','G.mgmt.stage','G.mgmtstage');
+let c =4
+L('G.mgmt.stage',[],{},L);
+
 //test ('right')
