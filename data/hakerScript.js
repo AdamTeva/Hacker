@@ -3,6 +3,9 @@ global_object: {
  var G = {} //
         "use strict";
         G.Q = A_; // question object
+        G.L = function () {
+            return this
+        }
         G.css = {};
         G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
         G.css.typeSolution = "";
@@ -33,17 +36,18 @@ global_object: {
         G.hacks.ipLocations = [];
       }
 util_functions: {
-    function L (...args){
+    function L2 (...args){
+        let colors = ['#FEFFC1','#FFEAC1','#D5FFC1', '#C1FFFA ', '#C1E7FF','#C4C1FF', '#F8C1FF', '#FFC1E6']
+        let rnd = getRandomInt(colors.length)
+        var styles = ['background:' + colors [rnd], ' [rnd]color: black', 'font-size:14px', 'line-height: 14px', 'font-weight: regular', ' display: inline-block' , 'border: 0px solid ' + colors [rnd], 'position:fixed', 'left:300px'].join(';');
+        fullArry = []
+        args.forEach((a)=>{
+            //console.log (a + " =", eval(a),",");
+            fullArry.push(a + " = ", eval(a), ", ")
+        })
+        txt = fullArry.join('')
+        console.log ('%c' + txt ,styles)
 
-
-
-        let txt = ' ';
-        txt += args.join(' , ');
-
-        for (i =1;i < 10;i++) {txt += ' '}
-
-        var styles = ['background: #F9F798', 'color: black', 'font-size:14px', 'line-height: 14px', 'font-weight: regular', ' display: inline-block' , 'border: 1px solid #F9F798', 'position:fixed', 'left:300px'].join(';');
-        console.log('%c'+  txt ,styles);
     }
 
     function test (typ){
@@ -1076,8 +1080,6 @@ function IpadGrahpic (type0) {
         if (!isFinishing) {drawIpIpad ()} else {consoleFoundIp()}
     }
     function fireWall (){
-
-
         function setFirewallPieces (numOfFWPieces) {
             G.hacks.piecesOfFirewall = [];
             G.hacks.NamesOfPiecesOfFirewall= [];
@@ -1176,5 +1178,6 @@ buildBoard ();
 setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu(); //test ('holo')
-L('asdf','fasdf', 'sdfsd',1,3,4)
+//L('asdf','fasdf', 'sdfsd',1,3,4)
+L2('G.css.textcolor','G.hacks.numOfsuccess');
 //test ('right')
