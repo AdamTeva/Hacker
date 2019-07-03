@@ -188,19 +188,20 @@ util_functions: {
     function StylelFader (element,ms = 30,fadeIn = false)  {
 
         var op = 1;  // initial opacity
-        console.log (element.style.opacity)
+
         let finOp = 0.001
         if (!fadeIn) {
             var timerOut = setInterval(function () {
 
 
                 let real = Is(element);
-                if ((op <= finOp) || (!real)){clearInterval(timerOut) ;console.log (element.style.opacity);return}
+                if ((op <= finOp) || (!real)){clearInterval(timerOut) ;
+                     (element.style.opacity);return}
 
                 element.style.opacity = op;
                 element.style.filter = 'alpha(opacity=' + op * 100 + ")";
 
-                op -= 0.1;
+                op -= 0.01;
 
             }, ms);
 
@@ -804,12 +805,14 @@ function setQuestion (num) {
 
 }
 function IpadGrahpic (type0) {
+
     canvasDefs: {
         var answeris = ''; var isFinishing = false;
         type0 = type0  || G.hacks.current;
 
-        if (G.hacks.current == 'firewall' && type0 == 'firewall'){G.hacks.numOfsuccess = 0}
+        if (G.hacks.current == 'firewall' && type0 == 'firewall'){
 
+            G.hacks.numOfsuccess = 0}
         if (type0 == 'right' || type0 == 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}
         if (type0 == 'finishChaper'){type0 = G.hacks.current; isFinishing = true}
         var canvas = Id ('ipad');
@@ -1061,12 +1064,17 @@ function IpadGrahpic (type0) {
     }
     function fireWall (){
 
-        function setFirewallPieces (numOfFWPieces) {
-            G.hacks.piecesOfFirewall = []
-            for (i = 1; i < numOfFWPieces; i++) {
 
+        function setFirewallPieces (numOfFWPieces) {
+            G.hacks.piecesOfFirewall = [];
+            G.hacks.NamesOfPiecesOfFirewall= [];
+            var defences = ['Computer access control',' Application security','Antivirus software',
+            'Secure coding', 'Secure by default','Sec-by design','Sec-operating systems','Authentication'
+            ,'AuthToken 2.0','Encryption']
+            for (i = 1; i < numOfFWPieces; i++) {
                 let randomX = getRandomInt (1300) * -1
                 let randomY = getRandomInt (350) * -1
+                G.hacks.NamesOfPiecesOfFirewall[i] = 'Ad#ewrweXxx00';
                 G.hacks.piecesOfFirewall[i] = {};
                 G.hacks.piecesOfFirewall[i].randX = randomX ;
                 G.hacks.piecesOfFirewall[i].randY = randomY ;
@@ -1075,51 +1083,66 @@ function IpadGrahpic (type0) {
         }
         function addFirewallClue (){G.hacks.numOfsuccess++;}
         function drawFireWallIpad () {
-            let ipadCover = Id ('ipadCover')
-            stl (ipadCover,myStyle ('text'),{
-                'backgroundColor': 'rgba(80,80,80, 0.95)',
-                'fontFamily': 'ariel', 'textAlign': 'center'
+            console.log (G.hacks.numOfsuccess)
+            let ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
+                'backgroundColor': 'rgba(40,40,40, 0.97)',
+                'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
-            ipadCover.innerHTML = '<br><br> &nbsp' + 'זיהוי חומת אש'
-            let randomMapX = getRandomInt (1300) * -1
-            let randomMapY = getRandomInt (350) * -1
-            G.hacks.ipMapLocation = G.hacks.ipMapLocation || [randomMapX,randomMapY]
-            // maximum values for green map G.hacks.ipMapLocation  = [-1300,-350]
+            ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
+            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"} else {
+                ipadCover.style.backgroundColor = 'transparent';
+                ipadCover.style.opacity = '1';
+                ipadCover.innerHTML += '<br><br><mark>' + 'מזהה רכיבים:' + '<br> '
+                ipadCover.innerHTML += '<div style="line-height:10px">';
+
+            }
+            ipadCover.innerHTML += '</mark>'
             G.divs.ipadContent = Elm ('ipadContent','img');
             var img = G.divs.ipadContent;
-            // god files jpg: 2,3, 8 png: 2, // 4 best
-            let num = 1
-            let srcurl =  "data/mother-board (" + num + ").png"
-            img.src = srcurl //'data/firewall2 edit.png'
-            let i = 1
+            let num = 0
+            img.src  =  "data/mother-board (" + 1 + ").png"
             img.onload = function() {
-                function showChips (num) {
-                    ctx.drawImage(img, G.hacks.piecesOfFirewall[num].randX,  G.hacks.piecesOfFirewall[num].randY);
-                    if (num + 1 < G.hacks.numOfsuccess) {
-                        setTimeout(()=>{showChips (num+1)},500 )};
+                function fadIntext (){
+                    if (ipadCover.style.opacity < 0.1) {
+
+                        StylelFader(ipadCover,30,true)
+                        var textToReplace = 'מזהה רכיבים:'
+                        var altText = 'הרכיבים שזוהו:'
+                        var origin = ipadCover.innerHTML;
+                        ipadCover.innerHTML = ipadCover.innerHTML.replace(textToReplace,altText)
+                    } else {setTimeout(()=>{fadIntext ()},500)}
+
+
                 }
-                showChips (num)
-                //  for (i = 1; i < G.hacks.numOfsuccess; i++){
-                // setTimeout(()=>{
-                //     console.log (i)
-                // ctx.drawImage(img, G.hacks.piecesOfFirewall[i].randX,  G.hacks.piecesOfFirewall[i].randY);
-                //     }, 200 * i);
-                // }
+                function showChips (num1) {
+
+                    ctx.drawImage(img, G.hacks.piecesOfFirewall[num1+1].randX,  G.hacks.piecesOfFirewall[num1+1].randY);
+                    ipadCover.innerHTML += '<br><span  style = "font-size:3vmin; background-color:black">' + G.hacks.NamesOfPiecesOfFirewall[num1+1];
+                    if (num1 - 1 < G.hacks.numOfsuccess) {
+                        setTimeout(()=>{showChips (num1+1)},400 )} else {
+
+
+
+
+                            fadIntext()};
+                }
+                if (G.hacks.numOfsuccess) showChips (num);
+
+
 
 
 
               }
         }
-        if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
-        drawFireWallIpad ()
         if (answeris === 'right') {
             let ipadCover = Id ('ipadCover')
-            StylelFader(ipadCover, 300);
-            console.log (ipadCover.style.opacity)
-
+            StylelFader(ipadCover, 30);
             addFirewallClue ()
 
         }
+        if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
+        drawFireWallIpad ()
+
 
     }
     switch( type0) {
@@ -1140,4 +1163,4 @@ buildBoard ();
 setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu(); //test ('holo')
-test ('right')
+//test ('right')
