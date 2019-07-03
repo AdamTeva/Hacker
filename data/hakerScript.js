@@ -36,17 +36,33 @@ global_object: {
         G.hacks.ipLocations = [];
       }
 util_functions: {
-    function L2 (...args){
-        let colors = ['#FEFFC1','#FFEAC1','#D5FFC1', '#C1FFFA ', '#C1E7FF','#C4C1FF', '#F8C1FF', '#FFC1E6']
-        let rnd = getRandomInt(colors.length)
-        var styles = ['background:' + colors [rnd], ' [rnd]color: black', 'font-size:14px', 'line-height: 14px', 'font-weight: regular', ' display: inline-block' , 'border: 0px solid ' + colors [rnd], 'position:fixed', 'left:300px'].join(';');
-        fullArry = []
+    function L (...args){
+        let txtcolor1 = 'black';
+        let txtcolor2 = 'blue';
+        let colors = ['#FAF1E1','#F2EAC1','#F5EAD1', '#F1FFDA ', '#DFEFFF','#E4DFFF', '#FDDFCD', '#FFEAEF']
+        let rnd = getRandomInt(colors.length) -1;
+        var styles = ['background:' + colors [rnd], 'color: black', 'font-size:14px', 'line-height: 14px', 'font-weight: regular', ' display: inline-block' , 'border: 0px solid ' + colors [rnd], 'position:fixed', 'left:300px'].join(';');
+        var style1 = styles + '; color:' + txtcolor1;
+        var style2 = styles + '; color:' + txtcolor2;
+        let t = []; for (i = 0; i < 40; i ++){t[i]=''}
+        let n = 0;
+        fullTxtArry = []
         args.forEach((a)=>{
-            //console.log (a + " =", eval(a),",");
-            fullArry.push(a + " = ", eval(a), ", ")
-        })
-        txt = fullArry.join('')
-        console.log ('%c' + txt ,styles)
+            t[n] = '%c'+ a + ' = '; n++
+            let evl = '%c bb';
+            try {evl = '%c' + eval(a)+ ' '}
+            catch {}
+            t[n] = evl;
+            ;n++
+        });
+        let fulltxt = t.join('')
+        let cssN = n;
+        for (i = 0; i < (cssN); i +=2){
+            t[i] = style1;
+            t[i + 1] = style2
+        }
+        console.log (fulltxt,t[0],t[1],t[2],t[3],t[4],t[5],t[6],t[7],t[8],t[9],t[10],t[11],t[12],t[12],t[14]);
+
 
     }
 
@@ -206,13 +222,13 @@ util_functions: {
         if (fadeIn) {element.fadeProccess = 'fadeIn'} else if (!fadeIn) {element.fadeProccess = 'fadeOut' }
 
         var op = 1;  // initial opacity
-        console.log (element.style.opacity)
+
         let finOp = 0.001
         if (!fadeIn) {
 
             var timerOut = setInterval(function () { //element.fadeProccess === 'fadeIn'
                 let real = Is(element);
-                if ((op <= finOp) || (!real) || element.fadeProccess === 'fadeIn') {clearInterval(timerOut) ;console.log (element.style.opacity);return}
+                if ((op <= finOp) || (!real) || element.fadeProccess === 'fadeIn') {clearInterval(timerOut) ;return}
 
                 element.style.opacity = op;
                 element.style.filter = 'alpha(opacity=' + op * 100 + ")";
@@ -1098,7 +1114,7 @@ function IpadGrahpic (type0) {
         }
         function addFirewallClue (){G.hacks.numOfsuccess++;}
         function drawFireWallIpad () {
-            console.log (G.hacks.numOfsuccess)
+
             let ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'backgroundColor': 'rgba(40,40,40, 0.97)',
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
@@ -1179,5 +1195,5 @@ setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu(); //test ('holo')
 //L('asdf','fasdf', 'sdfsd',1,3,4)
-L2('G.css.textcolor','G.hacks.numOfsuccess');
+L('G.css.textcolor','G.mgmt.stage','G.mgmtstage');
 //test ('right')
