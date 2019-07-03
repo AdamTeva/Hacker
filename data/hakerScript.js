@@ -33,6 +33,18 @@ global_object: {
         G.hacks.ipLocations = [];
       }
 util_functions: {
+    function L (...args){
+
+
+
+        let txt = ' ';
+        txt += args.join(' , ');
+
+        for (i =1;i < 10;i++) {txt += ' '}
+
+        var styles = ['background: #F9F798', 'color: black', 'font-size:14px', 'line-height: 14px', 'font-weight: regular', ' display: inline-block' , 'border: 1px solid #F9F798', 'position:fixed', 'left:300px'].join(';');
+        console.log('%c'+  txt ,styles);
+    }
 
     function test (typ){
         switch (typ) {
@@ -185,23 +197,23 @@ util_functions: {
         }
         return obj
     }
+
     function StylelFader (element,ms = 30,fadeIn = false)  {
+        if (fadeIn) {element.fadeProccess = 'fadeIn'} else if (!fadeIn) {element.fadeProccess = 'fadeOut' }
 
         var op = 1;  // initial opacity
-
+        console.log (element.style.opacity)
         let finOp = 0.001
         if (!fadeIn) {
-            var timerOut = setInterval(function () {
 
-
+            var timerOut = setInterval(function () { //element.fadeProccess === 'fadeIn'
                 let real = Is(element);
-                if ((op <= finOp) || (!real)){clearInterval(timerOut) ;
-                     (element.style.opacity);return}
+                if ((op <= finOp) || (!real) || element.fadeProccess === 'fadeIn') {clearInterval(timerOut) ;console.log (element.style.opacity);return}
 
                 element.style.opacity = op;
                 element.style.filter = 'alpha(opacity=' + op * 100 + ")";
 
-                op -= 0.01;
+                op -= 0.1;
 
             }, ms);
 
@@ -212,7 +224,7 @@ util_functions: {
             var timerIn = setInterval(function () {
                 let real = Is(element);
 
-                if (op >= 1 || (!real)){
+                if (op >= 1 || (!real) || element.fadeProccess === 'fadeOut'){
                     clearInterval(timerIn);
                 }
                 element.style.opacity = op;
@@ -222,6 +234,7 @@ util_functions: {
 
         }
     }
+
 
 
 }
@@ -1163,4 +1176,5 @@ buildBoard ();
 setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu(); //test ('holo')
+L('asdf','fasdf', 'sdfsd',1,3,4)
 //test ('right')
