@@ -1122,7 +1122,7 @@ function IpadGrahpic (type0) {
     function fireWall (){
 
 
-        var ipadFireWallBGColor = 'linear-gradient(to right, rgba(255,0,0,0,0), rgba(255,0,0,1))'//"linear-gradient(135deg, rgba(181, 189, 200, 0.5) 0%,rgba(130, 140, 149,0.2) 36%,rgba(40, 52, 59, 0.3) 100%)"
+        var ipadFireWallBGColor = 'rgba(100,100,100,0.5)'//"linear-gradient(135deg, rgba(181, 189, 200, 0.5) 0%,rgba(130, 140, 149,0.2) 36%,rgba(40, 52, 59, 0.3) 100%)"
         function blureChanger (){
 
             ipadCover.isbluring = true;
@@ -1171,7 +1171,9 @@ function IpadGrahpic (type0) {
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
             ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
-            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"; ipadCover.style.background = ipadFireWallBGColor ;   } else {
+            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"; ipadCover.style.backgroundColor = ipadFireWallBGColor ;
+
+         } else {
                 ipadCover.style.opacity = '1';
                 ipadCover.innerHTML += '<br><br><mark>' + 'מזהה רכיבים:' + '<br> '
                 ipadCover.innerHTML += '<div style="line-height:10px">';
@@ -1194,26 +1196,30 @@ function IpadGrahpic (type0) {
                     } else {setTimeout(()=>{fadIntext ()},500)}
                 }
                 function showChips (num1) {
+                    ms = 400;
+                    if  (answeris === 'wrong') {ms=10}
+
                     ctx.drawImage(img, G.hacks.piecesOfFirewall[num1+1].randX,  G.hacks.piecesOfFirewall[num1+1].randY);
                     ipadCover.innerHTML += '<br><span  style = "font-size:3vmin; background-color:black">' + G.hacks.NamesOfPiecesOfFirewall[num1+1];
-                    if (num1  < G.hacks.numOfsuccess * 2) {
-                        L(' G.hacks.numOfsuccess',num1 )
-                        setTimeout(()=>{showChips (num1+1)},400 )} else {
+                    if (num1 -1 < G.hacks.numOfsuccess * 2) {
+
+                        setTimeout(()=>{showChips (num1+1)},ms)} else {
                             fadIntext()};
                 }
                 if (G.hacks.numOfsuccess) showChips (num);
               }
         }
-        if (answeris === 'right') {let ipadCover = Id ('ipadCover');
+        if (answeris === 'right') {let ipadCover = Id ('ipadCover');StylelFader(ipadCover,30)
             ipadCover.style.filter = ''; ipadCover.style.background = 'transparent';
             ipadCover.isbluring = false;
 
             addFirewallClue ()}
             else if (answeris === 'wrong') {//ipadCover.style.filter = "blur(0.1rem)"
             blureChanger ();
-            ;ipadCover.style.background  = ipadFireWallBGColor}
+            ;ipadCover.style.backgroundColor  = ipadFireWallBGColor}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
-        if (answeris === 'wrong'){} else drawFireWallIpad ()
+
+        drawFireWallIpad ()
 
 
     }
@@ -1235,4 +1241,6 @@ buildBoard ();
 setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu(); //test ('holo')
-//IpadGrahpic('right')
+
+// IpadGrahpic('right')
+// IpadGrahpic('wrong')
