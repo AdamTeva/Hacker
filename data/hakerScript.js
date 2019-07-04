@@ -761,7 +761,7 @@ function buildBoard (){
     stl (G.divs.ipadCover, { //current
         'position': 'relative',
         'zIndex': 40,
-        'backgroundColor': 'red',
+        //'backgroundColor': 'red',
         'top': ipadComputedHeight * -0.09 + 'px',
         'left':ipadComputedWidth * -0.14 + 'px',
 
@@ -1120,9 +1120,11 @@ function IpadGrahpic (type0) {
         if (!isFinishing) {drawIpIpad ()} else {consoleFoundIp()}
     }
     function fireWall (){
-
-
-        var ipadFireWallBGColor = 'rgba(100,100,100,0.5)'//"linear-gradient(135deg, rgba(181, 189, 200, 0.5) 0%,rgba(130, 140, 149,0.2) 36%,rgba(40, 52, 59, 0.3) 100%)"
+        var ipadFireWallBGColor = "linear-gradient(135deg, rgba(78,92,90,1) 0%,rgba(78,92,90,0.57) 25%,rgba(78,92,90,0.9) 57%,rgba(101,118,119,0.89) 83%,rgba(25,26,63,1) 100%"
+        function setBG (c) {
+            var ipadCover = Id ('ipadCover')
+            ipadCover.style.backgroundImage = c
+        }
         function blureChanger (){
 
             ipadCover.isbluring = true;
@@ -1148,9 +1150,9 @@ function IpadGrahpic (type0) {
             var defences = ['access control ','Admin-security: ','Antivirus sftw(): ',
             'Sec- coding: ', 'Sec-by default: ','Sec-by design: ','S-op-systems _','Auth-user - '
             ,'AuthToken ; ','Encryp: ', 'main-Panel: ', 'crypto: ', 'node-Secure: ', 'memory-Leak: ']
-            var defence_functions = [' #0000FF', '#F1C40F','f()Firewall',
-            ,'OfFirewall;', '#000080', '#FF00FF', 'rgb(13,14,9)s','void_ssmain()i',
-             '#FA2DC9', '()linear-gradient',]
+            var defence_functions = [' #0000FF', '#F1C40F','f()Firewall','0x3e603fff','0x20004fff','0x4c0001ff','0x1bf200ff','0xfffff980','0x7ffffaff', '0x003fee00','0x6ffffff4','0x2fffffb8','0xffffff98','0xfff506ff','0x20bfffff', '0x3f62ffe9','0x2eff984f','0xf983ffb1'
+            ,'OfFirewall;', '#000080', '#FF00FF', 'rgb(13,14,9)s','void_ssmain-i',
+             '#FA2DC9', 'S\\N1692462',]
 
             for (i = 1; i < numOfFWPieces; i++) {
                 let randomX = getRandomInt (1300) * -1
@@ -1171,7 +1173,7 @@ function IpadGrahpic (type0) {
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
             ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
-            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"; ipadCover.style.backgroundColor = ipadFireWallBGColor ;
+            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"; setBG (ipadFireWallBGColor) ;
 
          } else {
                 ipadCover.style.opacity = '1';
@@ -1209,14 +1211,15 @@ function IpadGrahpic (type0) {
                 if (G.hacks.numOfsuccess) showChips (num);
               }
         }
-        if (answeris === 'right') {let ipadCover = Id ('ipadCover');StylelFader(ipadCover,30)
-            ipadCover.style.filter = ''; ipadCover.style.background = 'transparent';
+
+        if (answeris === 'right') {let ipadCover = Id ('ipadCover');//StylelFader(ipadCover,30)
+            ipadCover.style.filter = ''; setBG('');
             ipadCover.isbluring = false;
 
             addFirewallClue ()}
             else if (answeris === 'wrong') {//ipadCover.style.filter = "blur(0.1rem)"
             blureChanger ();
-            ;ipadCover.style.backgroundColor  = ipadFireWallBGColor}
+            ;setBG(ipadFireWallBGColor)}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
 
         drawFireWallIpad ()
