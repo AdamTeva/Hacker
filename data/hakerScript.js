@@ -240,8 +240,11 @@ util_functions: {
         return obj
     }
     function StylelFader (element,ms = 30,fadeIn = false)  {
-        L('element.fadeProccess')
+
+
         if (fadeIn) {element.fadeProccess = 'fadeIn'} else if (!fadeIn) {element.fadeProccess = 'fadeOut' }
+
+
 
         var op = 1;  // initial opacity
 
@@ -860,7 +863,6 @@ function setQuestion (num) {
 
 }
 function IpadGrahpic (type0) {
-
     canvasDefs: {
         var answeris = ''; var isFinishing = false;
         type0 = type0  || G.hacks.current;
@@ -1118,16 +1120,45 @@ function IpadGrahpic (type0) {
         if (!isFinishing) {drawIpIpad ()} else {consoleFoundIp()}
     }
     function fireWall (){
+
+
+        var ipadFireWallBGColor = 'linear-gradient(to right, rgba(255,0,0,0,0), rgba(255,0,0,1))'//"linear-gradient(135deg, rgba(181, 189, 200, 0.5) 0%,rgba(130, 140, 149,0.2) 36%,rgba(40, 52, 59, 0.3) 100%)"
+        function blureChanger (){
+
+            ipadCover.isbluring = true;
+            var n1 = 0.07 ; var ms = 50;
+            var delta = 0.01 ; top_blure = 0.2; bottom_blur = 0.06
+            function bllr (n){
+
+                if (!ipadCover.isbluring) {return}
+                let b = 'blur(' + n +'rem)';
+                ipadCover.style.filter = b;
+                if (n > top_blure) { delta *= -1}
+                if (n < bottom_blur) { delta *= -1}
+                n += delta;
+                setTimeout(()=> bllr (n),ms)
+            }
+            bllr(n1)
+
+
+        }
         function setFirewallPieces (numOfFWPieces) {
             G.hacks.piecesOfFirewall = [];
-            G.hacks.NamesOfPiecesOfFirewall= [];
-            var defences = ['Computer access control',' Application security','Antivirus software',
-            'Secure coding', 'Secure by default','Sec-by design','Sec-operating systems','Authentication'
-            ,'AuthToken 2.0','Encryption']
+            G.hacks.NamesOfPiecesOfFirewall = [];
+            var defences = ['access control ','Admin-security: ','Antivirus sftw(): ',
+            'Sec- coding: ', 'Sec-by default: ','Sec-by design: ','S-op-systems _','Auth-user - '
+            ,'AuthToken ; ','Encryp: ', 'main-Panel: ', 'crypto: ', 'node-Secure: ', 'memory-Leak: ']
+            var defence_functions = [' #0000FF', '#F1C40F','f()Firewall',
+            ,'OfFirewall;', '#000080', '#FF00FF', 'rgb(13,14,9)s','void_ssmain()i',
+             '#FA2DC9', '()linear-gradient',]
+
             for (i = 1; i < numOfFWPieces; i++) {
                 let randomX = getRandomInt (1300) * -1
                 let randomY = getRandomInt (350) * -1
-                G.hacks.NamesOfPiecesOfFirewall[i] = 'Ad#ewrweXxx00';
+                let randomDfence = getRandomInt(defences.length - 1)
+                let randomDfencef = getRandomInt(defence_functions.length - 1)
+                G.hacks.NamesOfPiecesOfFirewall[i] = defences[randomDfence] + defence_functions[randomDfencef];
+                defences.splice(randomDfence,1);
                 G.hacks.piecesOfFirewall[i] = {};
                 G.hacks.piecesOfFirewall[i].randX = randomX ;
                 G.hacks.piecesOfFirewall[i].randY = randomY ;
@@ -1136,14 +1167,11 @@ function IpadGrahpic (type0) {
         }
         function addFirewallClue (){G.hacks.numOfsuccess++;}
         function drawFireWallIpad () {
-
-            let ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
-                'backgroundColor': 'rgba(40,40,40, 0.97)',
+            var ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
             ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
-            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"} else {
-                ipadCover.style.backgroundColor = 'transparent';
+            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"; ipadCover.style.background = ipadFireWallBGColor ;   } else {
                 ipadCover.style.opacity = '1';
                 ipadCover.innerHTML += '<br><br><mark>' + 'מזהה רכיבים:' + '<br> '
                 ipadCover.innerHTML += '<div style="line-height:10px">';
@@ -1156,45 +1184,36 @@ function IpadGrahpic (type0) {
             img.src  =  "data/mother-board (" + 1 + ").png"
             img.onload = function() {
                 function fadIntext (){
-                    if (ipadCover.style.opacity < 0.1) {
 
+                    if (ipadCover.style.opacity < 0.2 || ipadCover.style.opacity > 0.8) {
                         StylelFader(ipadCover,30,true)
                         var textToReplace = 'מזהה רכיבים:'
                         var altText = 'הרכיבים שזוהו:'
                         var origin = ipadCover.innerHTML;
                         ipadCover.innerHTML = ipadCover.innerHTML.replace(textToReplace,altText)
                     } else {setTimeout(()=>{fadIntext ()},500)}
-
-
                 }
                 function showChips (num1) {
-
                     ctx.drawImage(img, G.hacks.piecesOfFirewall[num1+1].randX,  G.hacks.piecesOfFirewall[num1+1].randY);
                     ipadCover.innerHTML += '<br><span  style = "font-size:3vmin; background-color:black">' + G.hacks.NamesOfPiecesOfFirewall[num1+1];
-                    if (num1 - 1 < G.hacks.numOfsuccess) {
+                    if (num1  < G.hacks.numOfsuccess * 2) {
+                        L(' G.hacks.numOfsuccess',num1 )
                         setTimeout(()=>{showChips (num1+1)},400 )} else {
-
-
-
-
                             fadIntext()};
                 }
                 if (G.hacks.numOfsuccess) showChips (num);
-
-
-
-
-
               }
         }
-        if (answeris === 'right') {
-            let ipadCover = Id ('ipadCover')
-            StylelFader(ipadCover, 30);
-            addFirewallClue ()
+        if (answeris === 'right') {let ipadCover = Id ('ipadCover');
+            ipadCover.style.filter = ''; ipadCover.style.background = 'transparent';
+            ipadCover.isbluring = false;
 
-        }
+            addFirewallClue ()}
+            else if (answeris === 'wrong') {//ipadCover.style.filter = "blur(0.1rem)"
+            blureChanger ();
+            ;ipadCover.style.background  = ipadFireWallBGColor}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
-        drawFireWallIpad ()
+        if (answeris === 'wrong'){} else drawFireWallIpad ()
 
 
     }
@@ -1216,8 +1235,4 @@ buildBoard ();
 setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu(); //test ('holo')
-//L('asdf','fasdf', 'sdfsd',1,3,4)
-let c =4
-L('G.mgmt.stage',[],{},L);
-
-//test ('right')
+//IpadGrahpic('right')
