@@ -31,6 +31,8 @@ global_object: {
         G.divs = {};
         G.hacks = {};
         G.hacks.current = 'firewall'
+        G.hacks.firewallCodeId = 'FWhacksId';
+        G.hacks.firewallFinishText = 'ההגנה נעקפה.'
         G.hacks.ipLocations = [];
       }
 util_functions: {
@@ -1121,58 +1123,7 @@ function IpadGrahpic (type0) {
         if (!isFinishing) {drawIpIpad ()} else {consoleFoundIp()}
     }
     function fireWall (){
-        function hackFirewallElement(DomElement ,finishString = 'ok') {
-            var dictionary = "0123456789qwertyuiopasdfghjklzxcvbnm!?></\a`~+*=@#$%".split('');
-            var el = DomElement;
-            var before = '', after = '';
-            var virtualHtml = ''
-            el.style += ':before {  content: attr(data-before); word-break: break-all;  opacity: 0.5;}:after {  content: attr(data-after);  word-break: break-all;  opacity: 0.5;}'
-            var Whtml =  () =>{ el.innerHTML = before + virtualHtml + after}
-            var ran = function() {
-             return Math.floor(Math.random() * dictionary.length)
-            }
-            var ranString = function(amt) {
-              var string = '';
-              for(var i = 0; i < amt; i++) {
-                string += dictionary[ran()];
-              }
-              return string;
-            }
-            var init = function(str) {
-              var count = str.length;
-              var delay = 50;
-              //btn.classList.remove('show');
-              virtualHtml = '';
-              Whtml ();
 
-              var gen = setInterval(function() {
-                //el.setAttribute('data-before', ranString(count));
-                //el.setAttribute('data-after', ranString(count));
-                before = '<span style="opacity: 0.5;"> ' + ranString(count) + '</span>'
-                after = '<span style="opacity: 0.5;"> ' + ranString(count) + '</span>'
-                Whtml ()
-
-                if(delay > 0) {
-                  delay--;
-                }
-                else {
-                  if(count < str.length) {
-                    virtualHtml += str[str.length - count-1];
-                    Whtml ();
-
-                  }
-                  count--;
-                  if(count === -1) {
-                    clearInterval(gen);
-                    //showButton();
-                  }
-                }
-              }, 32);
-            }
-            /* my code */
-            init (finishString)
-
-        }
         function setBG (c) {
             var ipadCover = Id ('ipadCover')
             ipadCover.style.backgroundImage = c
@@ -1221,6 +1172,7 @@ function IpadGrahpic (type0) {
         }
         function addFirewallClue (){G.hacks.numOfsuccess++;}
         function drawFireWallIpad () {
+
             var ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
@@ -1233,18 +1185,74 @@ function IpadGrahpic (type0) {
                 ipadCover.innerHTML += '<div style="line-height:10px">';
 
             }
-            ipadCover.innerHTML += '</mark>'
+            ipadCover.innerHTML += '</mark> <br>'
             G.divs.ipadContent = Elm ('ipadContent','img');
             var img = G.divs.ipadContent;
             let num = 1
             img.src  =  "data/mother-board (" + 1 + ").png"
             img.onload = function() {
-                function addHackOption (el){
-                    el.addEventListener('onclick', ()=>{alert('k')} );
+            function addHackOption (el){
+                function clickFirewallHack (el){
+                    function hackFirewallElement(DomElement ,finishString = 'ok') {
+                        var dictionary = "0123456789qwertyuiopasdfghjklzxcvbnm!?></\a`~+*=@#$%".split('');
+                        var el = DomElement;
+                        if (el.innerHTML.includes(finishString)) return;
+                        var before = '', after = '';
+                        var virtualHtml = ''
+                        //el.style += ';:before {  content: attr(data-before); word-break: break-all;  opacity: 0.5;}:after {  content: attr(data-after);  word-break: break-all;  opacity: 0.5;}'
+                        var Whtml =  () =>{ el.innerHTML = before + virtualHtml + after}
+                        var ran = function() {
+                         return Math.floor(Math.random() * dictionary.length)
+                        }
+                        var ranString = function(amt) {
+                          var string = '';
+                          for(var i = 0; i < amt; i++) {
+                            string += dictionary[ran()];
+                          }
+                          return string;
+                        }
+                        var init = function(str) {
+                          var count = str.length;
+                          var delay = 50;
+                          //btn.classList.remove('show');
+                          virtualHtml = '';
+                          Whtml ();
 
+                          var gen = setInterval(function() {
 
+                            before = '<span style="opacity: 0.5;"> ' + ranString(count) + '</span>'
+                            after = '<span style="opacity: 0.5;"> ' + ranString(count) + '</span>'
+                            Whtml ()
+
+                            if(delay > 0) {
+                              delay--;
+                            }
+                            else {
+                              if(count < str.length) {
+                                virtualHtml += str[str.length - count-1];
+                                Whtml ();
+
+                              }
+                              count--;
+                              if(count === -1) {
+                                clearInterval(gen);
+                                //showButton();
+                              }
+                            }
+                          }, 32);
+                        }
+                        /* my code */
+                        init (finishString)
+
+                    }
+                    hackFirewallElement (this,G.hacks.firewallFinishText);
 
                 }
+                el = Id (el)
+
+                el.addEventListener('click',clickFirewallHack, true)
+
+            }
                 function fadIntext (){
 
                     if (ipadCover.style.opacity < 0.2 || ipadCover.style.opacity > 0.8) {
@@ -1258,16 +1266,24 @@ function IpadGrahpic (type0) {
                 function showChips (num1) {
                     ms = 400;
                     if  (answeris === 'wrong') {ms=10}
-
                     ctx.drawImage(img, G.hacks.piecesOfFirewall[num1+1].randX,  G.hacks.piecesOfFirewall[num1+1].randY);
-                    spanId = 'firewallEId' + num1+1;
-                    ipadCover.innerHTML += '<br><span id = "' + spanId + '"style = "font-size:3vmin; background-color:black">' +  G.hacks.NamesOfPiecesOfFirewall[num1+1] + '</span>';
-                    let sp = Id (spanId )
-                     addHackOption (Id (spanId ));
+                    spanId = G.hacks.firewallCodeId  + num1+1;
+                    ipadCover.innerHTML += '<div id = "' + spanId + '"style = "font-size:3vmin; background-color:rgba(10,0,0,0.7); width:80% ;margin: 0 auto; margin-top:1%;">' +  G.hacks.NamesOfPiecesOfFirewall[num1+1] + '</div>';
+                    let sp = Id (spanId);
                     if (num1  < G.hacks.numOfsuccess ) {
 
                         setTimeout(()=>{showChips (num1+1)},ms)} else {
-                            fadIntext()};
+                            fadIntext();
+                            if (G.hacks.numOfsuccess >=G.mgmt.maxFirewallTofind ){
+                                let txt = 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.'
+                            ipadCover.innerHTML += '<br><br><div id = "'  + '"style = "font-size:4.3vmin; background-color:rgb(0,191,255); font-weight: bold; color:black;width:90% ;margin: 0 auto; margin-top:3%; padding:2% ;border: 0.3vmin solid black;border-radius: 3vmin">' +  txt + '</div>';}
+                            ipadCover.childNodes.forEach(a=>{
+                                if (!a.id) {return}
+                                if (a.id.includes(G.hacks.firewallCodeId)) {addHackOption (a.id)}
+                            })
+
+                        };
+
                 }
                 if (G.hacks.numOfsuccess) showChips (num);
               }
@@ -1278,9 +1294,9 @@ function IpadGrahpic (type0) {
             ipadCover.isbluring = false;
 
             addFirewallClue ()}
-            else if (answeris === 'wrong') {blureChanger ();;setBG(ipadFireWallBGColor)}
+            else if (answeris === 'wrong') {blureChanger ();setBG(ipadFireWallBGColor)}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
-        if (G.hacks.numOfsuccess >= G.mgmt.maxFirewallTofind) {alert ('good job')}
+
 
         drawFireWallIpad ()
         //let ipadCover = Id ('ipadCover')
@@ -1309,6 +1325,4 @@ buildBoard ();
 setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu(); //test ('holo')
-
-// IpadGrahpic('right')
-// IpadGrahpic('wrong')
+//
