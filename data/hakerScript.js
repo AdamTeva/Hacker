@@ -26,6 +26,7 @@ global_object: {
         G.mgmt.isQuestion = false;
         G.mgmt.isHolo = false// is the holo up
         G.mgmt.maxIpsTofind = 6;
+        G.mgmt.maxFirewallTofind = 3;
         G.mgmt.isFinalAnsInChapter = false;
         G.divs = {};
         G.hacks = {};
@@ -1120,7 +1121,58 @@ function IpadGrahpic (type0) {
         if (!isFinishing) {drawIpIpad ()} else {consoleFoundIp()}
     }
     function fireWall (){
-        var ipadFireWallBGColor = "linear-gradient(135deg, rgba(78,92,90,1) 0%,rgba(78,92,90,0.57) 25%,rgba(78,92,90,0.9) 57%,rgba(101,118,119,0.89) 83%,rgba(25,26,63,1) 100%"
+        function hackFirewallElement(DomElement ,finishString = 'ok') {
+            var dictionary = "0123456789qwertyuiopasdfghjklzxcvbnm!?></\a`~+*=@#$%".split('');
+            var el = DomElement;
+            var before = '', after = '';
+            var virtualHtml = ''
+            el.style += ':before {  content: attr(data-before); word-break: break-all;  opacity: 0.5;}:after {  content: attr(data-after);  word-break: break-all;  opacity: 0.5;}'
+            var Whtml =  () =>{ el.innerHTML = before + virtualHtml + after}
+            var ran = function() {
+             return Math.floor(Math.random() * dictionary.length)
+            }
+            var ranString = function(amt) {
+              var string = '';
+              for(var i = 0; i < amt; i++) {
+                string += dictionary[ran()];
+              }
+              return string;
+            }
+            var init = function(str) {
+              var count = str.length;
+              var delay = 50;
+              //btn.classList.remove('show');
+              virtualHtml = '';
+              Whtml ();
+
+              var gen = setInterval(function() {
+                //el.setAttribute('data-before', ranString(count));
+                //el.setAttribute('data-after', ranString(count));
+                before = '<span style="opacity: 0.5;"> ' + ranString(count) + '</span>'
+                after = '<span style="opacity: 0.5;"> ' + ranString(count) + '</span>'
+                Whtml ()
+
+                if(delay > 0) {
+                  delay--;
+                }
+                else {
+                  if(count < str.length) {
+                    virtualHtml += str[str.length - count-1];
+                    Whtml ();
+
+                  }
+                  count--;
+                  if(count === -1) {
+                    clearInterval(gen);
+                    //showButton();
+                  }
+                }
+              }, 32);
+            }
+            /* my code */
+            init (finishString)
+
+        }
         function setBG (c) {
             var ipadCover = Id ('ipadCover')
             ipadCover.style.backgroundImage = c
@@ -1150,9 +1202,9 @@ function IpadGrahpic (type0) {
             var defences = ['access control ','Admin-security: ','Antivirus sftw(): ',
             'Sec- coding: ', 'Sec-by default: ','Sec-by design: ','S-op-systems _','Auth-user - '
             ,'AuthToken ; ','Encryp: ', 'main-Panel: ', 'crypto: ', 'node-Secure: ', 'memory-Leak: ']
-            var defence_functions = [' #0000FF', '#F1C40F','f()Firewall','0x3e603fff','0x20004fff','0x4c0001ff','0x1bf200ff','0xfffff980','0x7ffffaff', '0x003fee00','0x6ffffff4','0x2fffffb8','0xffffff98','0xfff506ff','0x20bfffff', '0x3f62ffe9','0x2eff984f','0xf983ffb1'
-            ,'OfFirewall;', '#000080', '#FF00FF', 'rgb(13,14,9)s','void_ssmain-i',
-             '#FA2DC9', 'S\\N1692462',]
+            var defence_functions = [' #0000FF', '#F1C40F','f()Firewall','0x3e603fff','0x20004fff','0x4c0101ff','0x1bf200ff','0xffd61f980','0x7ffffaff', '0x003fee00','0x6ffffff4','0x2fffffb8','0xffffff98','0xfff506ff','0x20bfe5ff', '0x3f62ffe9','0x2eff984f','0xf983ffb1'
+            ,'OfFirewall', '#0002080', '#FF00FF', 'rgb(13,14,9)s','void_ssmain-i',
+             '#FA2DC9', 'S-N/1692462',]
 
             for (i = 1; i < numOfFWPieces; i++) {
                 let randomX = getRandomInt (1300) * -1
@@ -1175,7 +1227,7 @@ function IpadGrahpic (type0) {
             ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
             if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"; setBG (ipadFireWallBGColor) ;
 
-         } else {
+            } else {
                 ipadCover.style.opacity = '1';
                 ipadCover.innerHTML += '<br><br><mark>' + 'מזהה רכיבים:' + '<br> '
                 ipadCover.innerHTML += '<div style="line-height:10px">';
@@ -1184,9 +1236,15 @@ function IpadGrahpic (type0) {
             ipadCover.innerHTML += '</mark>'
             G.divs.ipadContent = Elm ('ipadContent','img');
             var img = G.divs.ipadContent;
-            let num = 0
+            let num = 1
             img.src  =  "data/mother-board (" + 1 + ").png"
             img.onload = function() {
+                function addHackOption (el){
+                    el.addEventListener('onclick', ()=>{alert('k')} );
+
+
+
+                }
                 function fadIntext (){
 
                     if (ipadCover.style.opacity < 0.2 || ipadCover.style.opacity > 0.8) {
@@ -1202,8 +1260,11 @@ function IpadGrahpic (type0) {
                     if  (answeris === 'wrong') {ms=10}
 
                     ctx.drawImage(img, G.hacks.piecesOfFirewall[num1+1].randX,  G.hacks.piecesOfFirewall[num1+1].randY);
-                    ipadCover.innerHTML += '<br><span  style = "font-size:3vmin; background-color:black">' + G.hacks.NamesOfPiecesOfFirewall[num1+1];
-                    if (num1 -1 < G.hacks.numOfsuccess * 2) {
+                    spanId = 'firewallEId' + num1+1;
+                    ipadCover.innerHTML += '<br><span id = "' + spanId + '"style = "font-size:3vmin; background-color:black">' +  G.hacks.NamesOfPiecesOfFirewall[num1+1] + '</span>';
+                    let sp = Id (spanId )
+                     addHackOption (Id (spanId ));
+                    if (num1  < G.hacks.numOfsuccess ) {
 
                         setTimeout(()=>{showChips (num1+1)},ms)} else {
                             fadIntext()};
@@ -1211,18 +1272,22 @@ function IpadGrahpic (type0) {
                 if (G.hacks.numOfsuccess) showChips (num);
               }
         }
-
+        var ipadFireWallBGColor = "linear-gradient(135deg, rgba(78,92,90,1) 0%,rgba(78,92,90,0.57) 25%,rgba(78,92,90,0.9) 57%,rgba(101,118,119,0.89) 83%,rgba(25,26,63,1) 100%"
         if (answeris === 'right') {let ipadCover = Id ('ipadCover');//StylelFader(ipadCover,30)
             ipadCover.style.filter = ''; setBG('');
             ipadCover.isbluring = false;
 
             addFirewallClue ()}
-            else if (answeris === 'wrong') {//ipadCover.style.filter = "blur(0.1rem)"
-            blureChanger ();
-            ;setBG(ipadFireWallBGColor)}
+            else if (answeris === 'wrong') {blureChanger ();;setBG(ipadFireWallBGColor)}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
+        if (G.hacks.numOfsuccess >= G.mgmt.maxFirewallTofind) {alert ('good job')}
 
         drawFireWallIpad ()
+        //let ipadCover = Id ('ipadCover')
+        //ipadCover.innerHTML += '<br>' + '<p id="id1">asdfasdfsadfasdf</p>'
+        //let el1 = Id ('id1'); let finishText = 'הגנה נעקפה √ '
+        //setTimeout  (()=>{ hackFirewallElement(el1  , finishText) }, 300)
+
 
 
     }
