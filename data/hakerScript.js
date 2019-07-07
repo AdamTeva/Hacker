@@ -20,17 +20,18 @@ global_object: {
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
         G.mgmt.stageNumber = 1; //the stage number to begin
-        G.mgmt.stageNames = ["",'getIp','firewall','password','server','virus'];
+        G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
         G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
         G.mgmt.isQuestion = false;
         G.mgmt.isHolo = false// is the holo up
-        G.mgmt.maxIpsTofind = 6;
-        G.mgmt.maxFirewallTofind = 1;
+        G.mgmt.maxIpsTofind = 3;
+        G.mgmt.maxFirewallTofind = 3;
         G.mgmt.isFinalAnsInChapter = false;
+        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0;L('G.mgmt.stageNumber', 'G.hacks.current ') ;alert (G.hacks.current) }
         G.divs = {};
         G.hacks = {};
-        G.hacks.current = 'getIp' // getIp
+        G.hacks.current = G.mgmt.stageNames // getIp // firewall
         G.hacks.firewallCodeId = 'FWhacksId';
         G.hacks.firewallFinishText = 'ההגנה נעקפה.'
         G.hacks.firewallScrambleColor = 'yellow'
@@ -868,14 +869,14 @@ function setQuestion (num) {
 
 }
 function IpadGrahpic (type0) {
+
     canvasDefs:
         var answeris = ''; var isFinishing = false;
         type0 = type0  || G.hacks.current;
 
-        if (G.hacks.current == 'firewall' && type0 == 'firewall'){
-
-            G.hacks.numOfsuccess = 0}
+        if (G.hacks.current == 'firewall' && type0 == 'firewall'){G.hacks.numOfsuccess = 0}
         if (type0 == 'right' || type0 == 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}
+
         if (type0 == 'finishChaper'){type0 = G.hacks.current; isFinishing = true}
         var canvas = Id ('ipad');
         canvas.addEventListener('click',clickCanvas,false);
@@ -898,7 +899,7 @@ function IpadGrahpic (type0) {
         canvas.style.color = 'white';
         var ctx = canvas.getContext("2d");
 
-    
+
     function clickCanvas (e) {
         let x0  = e.clientX
         let y0 = e.clientY
@@ -1020,7 +1021,7 @@ function IpadGrahpic (type0) {
                     G.Q [500][3] = "המשך";
                     G.Q [500][4] = "בדיקה נוספת";
                     G.Q [500][G.mgmt.solutionCol] = 1;
-                    G.hacks.current = 'firewall';
+                    G.mgmt.nextStage ()
 
                     G.divs.textContainer.removeChild(G.divs.textBlock2 )
                     setQuestion (500)
@@ -1183,7 +1184,7 @@ function IpadGrahpic (type0) {
                     G.Q [500][3] = "המשך";
                     G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                     G.Q [500][G.mgmt.solutionCol] = 1;
-                    G.hacks.current = 'firewall';
+                    G.mgmt.nextStage ()
 
                     G.divs.textContainer.removeChild(G.divs.textBlock2 )
                     setQuestion (500)
@@ -1253,7 +1254,6 @@ function IpadGrahpic (type0) {
             });
             ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
             if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"; setBG (ipadFireWallBGColor) ;
-
             } else {
                 ipadCover.style.opacity = '1';
                 ipadCover.innerHTML += '<br><br><mark>' + 'מזהה רכיבים:' + '<br> '
@@ -1401,6 +1401,10 @@ function IpadGrahpic (type0) {
         G.hacks.current = 'firewall';
          fireWall ()
          break;
+         case 'user':
+         G.hacks.current = 'user';
+          user ()
+          break;
 
 
     }
