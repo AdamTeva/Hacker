@@ -19,14 +19,14 @@ global_object: {
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
-        G.mgmt.stageNumber = 1; //the stage number to begin
+        G.mgmt.stageNumber = 3; //the stage number to begin
         G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
         G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
         G.mgmt.isQuestion = false;
         G.mgmt.isHolo = false// is the holo up
-        G.mgmt.maxIpsTofind = 3;
-        G.mgmt.maxFirewallTofind = 3;
+        G.mgmt.maxIpsTofind = 2;
+        G.mgmt.maxFirewallTofind = 2;
         G.mgmt.isFinalAnsInChapter = false;
         G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0;L('G.mgmt.stageNumber', 'G.hacks.current ') ;alert (G.hacks.current) }
         G.divs = {};
@@ -333,8 +333,6 @@ function clickAnswer (elem){
             if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
         }
         function fadeOut () {
-
-
 
             let finRgb = rgbPartialTxt + op + ")"
             //
@@ -873,10 +871,8 @@ function IpadGrahpic (type0) {
     canvasDefs:
         var answeris = ''; var isFinishing = false;
         type0 = type0  || G.hacks.current;
-
-        if (G.hacks.current == 'firewall' && type0 == 'firewall'){G.hacks.numOfsuccess = 0}
-        if (type0 == 'right' || type0 == 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}
-
+        if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0}
+        if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}
         if (type0 == 'finishChaper'){type0 = G.hacks.current; isFinishing = true}
         var canvas = Id ('ipad');
         canvas.addEventListener('click',clickCanvas,false);
@@ -1248,7 +1244,6 @@ function IpadGrahpic (type0) {
         }
         function addFirewallClue (){G.hacks.numOfsuccess++;}
         function drawFireWallIpad () {
-
             var ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
@@ -1391,6 +1386,35 @@ function IpadGrahpic (type0) {
             else if (answeris === 'wrong') {blureChanger ();setBG(ipadFireWallBGColor)}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
         drawFireWallIpad ()
+    }
+    function user (){
+        function whiteNoise (t,img_) {
+        let randomImgX = getRandomInt (100) * -1
+        let randomImgY = getRandomInt (100) * -1
+        G.hacks.userBlureBackround =  [randomImgX,randomImgY]
+        ctx.drawImage(img_, G.hacks.userBlureBackround [0],  G.hacks.userBlureBackround [1]);
+        let t1 = t
+        if (t > 2) {setTimeout (()=>{whiteNoise (t1-1,img_)}, t);L(t1)} else return;
+        }
+        function drawBaseForm (){
+            
+            G.divs.ipadContent = G.divs.ipadContent || Elm ('ipadContent','img');
+            var img = G.divs.ipadContent;
+            img.src = "data/White-Noise (1).jpg"
+            let ipadCover = Id ('ipadCover');
+            stl (ipadCover, {backgroundColor: 'rgba (255,255,255,1)'});
+            ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
+                'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
+            });
+            ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
+            ipadCover.style.backgroundColor = 'rgba(254,254,254,0.99)';
+
+
+            img.onload = function() {
+            whiteNoise (1,img)
+            }
+        }
+        drawBaseForm ()
     }
     switch( type0) {
         case 'getIp':
