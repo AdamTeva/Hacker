@@ -1397,7 +1397,27 @@ function IpadGrahpic (type0) {
         if (t > 2) {setTimeout (()=>{whiteNoise (t1-1,img_)}, t);L(t1)} else return;
         }
         function drawBaseForm (){
-            
+
+            function addInput (name, typeOfElem =  "text", placeholder,stl) {
+                var newInput = document.createElement('input');
+                newInput.id = name;
+                newInput.type= typeOfElem
+                newInput.name="userName"
+                newInput.placeholder = placeholder
+                newInput.autocomplete="off"
+                return newInput;
+            }
+            var firstName = addInput ('firstName', 'text', 'שם פרטי', );
+            var familyName = addInput ('familyName', 'text', 'שם משפחה', );
+            var userName =  addInput ('userName', 'text', 'שם משפחה', );
+            var codephrase =  addInput ('codephrase', 'password', 'שם משפחה', );
+
+            let qArray = [firstName ,familyName,userName,codephrase,,]
+
+
+
+
+
             G.divs.ipadContent = G.divs.ipadContent || Elm ('ipadContent','img');
             var img = G.divs.ipadContent;
             img.src = "data/White-Noise (1).jpg"
@@ -1408,6 +1428,9 @@ function IpadGrahpic (type0) {
             });
             ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
             ipadCover.style.backgroundColor = 'rgba(254,254,254,0.99)';
+            var userForm = document.createElement('form'); stl (userForm, myStyle ('text'));
+            ipadCover.appendChild(userForm)
+            qArray.forEach(e=>{userForm.appendChild(e)})
 
 
             img.onload = function() {
