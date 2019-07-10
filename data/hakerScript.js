@@ -1405,18 +1405,28 @@ function IpadGrahpic (type0) {
                 newInput.name="userName"
                 newInput.placeholder = placeholder
                 newInput.autocomplete="off"
+                newInput.style = "font-size: 3vmin; width: 50%;height :1%%; padding: 1vmin 4vmin; margin: 1vmin 0;              border: 0.3vmin solid #ccc; border-radius: 1vmin; box-sizing: border-box;background-color: white;"
+                newInput.innerHTML = '<br>'
                 return newInput;
             }
             var firstName = addInput ('firstName', 'text', 'שם פרטי', );
             var familyName = addInput ('familyName', 'text', 'שם משפחה', );
-            var userName =  addInput ('userName', 'text', 'שם משפחה', );
-            var codephrase =  addInput ('codephrase', 'password', 'שם משפחה', );
+            var userName =  addInput ('userName', 'text', 'שם משתמש', );
+            var codephrase =  addInput ('codephrase', 'password', 'קוד אבטחה', );
+            var submitButton =  addInput ('submitButton', 'button', 'קוד אבטחה', );
+            var br = document.createElement('p')
 
-            let qArray = [firstName ,familyName,userName,codephrase,,]
+            let qArray = [firstName ,familyName,userName,codephrase,submitButton]
+            let spanArr = [];
+            for (i = 0; i < qArray.length; i ++){
+                if (qArray[i] === familyName) continue
+                spanArr[i] = document.createElement('span');
+                spanArr[i].innerHTML = '<br>';
+                spanArr[i].appendChild(qArray[i]);
+                if (qArray[i + 1] === familyName) {spanArr[i].appendChild(qArray[i + 1])}
+                spanArr[i].id = 'formP-' + i;
 
-
-
-
+            }
 
             G.divs.ipadContent = G.divs.ipadContent || Elm ('ipadContent','img');
             var img = G.divs.ipadContent;
@@ -1426,11 +1436,11 @@ function IpadGrahpic (type0) {
             ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
-            ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
+            ipadCover.innerHTML = '<br><br><font style="color:black;"> &nbsp' + 'כניסת משתמש'
             ipadCover.style.backgroundColor = 'rgba(254,254,254,0.99)';
-            var userForm = document.createElement('form'); stl (userForm, myStyle ('text'));
+            var userForm = document.createElement('form'); stl (userForm, myStyle ('text'), {'fontSize': '1vmin', 'padding-right':'2vmin'});
             ipadCover.appendChild(userForm)
-            qArray.forEach(e=>{userForm.appendChild(e)})
+            spanArr.forEach(e=>{userForm.appendChild(e)})
 
 
             img.onload = function() {
