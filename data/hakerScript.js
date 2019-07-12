@@ -19,7 +19,7 @@ global_object: {
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
-        G.mgmt.stageNumber = 3; //the stage number to begin
+        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
         G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
@@ -31,6 +31,7 @@ global_object: {
         G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0;L('G.mgmt.stageNumber', 'G.hacks.current ') ;alert (G.hacks.current) }
         G.divs = {};
         G.hacks = {};
+        G.hacks.numOfsuccess = 0;
         G.hacks.current = G.mgmt.stageNames // getIp // firewall
         G.hacks.firewallCodeId = 'FWhacksId';
         G.hacks.firewallFinishText = 'ההגנה נעקפה.'
@@ -761,15 +762,18 @@ function buildBoard (){
 
     let ipadComputedWidth = G.divs.ipad.clientWidth
     let ipadComputedHeight = G.divs.ipad.clientHeight
-    stl (G.divs.ipadCover, { //current
+    stl (G.divs.ipadCover, {
         'position': 'relative',
         'zIndex': 40,
         //'backgroundColor': 'red',
-        'top': ipadComputedHeight * -0.09 + 'px',
-        'left':ipadComputedWidth * -0.14 + 'px',
-
-        'height':ipadComputedHeight  + 'px',
-       'width':ipadComputedWidth + 'px',
+       //  'top': ipadComputedHeight * -0.024 + '%',
+       //  'left':ipadComputedWidth * -0.14 + 'px',
+       //  'height':ipadComputedHeight  + 'px',
+       // 'width':ipadComputedWidth + 'px',
+       'top': '-10%',
+       'left': '-20%',
+       'height' : '120%',
+       'width' : '140%',
        'overflow': 'hidden',
         "resize": "both",})
 
@@ -869,8 +873,7 @@ function setQuestion (num) {
 function IpadGrahpic (type0) {
 
     canvasDefs:
-        var answeris = ''; var isFinishing = false;
-        type0 = type0  || G.hacks.current;
+        var answeris = ''; var isFinishing = false; type0 = type0  || G.hacks.current;
         if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0}
         if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}
         if (type0 == 'finishChaper'){type0 = G.hacks.current; isFinishing = true}
@@ -1260,7 +1263,9 @@ function IpadGrahpic (type0) {
             var img = G.divs.ipadContent;
             let num = 1
             img.src  =  "data/mother-board (" + 1 + ").png"
+
             img.onload = function() {
+
             function addHackOption (el){
                 function clickFirewallHack (el){
                     function hackFirewallElement(DomElement ,finishString = 'ok') {
@@ -1355,6 +1360,7 @@ function IpadGrahpic (type0) {
             function showChips (num1) {
                 ms = 400;
                 if  (answeris === 'wrong') {ms=10}
+
                 ctx.drawImage(img, G.hacks.piecesOfFirewall[num1+1].randX,  G.hacks.piecesOfFirewall[num1+1].randY);
                 spanId = G.hacks.firewallCodeId  + num1+1;
                 ipadCover.innerHTML += '<div id = "' + spanId + '"style = "font-size:3vmin; background-color:rgba(10,0,0,0.7); width:80% ; height:5% ;margin: 0 auto; margin-top:1%;">' +  G.hacks.NamesOfPiecesOfFirewall[num1+1] + '</div>';
@@ -1375,6 +1381,8 @@ function IpadGrahpic (type0) {
 
             }
                 if (G.hacks.numOfsuccess) showChips (num);
+                L(G.hacks.numOfsuccess)
+
               }
         }
         var ipadFireWallBGColor = "linear-gradient(135deg, rgba(78,92,90,1) 0%,rgba(78,92,90,0.57) 25%,rgba(78,92,90,0.9) 57%,rgba(101,118,119,0.89) 83%,rgba(25,26,63,1) 100%"
@@ -1432,7 +1440,8 @@ function IpadGrahpic (type0) {
             var img = G.divs.ipadContent;
             img.src = "data/White-Noise (1).jpg"
             let ipadCover = Id ('ipadCover');
-            stl (ipadCover, {backgroundColor: 'rgba (255,255,255,1)'});
+
+            stl (ipadCover, {backgroundColor: 'rgba (255,255,255,1)', 'borderRadius': '2vmin' });
             ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
