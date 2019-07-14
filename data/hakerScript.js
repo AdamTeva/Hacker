@@ -19,7 +19,7 @@ global_object: {
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
-        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
+        G.mgmt.stageNumber = 3; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
         G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
@@ -28,7 +28,7 @@ global_object: {
         G.mgmt.maxIpsTofind = 2;
         G.mgmt.maxFirewallTofind = 2;
         G.mgmt.isFinalAnsInChapter = false;
-        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0;L('G.mgmt.stageNumber', 'G.hacks.current ') ;alert (G.hacks.current) }
+        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ;alert (G.hacks.current) }
         G.divs = {};
         G.hacks = {};
         G.hacks.numOfsuccess = 0;
@@ -1389,7 +1389,7 @@ function IpadGrahpic (type0) {
 
             }
                 if (G.hacks.numOfsuccess) showChips (num);
-                L(G.hacks.numOfsuccess)
+
 
               }
         }
@@ -1397,55 +1397,42 @@ function IpadGrahpic (type0) {
         if (answeris === 'right') {let ipadCover = Id ('ipadCover');
             ipadCover.style.filter = ''; setBG('');
             ipadCover.isbluring = false;
-
             addFirewallClue ()}
             else if (answeris === 'wrong') {blureChanger ();setBG(ipadFireWallBGColor)}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
         drawFireWallIpad ()
     }
     function user (){
+
+
         function whiteNoise (t,img_) {
-        var canvas = Id ('ipad');
-        var ctx = canvas.getContext("2d");
-        let randomImgX = getRandomInt (100) * -1
-        let randomImgY = getRandomInt (100) * -1
-        G.hacks.userBlureBackround =  [randomImgX,randomImgY]
-        ctx.drawImage(img_, G.hacks.userBlureBackround [0],  G.hacks.userBlureBackround [1]);
-        let t1 = t
-        if (t > 2) {setTimeout (()=>{whiteNoise (t1-1,img_)}, t);L(t1)} else return;
+            var canvas = Id ('ipad');
+            var ctx = canvas.getContext("2d");
+            let randomImgX = getRandomInt (100) * -1;
+            let randomImgY = getRandomInt (100) * -1;
+            G.hacks.userBlureBackround =  [randomImgX,randomImgY];
+            ctx.drawImage(img_, G.hacks.userBlureBackround [0],  G.hacks.userBlureBackround [1]);
+            let t1 = t;
+            let sin = Math.sin(t/8); ipadCover.style.opacity = sin + 1.2;
+            if (t > 2) {setTimeout (()=>{whiteNoise (t1-1,img_)}, t / 6)} else return;
         }
+        function addUserClue (){G.hacks.numOfsuccess++;}
         function setFormData (){
+            if (G.hacks.FormfirstNames) return
 
             G.hacks.FormfirstNames = ['Addison', 'Adrian', 'Aiden', 'Ainsley', 'Alex', 'Amari', 'Andy', 'Ari', 'Ash', 'Aspen', 'Aubrey', 'August', 'Avery', 'Bailey', 'Bay', 'Blaine', 'Blake', 'Bobbie', 'Brett', 'Brook', 'Brooklyn', 'Caelan', 'Cameron', 'Campbell', 'Carroll', 'Carson', 'Casey', 'Charlie', 'Chris', 'Clay', 'Corey', 'Dana', 'Dakota', 'Dale', 'Dallas', 'Daryl', 'Delta', 'Devin', 'Dorian', 'Drew', 'Dylan', 'Easton', 'Eddie', 'Eli', 'Elliott', 'Emerson', 'Emery', 'Finley', 'Frances', 'Frankie', 'Gabriel', 'Glenn', 'Gray', 'Harley', 'Harper', 'Hayden', 'Hudson', 'Hunter', 'James', 'Jamie', 'Jayden', 'Jean', 'Jesse', 'Jordan', 'Jules', 'Julian', 'Kaden', 'Kai', 'Karter', 'Kelly', 'Kelsey', 'Kendall', 'Kennedy', 'Kyle', 'Lake', 'Landry', 'Lincoln', 'Logan', 'London', 'Lou', 'Mackenzie', 'Mason', 'Max', 'Maxwell', 'Monroe', 'Morgan', 'Parker', 'Pat', 'Peyton', 'Phoenix', 'Quinn', 'Ray', 'Reagan', 'Reed', 'Reese', 'Remy', 'Riley', 'River', 'Roan', 'Rory', 'Rowan', 'Rudy', 'Ryan', 'Sage', 'Sam', 'Sawyer', 'Shawn', 'Sean', 'Skylar', 'Spencer', 'Stevie', 'Sydney', 'Tanner', 'Tatum', 'Taylor', 'Toby', 'Tyler', 'Val', 'West', 'Winter'];
             G.hacks.FormlastNames = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart', 'Sanchez', 'Morris', 'Rogers', 'Reed', 'Cook', 'Morgan', 'Bell', 'Murphy', 'Bailey', 'Rivera', 'Cooper', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray', 'Ramirez', 'James', 'Watson', 'Brooks', 'Kelly', 'Sanders', 'Price', 'Bennett', 'Wood', 'Barnes', 'Ross', 'Henderson', 'Coleman', 'Jenkins', 'Perry', 'Powell', 'Long', 'Patterson', 'Hughes', 'Flores', 'Washington', 'Butler', 'Simmons', 'Foster', 'Gonzales', 'Bryant', 'Alexander', 'Russell', 'Griffin', 'Diaz', 'Hayes', 'Myers', 'Ford', 'Hamilton', 'Graham', 'Sullivan', 'Wallace', 'Woods', 'Cole', 'West', 'Jordan', 'Owens', 'Reynolds', 'Fisher', 'Ellis', 'Harrison', 'Gibson', 'Mcdonald', 'Cruz', 'Marshall', 'Ortiz', 'Gomez', 'Murray', 'Freeman', 'Wells', 'Webb', 'Simpson', 'Stevens', 'Tucker', 'Porter', 'Hunter', 'Hicks', 'Crawford', 'Henry', 'Boyd', 'Mason', 'Morales', 'Kennedy', 'Warren', 'Dixon', 'Ramos', 'Reyes', 'Burns', 'Gordon', 'Shaw', 'Holmes', 'Rice', 'Robertson', 'Hunt', 'Black', 'Daniels', 'Palmer', 'Mills', 'Nichols', 'Grant', 'Knight', 'Ferguson', 'Rose', 'Stone', 'Hawkins', 'Dunn', 'Perkins', 'Hudson', 'Spencer', 'Gardner', 'Stephens', 'Payne', 'Pierce', 'Berry', 'Matthews', 'Arnold', 'Wagner', 'Willis', 'Ray', 'Watkins', 'Olson', 'Carroll', 'Duncan', 'Snyder', 'Hart', 'Cunningham', 'Bradley', 'Lane', 'Andrews', 'Ruiz', 'Harper', 'Fox', 'Riley', 'Armstrong', 'Carpenter', 'Weaver', 'Greene', 'Lawrence', 'Elliott', 'Chavez', 'Sims', 'Austin', 'Peters', 'Kelley', 'Franklin', 'Lawson', 'Fields', 'Gutierrez', 'Ryan', 'Schmidt', 'Carr', 'Vasquez', 'Castillo', 'Wheeler', 'Chapman'];
-            Id('firstName').data = getRandomInt (G.hacks.FormfirstNames.length);
+            let firstName = Id('firstName');
+            firstName.data = getRandomInt (G.hacks.FormfirstNames.length);
 
-
-
-
-
-
-
-
-
-
-
-
-
-			;
-
-
-
-
-
-
-
-
-
-
+            Id('familyName').data =  getRandomInt (G.hacks.FormlastNames.length)
+            Id('userName').data = 'userNamesdfgsfgsdfhsdfjs';
+            Id('codephrase').data  = 'cgdfgsodsdgephrase';
+            Id('submitButton').data = 'fasdf submitButton';
 
         }
         function drawBaseForm (){
+
             function submittingForm (){
                 function DenyEntry () {
                     var deny = Elm ('deny');
@@ -1455,14 +1442,9 @@ function IpadGrahpic (type0) {
                     deny.innerHTML += '<br>' + 'הכניסה אסורה. '
                     setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
                 }
-
-                //DenyEntry ()
-                qArray.forEach ((e)=>{L(e.data)})
-
-
+                DenyEntry ()
 
             }
-
             function addInput (name, typeOfElem =  "text", placeholder,stl0) {
                 var newInput = document.createElement('input');
                 newInput.id = name;
@@ -1484,6 +1466,9 @@ function IpadGrahpic (type0) {
             submitButton.addEventListener('click', submittingForm );
             G.css.formBackColor = 'rgba(219, 250, 89 ,0.99)'
             var qArray = [firstName ,familyName,userName,codephrase,submitButton] ; let spanArr = [];
+            G.hacks.formQarray = qArray ;
+
+
             for (i = 0; i < qArray.length; i ++){
                 if (qArray[i] === familyName) continue
                 spanArr[i] = document.createElement('span');
@@ -1509,20 +1494,39 @@ function IpadGrahpic (type0) {
             ipadCover.appendChild(userForm)
             var passportDiv = Elm ('passportDiv'); //just now
             let passportIMG = Elm ('passportIMG', 'img');
-            passportIMG.src = 'data/passports/passport (1).jpg'
+            passportIMG.src = 'data/passports/passport (20).jpg'
             stl (passportIMG, {'width': '30%' , 'margins' : '1vmin', 'border': '0.3vmin solid #ccc ', 'border-radius': '1vmin'});
-            userForm.appendChild (passportIMG)
-
+            userForm.appendChild (passportIMG);
             spanArr.forEach(e=>{userForm.appendChild(e)})
+            img.onload = function() {}
+            setFormData ();
 
-
-            img.onload = function() {
-            whiteNoise (1,img)
-            }
         }
-        drawBaseForm ();
-         //submittingForm ();
-        setFormData ()
+        let ipadCover = Id ('ipadCover')
+        if (answeris === 'right') {let ipadCover = Id ('ipadCover');
+            ipadCover.style.filter = '';
+            ipadCover.isbluring = false;
+            addUserClue ()}
+        else if (answeris === 'wrong') {
+            var img = G.divs.ipadContent;
+            img.src = "data/White-Noise (1).jpg"
+            let rnd = getRandomInt (100) + 30
+            whiteNoise (rnd,img); ipadCover.style.opacity = '0.5'} else {drawBaseForm ();}
+            L(G.hacks.formQarray)
+
+        for (i1 = 1; i1  <= G.hacks.numOfsuccess; i1++) {
+            if (i + 1 > G.hacks.formQarray.length) break;
+            let q = G.hacks.formQarray[i1-1]
+            q.value =  q.data
+
+            let isQ = Is (q)
+            if(isQ  && Is (q.data)) {}
+
+
+        }
+
+
+
     }
 
     var answeris = ''; var isFinishing = false; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper'){type0 = G.hacks.current; isFinishing = true}
