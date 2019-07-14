@@ -127,7 +127,7 @@ util_functions: {
     }
     function Elm(idname, type0){
         let testIt = Id(idname);
-        if (Is(testIt)) return true;
+        if (Is(testIt)) return testIt;
         type0 = type0 || 'div'
         let newElem = document.createElement(type0);
         newElem.id = idname;
@@ -245,7 +245,7 @@ util_functions: {
         }
         return obj
     }
-    function StylelFader (element,ms = 30,fadeIn = false)  {
+    function StylelFader (element,ms = 30,fadeIn = false, deleteElm = false)  {
 
 
         if (fadeIn) {element.fadeProccess = 'fadeIn'} else if (!fadeIn) {element.fadeProccess = 'fadeOut' }
@@ -257,9 +257,12 @@ util_functions: {
         let finOp = 0.001
         if (!fadeIn) {
 
-            var timerOut = setInterval(function () { //element.fadeProccess === 'fadeIn'
+            var timerOut = setInterval(function () {
                 let real = Is(element);
-                if ((op <= finOp) || (!real) || element.fadeProccess === 'fadeIn') {clearInterval(timerOut) ;return}
+                if ((op <= finOp) || (!real) || element.fadeProccess === 'fadeIn') {
+                    clearInterval(timerOut) ;
+                    if (deleteElm) { element.parentNode.removeChild(element)};
+                    return}
 
                 element.style.opacity = op;
                 element.style.filter = 'alpha(opacity=' + op * 100 + ")";
@@ -291,6 +294,11 @@ util_functions: {
 }
 
 function clickAnswer (elem){
+    /* for testing */
+    if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]
+    let idName = 'ans'+ rightAnswer;
+    let div = Id(idName); elem.target = div}
+
     function wrongAnswerAnimation (num) {
 
         G.mgmt.isAnswering = true;
@@ -350,12 +358,15 @@ function clickAnswer (elem){
         fadeOut ()
     }
 
+
     if (G.mgmt.isAnswering) return;
     let ansId = elem.target.id;
+
     if (elem.target.nodeName == "DIV") {} else {ansId = elem.target.parentElement.id }
     let ansDiv = Id(ansId);
 
     let numOfans =  Number(ansId.replace("ans", ''))
+
      G.mgmt.clickedAnswer = numOfans;
     let solutionNumber = G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]
     let solutionText = G.Q[G.mgmt.qNumber][2 + Number(solutionNumber)]
@@ -510,7 +521,11 @@ function ledEvent (e){
 function buildBoard (){
     function keyPressFunc (e) {
 
-        if (e.charCode == 32 ) {IpadGrahpic ('right')}
+
+        if (e.charCode == 32 ) {
+            clickAnswer ('rightAnswerClick');
+            //IpadGrahpic ('right')
+        }
     }
     function mOverAnswer (elem){
         function mouseOutTimer () {
@@ -871,86 +886,58 @@ function setQuestion (num) {
 
 }
 function IpadGrahpic (type0) {
-
-    canvasDefs:
-        var answeris = ''; var isFinishing = false; type0 = type0  || G.hacks.current;
-        if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0}
-        if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}
-        if (type0 == 'finishChaper'){type0 = G.hacks.current; isFinishing = true}
-        var canvas = Id ('ipad');
-        canvas.addEventListener('click',clickCanvas,false);
-        var preW = Pre2Num (G.divs.ipadContainer.style.width) / 100;
-        var preH = Pre2Num (G.divs.ipadContainer.style.height) / 100;
-        const highRes = 2;
-        canvas.height =  preH * window.innerHeight * highRes;
-        canvas.width =  preW * window.innerWidth * highRes;
-        const w = canvas.width;
-        const h = canvas.height;
-        function xP(x_){ // x Precent
-            let pre = x_ / 100;
-            return Math.round(w * pre);
-        }
-        function yP(y_){ // x Precent
-            let pre = y_ / 100;
-            return Math.round(h * pre);
-
-        }
-        canvas.style.color = 'white';
-        var ctx = canvas.getContext("2d");
-
-
-    function clickCanvas (e) {
-        let x0  = e.clientX
-        let y0 = e.clientY
-        let xPadding  = Pre2Num(canvas.parentNode.style.padding) / Pre2Num(canvas.parentNode.style.width)
-        let canvasXpre = Pre2Num(canvas.parentNode.style.left)   ;
-        let canvasBaseX = window.innerWidth * (canvasXpre +  xPadding) / 100
-
-
-    }
-    function drawLine (x0,y0, x1,y1) {
-        let x = xP(x0) ; xe = xP (x1);
-        let y = yP(y0) ; ye = yP (y1);
-        ctx.beginPath();
-        ctx.moveTo(x,y);
-
-        ctx.lineTo(xe,ye);
-        ctx.strokeStyle="red";
-        ctx.stroke();
-    }
-    function drawCircle (x0,y0,r0, color = 'white') {
-        let x = xP(x0) ;
-        let y = yP(y0);
-        let r = yP(r0) ;
-        ctx.beginPath();
-        ctx.arc(x,y,r,0,2*Math.PI);
-        ctx.fillStyle = color // color;
-        ctx.fill();
-    }
-    function MoveC (x00,y00, x1,y1, tm = 1 , cObj) {
-        cObj = cObj || { 'r' : 0.5, 'color' : 'yellow' }
-        for (i = 1; i < 90; i++){
-            var deltaX = x1 - x00;
-            var  deltaY = y1 - y00;
-            var  adder  = 0.01
-            var Ydirection = 1; if (deltaY < 0) {Ydirection = -1  }
-            var Xdirection = 1; if (deltaX < 0) {Xdirection = -1 }
-            var diagonal =  Math.abs(deltaY / deltaX)
-            var  Yadder = adder *  diagonal
-            x00 = x00 + Math.sign(deltaX) * adder ;
-            y00 = y00 + Math.sign (deltaY) * Yadder;
-            if (x00 > 100 || x00 < 1 || y00 < 1 || y00 > 100) { return}
-            if (isNaN(x00 + y00)) {return}
-
-            tm = 1 /* testing   */
-
-            drawCircle (x00,y00,cObj.r, cObj.color)
-            if (deltaX < 1 && deltaX > -1  && deltaY < 1 && deltaY > -1 ){return}
-        }
-        setTimeout(()=>{MoveC (x00,y00, x1,y1, tm  , cObj)},tm);
-
-    }
     function getIp (){
+        function clickCanvas (e) {
+            let x0  = e.clientX
+            let y0 = e.clientY
+            let xPadding  = Pre2Num(canvas.parentNode.style.padding) / Pre2Num(canvas.parentNode.style.width)
+            let canvasXpre = Pre2Num(canvas.parentNode.style.left)   ;
+            let canvasBaseX = window.innerWidth * (canvasXpre +  xPadding) / 100
+
+
+        }
+        function drawLine (x0,y0, x1,y1) {
+            let x = xP(x0) ; xe = xP (x1);
+            let y = yP(y0) ; ye = yP (y1);
+            ctx.beginPath();
+            ctx.moveTo(x,y);
+
+            ctx.lineTo(xe,ye);
+            ctx.strokeStyle="red";
+            ctx.stroke();
+        }
+        function drawCircle (x0,y0,r0, color = 'white') {
+            let x = xP(x0) ;
+            let y = yP(y0);
+            let r = yP(r0) ;
+            ctx.beginPath();
+            ctx.arc(x,y,r,0,2*Math.PI);
+            ctx.fillStyle = color // color;
+            ctx.fill();
+        }
+        function MoveC (x00,y00, x1,y1, tm = 1 , cObj) {
+            cObj = cObj || { 'r' : 0.5, 'color' : 'yellow' }
+            for (i = 1; i < 90; i++){
+                var deltaX = x1 - x00;
+                var  deltaY = y1 - y00;
+                var  adder  = 0.01
+                var Ydirection = 1; if (deltaY < 0) {Ydirection = -1  }
+                var Xdirection = 1; if (deltaX < 0) {Xdirection = -1 }
+                var diagonal =  Math.abs(deltaY / deltaX)
+                var  Yadder = adder *  diagonal
+                x00 = x00 + Math.sign(deltaX) * adder ;
+                y00 = y00 + Math.sign (deltaY) * Yadder;
+                if (x00 > 100 || x00 < 1 || y00 < 1 || y00 > 100) { return}
+                if (isNaN(x00 + y00)) {return}
+
+                tm = 1 /* testing   */
+
+                drawCircle (x00,y00,cObj.r, cObj.color)
+                if (deltaX < 1 && deltaX > -1  && deltaY < 1 && deltaY > -1 ){return}
+            }
+            setTimeout(()=>{MoveC (x00,y00, x1,y1, tm  , cObj)},tm);
+
+        }
         function consoleFoundIp() {
             G.mgmt.isFinalAnsInChapter = false;
             let tb = Id('textBlock2');
@@ -1119,6 +1106,26 @@ function IpadGrahpic (type0) {
 
 
         }
+        var canvas = Id ('ipad');
+        canvas.addEventListener('click',clickCanvas,false);
+        var preW = Pre2Num (G.divs.ipadContainer.style.width) / 100;
+        var preH = Pre2Num (G.divs.ipadContainer.style.height) / 100;
+        const highRes = 2;
+        canvas.height =  preH * window.innerHeight * highRes;
+        canvas.width =  preW * window.innerWidth * highRes;
+        const w = canvas.width;
+        const h = canvas.height;
+        function xP(x_){ // x Precent
+            let pre = x_ / 100;
+            return Math.round(w * pre);
+        }
+        function yP(y_){ // x Precent
+            let pre = y_ / 100;
+            return Math.round(h * pre);
+
+        }
+        canvas.style.color = 'white';
+        var ctx = canvas.getContext("2d");
         if (answeris === 'right') {addRevieledLovation ()}
         if (G.hacks.numOfsuccess >= G.mgmt.maxIpsTofind) {FullIpWasfoundAnimation ()}
         if (!isFinishing) {drawIpIpad ()} else {consoleFoundIp()}
@@ -1360,7 +1367,8 @@ function IpadGrahpic (type0) {
             function showChips (num1) {
                 ms = 400;
                 if  (answeris === 'wrong') {ms=10}
-
+                var canvas = Id ('ipad');
+                var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, G.hacks.piecesOfFirewall[num1+1].randX,  G.hacks.piecesOfFirewall[num1+1].randY);
                 spanId = G.hacks.firewallCodeId  + num1+1;
                 ipadCover.innerHTML += '<div id = "' + spanId + '"style = "font-size:3vmin; background-color:rgba(10,0,0,0.7); width:80% ; height:5% ;margin: 0 auto; margin-top:1%;">' +  G.hacks.NamesOfPiecesOfFirewall[num1+1] + '</div>';
@@ -1397,6 +1405,8 @@ function IpadGrahpic (type0) {
     }
     function user (){
         function whiteNoise (t,img_) {
+        var canvas = Id ('ipad');
+        var ctx = canvas.getContext("2d");
         let randomImgX = getRandomInt (100) * -1
         let randomImgY = getRandomInt (100) * -1
         G.hacks.userBlureBackround =  [randomImgX,randomImgY]
@@ -1404,28 +1414,76 @@ function IpadGrahpic (type0) {
         let t1 = t
         if (t > 2) {setTimeout (()=>{whiteNoise (t1-1,img_)}, t);L(t1)} else return;
         }
-        function drawBaseForm (){
+        function setFormData (){
 
-            function addInput (name, typeOfElem =  "text", placeholder,stl) {
+            G.hacks.FormfirstNames = ['Addison', 'Adrian', 'Aiden', 'Ainsley', 'Alex', 'Amari', 'Andy', 'Ari', 'Ash', 'Aspen', 'Aubrey', 'August', 'Avery', 'Bailey', 'Bay', 'Blaine', 'Blake', 'Bobbie', 'Brett', 'Brook', 'Brooklyn', 'Caelan', 'Cameron', 'Campbell', 'Carroll', 'Carson', 'Casey', 'Charlie', 'Chris', 'Clay', 'Corey', 'Dana', 'Dakota', 'Dale', 'Dallas', 'Daryl', 'Delta', 'Devin', 'Dorian', 'Drew', 'Dylan', 'Easton', 'Eddie', 'Eli', 'Elliott', 'Emerson', 'Emery', 'Finley', 'Frances', 'Frankie', 'Gabriel', 'Glenn', 'Gray', 'Harley', 'Harper', 'Hayden', 'Hudson', 'Hunter', 'James', 'Jamie', 'Jayden', 'Jean', 'Jesse', 'Jordan', 'Jules', 'Julian', 'Kaden', 'Kai', 'Karter', 'Kelly', 'Kelsey', 'Kendall', 'Kennedy', 'Kyle', 'Lake', 'Landry', 'Lincoln', 'Logan', 'London', 'Lou', 'Mackenzie', 'Mason', 'Max', 'Maxwell', 'Monroe', 'Morgan', 'Parker', 'Pat', 'Peyton', 'Phoenix', 'Quinn', 'Ray', 'Reagan', 'Reed', 'Reese', 'Remy', 'Riley', 'River', 'Roan', 'Rory', 'Rowan', 'Rudy', 'Ryan', 'Sage', 'Sam', 'Sawyer', 'Shawn', 'Sean', 'Skylar', 'Spencer', 'Stevie', 'Sydney', 'Tanner', 'Tatum', 'Taylor', 'Toby', 'Tyler', 'Val', 'West', 'Winter'];
+            G.hacks.FormlastNames = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart', 'Sanchez', 'Morris', 'Rogers', 'Reed', 'Cook', 'Morgan', 'Bell', 'Murphy', 'Bailey', 'Rivera', 'Cooper', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray', 'Ramirez', 'James', 'Watson', 'Brooks', 'Kelly', 'Sanders', 'Price', 'Bennett', 'Wood', 'Barnes', 'Ross', 'Henderson', 'Coleman', 'Jenkins', 'Perry', 'Powell', 'Long', 'Patterson', 'Hughes', 'Flores', 'Washington', 'Butler', 'Simmons', 'Foster', 'Gonzales', 'Bryant', 'Alexander', 'Russell', 'Griffin', 'Diaz', 'Hayes', 'Myers', 'Ford', 'Hamilton', 'Graham', 'Sullivan', 'Wallace', 'Woods', 'Cole', 'West', 'Jordan', 'Owens', 'Reynolds', 'Fisher', 'Ellis', 'Harrison', 'Gibson', 'Mcdonald', 'Cruz', 'Marshall', 'Ortiz', 'Gomez', 'Murray', 'Freeman', 'Wells', 'Webb', 'Simpson', 'Stevens', 'Tucker', 'Porter', 'Hunter', 'Hicks', 'Crawford', 'Henry', 'Boyd', 'Mason', 'Morales', 'Kennedy', 'Warren', 'Dixon', 'Ramos', 'Reyes', 'Burns', 'Gordon', 'Shaw', 'Holmes', 'Rice', 'Robertson', 'Hunt', 'Black', 'Daniels', 'Palmer', 'Mills', 'Nichols', 'Grant', 'Knight', 'Ferguson', 'Rose', 'Stone', 'Hawkins', 'Dunn', 'Perkins', 'Hudson', 'Spencer', 'Gardner', 'Stephens', 'Payne', 'Pierce', 'Berry', 'Matthews', 'Arnold', 'Wagner', 'Willis', 'Ray', 'Watkins', 'Olson', 'Carroll', 'Duncan', 'Snyder', 'Hart', 'Cunningham', 'Bradley', 'Lane', 'Andrews', 'Ruiz', 'Harper', 'Fox', 'Riley', 'Armstrong', 'Carpenter', 'Weaver', 'Greene', 'Lawrence', 'Elliott', 'Chavez', 'Sims', 'Austin', 'Peters', 'Kelley', 'Franklin', 'Lawson', 'Fields', 'Gutierrez', 'Ryan', 'Schmidt', 'Carr', 'Vasquez', 'Castillo', 'Wheeler', 'Chapman'];
+            Id('firstName').data = getRandomInt (G.hacks.FormfirstNames.length);
+
+
+
+
+
+
+
+
+
+
+
+
+
+			;
+
+
+
+
+
+
+
+
+
+
+
+        }
+        function drawBaseForm (){
+            function submittingForm (){
+                function DenyEntry () {
+                    var deny = Elm ('deny');
+                    let ipadCover = Id ('ipadCover') ; ipadCover.appendChild (deny)
+                    stl (deny , myStyle ('text'), {'position': 'absolute', 'top' : '25%', 'right': '5%' , 'textAlign': 'center', 'backgroundColor': 'red', 'color' : 'black', 'padding' : '0.5vmin', 'fontWeight': 'bolder', 'border' : 'solid black 0.3vmin'});
+                    deny.innerHTML = 'אחד או יותר מהנתונים שגוי.' ;
+                    deny.innerHTML += '<br>' + 'הכניסה אסורה. '
+                    setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
+                }
+
+                //DenyEntry ()
+                qArray.forEach ((e)=>{L(e.data)})
+
+
+
+            }
+
+            function addInput (name, typeOfElem =  "text", placeholder,stl0) {
                 var newInput = document.createElement('input');
                 newInput.id = name;
                 newInput.type= typeOfElem
                 newInput.name="userName"
                 newInput.placeholder = placeholder
                 newInput.autocomplete="off"
-                newInput.style = "font-size: 3vmin; width: 50%;height :1%%; padding: 1vmin 4vmin; margin: 1vmin 0;              border: 0.3vmin solid #ccc; border-radius: 1vmin; box-sizing: border-box;background-color: white;"
+                newInput.style = "font-size: 3vmin; width: 50%;height :1%%; padding: 1vmin 4vmin; margin: 1vmin 1vmin; border: 0.3vmin solid #ccc; border-radius: 1vmin; box-sizing: border-box;background-color: white;"
+                if (stl0) stl (newInput, stl0);
+
                 newInput.innerHTML = '<br>'
                 return newInput;
             }
-            var firstName = addInput ('firstName', 'text', 'שם פרטי', );
-            var familyName = addInput ('familyName', 'text', 'שם משפחה', );
-            var userName =  addInput ('userName', 'text', 'שם משתמש', );
-            var codephrase =  addInput ('codephrase', 'password', 'קוד אבטחה', );
-            var submitButton =  addInput ('submitButton', 'button', 'קוד אבטחה', );
-            var br = document.createElement('p')
-
-            let qArray = [firstName ,familyName,userName,codephrase,submitButton]
-            let spanArr = [];
+            var firstName = addInput ('firstName', 'text', 'שם פרטי', {'width': '45%'});
+            var familyName = addInput ('familyName', 'text', 'שם משפחה', {'width': '45%'});
+            var userName =  addInput ('userName', 'text', 'שם משתמש', {'width': '85%'});
+            var codephrase =  addInput ('codephrase', 'password', 'קוד אבטחה', {'width': '85%'});
+            var submitButton =  addInput ('submitButton', 'button', 'קוד אבטחה', {'backgroundColor' : 'lightgreen', 'border': 'solid black'}); submitButton.value = 'כניסה' ;
+            submitButton.addEventListener('click', submittingForm );
+            G.css.formBackColor = 'rgba(219, 250, 89 ,0.99)'
+            var qArray = [firstName ,familyName,userName,codephrase,submitButton] ; let spanArr = [];
             for (i = 0; i < qArray.length; i ++){
                 if (qArray[i] === familyName) continue
                 spanArr[i] = document.createElement('span');
@@ -1441,14 +1499,20 @@ function IpadGrahpic (type0) {
             img.src = "data/White-Noise (1).jpg"
             let ipadCover = Id ('ipadCover');
 
-            stl (ipadCover, {backgroundColor: 'rgba (255,255,255,1)', 'borderRadius': '2vmin' });
+            stl (ipadCover, { 'borderRadius': '2vmin' });
             ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
-                'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
+                'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin','backgroundColor': G.css.formBackColor
             });
-            ipadCover.innerHTML = '<br><br><font style="color:black;"> &nbsp' + 'כניסת משתמש'
-            ipadCover.style.backgroundColor = 'rgba(254,254,254,0.99)';
-            var userForm = document.createElement('form'); stl (userForm, myStyle ('text'), {'fontSize': '1vmin', 'padding-right':'2vmin'});
+            ipadCover.innerHTML = '<br><font style="color:black;"> &nbsp' + 'כניסת משתמש' +'<br><br>'
+            ipadCover.style.background = G.css.formBackColor;
+            var userForm = document.createElement('form'); stl (userForm, myStyle ('text'), {'fontSize': '1vmin', 'padding-right':'0vmin', 'textAlign': 'center'});
             ipadCover.appendChild(userForm)
+            var passportDiv = Elm ('passportDiv'); //just now
+            let passportIMG = Elm ('passportIMG', 'img');
+            passportIMG.src = 'data/passports/passport (1).jpg'
+            stl (passportIMG, {'width': '30%' , 'margins' : '1vmin', 'border': '0.3vmin solid #ccc ', 'border-radius': '1vmin'});
+            userForm.appendChild (passportIMG)
+
             spanArr.forEach(e=>{userForm.appendChild(e)})
 
 
@@ -1456,8 +1520,12 @@ function IpadGrahpic (type0) {
             whiteNoise (1,img)
             }
         }
-        drawBaseForm ()
+        drawBaseForm ();
+         //submittingForm ();
+        setFormData ()
     }
+
+    var answeris = ''; var isFinishing = false; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper'){type0 = G.hacks.current; isFinishing = true}
     switch( type0) {
         case 'getIp':
         G.hacks.current = 'getIp';
