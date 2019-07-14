@@ -1404,6 +1404,27 @@ function IpadGrahpic (type0) {
         drawFireWallIpad ()
     }
     function user (){
+        function retryPass(el) {
+            el.type = 'text';
+            var minChar = 3; var tm = 200; var endLength = 14;
+            var charsDeleted = 0 ;
+            function deletePass () {
+                let txt = el.value.slice(2,   el.value.length)
+                el.value = txt
+                charsDeleted++
+                if (el.value.length >= minChar) {setTimeout(()=>{deletePass()},tm)} else rewritePass()
+            }
+            function  rewritePass() {
+                let newtxt = el.data1.slice(-1)
+                el.data1 = el.data1.replace(newtxt , '')
+                el.value  = newtxt + el.value;
+                charsDeleted--
+                if (charsDeleted > -2){setTimeout(()=>{rewritePass()},tm)} else {setTimeout(()=>{el.type = 'password'}, (tm * 5))}
+
+            }
+            deletePass ()
+
+        }
         function whiteNoise (t,img_) {
             var canvas = Id ('ipad');
             var ctx = canvas.getContext("2d");
@@ -1419,7 +1440,7 @@ function IpadGrahpic (type0) {
         function setFormData (){
             function makeid(length) {
                     var result           = '';
-                    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+                    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                     var charactersLength = characters.length;
                     for (var i = 0; i < length; i++ ) {
                       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -1435,8 +1456,9 @@ function IpadGrahpic (type0) {
             Id('familyName').data =  G.hacks.FormlastNames[getRandomInt (G.hacks.FormlastNames.length)];
             Id('userName').data = Id('firstName').data + "_" + makeid(7)
             Id('codephrase').data  = makeid(12);
+            Id('codephrase').data1  = makeid(30);
             Id('submitButton').data = "✓ " + 'לחץ לכניסה'
-            Id('passportIMG').data =  'data/passports/passport (18).jpg';
+            Id('passportIMG').data =  'data/passports/passport ('+getRandomInt(19)+').jpg';
             // seting the number of questions per stageNames
 
 
@@ -1473,7 +1495,6 @@ function IpadGrahpic (type0) {
                 DenyEntry ()
 
             }
-
             function addInput (name, typeOfElem =  "text", placeholder,stl0) {
                 var newInput = document.createElement('input');
                 newInput.id = name;
@@ -1495,7 +1516,7 @@ function IpadGrahpic (type0) {
             submitButton.addEventListener('click', submittingForm );
             G.css.formBackColor = 'rgba(219, 250, 89 ,0.99)'
             var qArray = [firstName ,familyName,userName,codephrase,submitButton] ; let spanArr = [];
-            G.hacks.formQarray = qArray ;
+            G.hacks.formQarray = [codephrase,codephrase,codephrase,firstName ,familyName,userName,codephrase,codephrase,submitButton]
 
 
             for (i = 0; i < qArray.length; i ++){
@@ -1548,12 +1569,11 @@ function IpadGrahpic (type0) {
             let q = G.hacks.formQarray[i1-1]
             if (q === undefined) {alert ()} else {
                 q.value =  q.data
-
                 if (q.id === 'firstName' && G.hacks.numOfsuccess === i1) {Id ('passportIMG').src = Id ('passportIMG').data;  'data/passports/passport (19).jpg';
                 let b = 'blur(' + 0.5 +'rem)'; Id ('passportIMG').style.filter = b;}
                 if (q.id === 'familyName' && G.hacks.numOfsuccess === i1 ) {blureChanger (Id ('passportIMG'))}
-
-
+                if (q.id === 'codephrase' &&  G.hacks.formQarray[i1-1].id === 'codephrase'  && G.hacks.numOfsuccess === i1) {
+                    retryPass(Id('codephrase')) }
                 if (q.id ===  'submitButton' ) { q.style.backgroundColor = 'rgb(144, 238, 144)'}
             }
 
