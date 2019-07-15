@@ -1408,6 +1408,27 @@ function IpadGrahpic (type0) {
             el.type = 'text';
             var minChar = 3; var tm = 200; var endLength = 14;
             var charsDeleted = 0 ;
+            var oroginalWidth = 80;
+            var originalBorder = el.style.border;
+            function colorBorderPass (c,dlt = 1) {
+                if(el.type === 'password')  {el.style.border = originalBorder; return}
+                el.style.border = 'solid rgb(254,' + c + ',0) 0.5vmin';
+                if (c < 60) {dlt = 1} else if (c > 184) { dlt = -1}
+                setTimeout(()=>{colorBorderPass (c+ (30*dlt),dlt)}, 30)
+
+
+            }
+            function changepassStyle ( n = 1, delta = 1) {
+
+
+              let boxS = ( n * 0.01) + 'vmin '
+              el.style.boxShadow =  boxS + boxS + boxS + "black" // '9px 10px 5px 0px rgba(0,0,0,0.75);'
+              let nw = n;
+              //if ( n < 30 ) {nw*= -6 }
+              el.style.width = 80 + (nw * 0.15) + '%'
+              if (n > 110 || n < 0) return
+              setTimeout (()=>{changepassStyle (n + delta, delta)},3)
+            }
             function deletePass () {
                 let txt = el.value.slice(2,   el.value.length)
                 el.value = txt
@@ -1415,14 +1436,21 @@ function IpadGrahpic (type0) {
                 if (el.value.length >= minChar) {setTimeout(()=>{deletePass()},tm)} else rewritePass()
             }
             function  rewritePass() {
-                let newtxt = el.data1.slice(-1)
+                let newtxt = el.data1.slice(-2)
                 el.data1 = el.data1.replace(newtxt , '')
+
                 el.value  = newtxt + el.value;
-                charsDeleted--
-                if (charsDeleted > -2){setTimeout(()=>{rewritePass()},tm)} else {setTimeout(()=>{el.type = 'password'}, (tm * 5))}
+                charsDeleted -=  2
+                L(el.value)
+                if (charsDeleted > -2){setTimeout(()=>{rewritePass()},tm)} else {
+
+                    changepassStyle (100,-1)
+                    setTimeout(()=>{el.type = 'password'}, (tm * 5))}
 
             }
             deletePass ()
+            changepassStyle ()
+            colorBorderPass (1,1)
 
         }
         function whiteNoise (t,img_) {
@@ -1438,9 +1466,11 @@ function IpadGrahpic (type0) {
         }
         function addUserClue (){G.hacks.numOfsuccess++;}
         function setFormData (){
-            function makeid(length) {
+            function makeid(length, isPass = false) {
                     var result           = '';
                     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                    var passwordChars = "ÇÆÅÄÃâãäåĂāÿýþÒØÙÚÜÛåẾẽẂẅẒẓẞẠɶɸʘʧʤʡʝʛꝀꜼ" + characters
+                    //if (isPass){characters = passwordChars}
                     var charactersLength = characters.length;
                     for (var i = 0; i < length; i++ ) {
                       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -1455,8 +1485,9 @@ function IpadGrahpic (type0) {
             Id('firstName').data =  G.hacks.FormfirstNames[getRandomInt (G.hacks.FormfirstNames.length)];
             Id('familyName').data =  G.hacks.FormlastNames[getRandomInt (G.hacks.FormlastNames.length)];
             Id('userName').data = Id('firstName').data + "_" + makeid(7)
-            Id('codephrase').data  = makeid(12);
-            Id('codephrase').data1  = makeid(30);
+            Id('codephrase').data  = makeid(20, true);
+            Id('codephrase').data1  = makeid(130, true);
+            L(Id('codephrase').data1)
             Id('submitButton').data = "✓ " + 'לחץ לכניסה'
             Id('passportIMG').data =  'data/passports/passport ('+getRandomInt(19)+').jpg';
             // seting the number of questions per stageNames
@@ -1550,6 +1581,7 @@ function IpadGrahpic (type0) {
             spanArr.forEach(e=>{userForm.appendChild(e)})
             img.onload = function() {}
             setFormData ();
+            retryPass(codephrase)
 
         }
         let ipadCover = Id ('ipadCover')
