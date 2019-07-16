@@ -1156,7 +1156,7 @@ function IpadGrahpic (type0) {
             }
             //var x = 200;
             function runIps (x){
-                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + "פורץ גישה דרך חומת האש :" + "</p>"
+                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + "בוצעה כניסה מוצלחת למערכת, באמצעות המשתמש :" + "</p>"
                 G.divs.textBlock2.innerHTML += 'Finding weak Points inside-Firewall: x000fff' + (x + 212) + ' <br><br>';
                 for (i = 0 ; i < 19; i++){
                     if (i + x > 99) { continue}
@@ -1404,6 +1404,48 @@ function IpadGrahpic (type0) {
         drawFireWallIpad ()
     }
     function user (){
+        function consoleHackedUser() {
+            G.mgmt.isFinalAnsInChapter = false;
+            let tb = Id('textBlock2');
+            let tc = Id('textContainer');
+            G.divs.textContainer.appendChild(G.divs.textBlock2 )
+            G.divs.textBlock2.style.overflow = "hidden";
+
+            //tb.style.color =  G.css.textcolor
+            var ipArray = [];
+            var ipTxtArray = [];
+
+            //var x = 200;
+            function runIps (x){
+                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + "בוצעה כניסה מוצלחת למערכת, באמצעות המשתמש :" + "</p>"
+                G.divs.textBlock2.innerHTML += 'user_Name: ' + familyName.data +', '+ firstName.data + ' <br><br>';
+                G.divs.textBlock2.innerHTML += 'user_Id: ' +  Id('userName').data + '<br><br>';
+
+
+
+                x++
+                if (x < 100) { setTimeout(()=>{},30)} else {
+                    G.Q [500] = ["", "","","","","","","",""]
+                    G.Q [500][1] = G.divs.textBlock2.innerHTML + '<br><p dir=rtl style="text-align: right">'
+                    G.Q [500][2] = "כל ההגנות נעקפו ונמצאה חולשה מרכזית. להמשיך ?"
+                    G.Q [500][3] = "המשך";
+                    G.Q [500][4] = "ביצוע הסוואה של הפעילות"
+                    G.Q [500][G.mgmt.solutionCol] = 1;
+                    G.mgmt.nextStage ()
+
+                    G.divs.textContainer.removeChild(G.divs.textBlock2 )
+                    setQuestion (500)
+
+                };
+            }
+
+            runIps (101)
+
+
+
+
+
+        }
         function retryPass(el) {
             el.type = 'text';
             var minChar = 3; var tm = 200; var endLength = 14;
@@ -1441,10 +1483,9 @@ function IpadGrahpic (type0) {
 
                 el.value  = newtxt + el.value;
                 charsDeleted -=  2
-                L(el.value)
                 if (charsDeleted > -2){setTimeout(()=>{rewritePass()},tm)} else {
 
-                    changepassStyle (100,-1)
+                    changepassStyle (100,-2)
                     setTimeout(()=>{el.type = 'password'}, (tm * 5))}
 
             }
@@ -1469,8 +1510,8 @@ function IpadGrahpic (type0) {
             function makeid(length, isPass = false) {
                     var result           = '';
                     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                    var passwordChars = "ÇÆÅÄÃâãäåĂāÿýþÒØÙÚÜÛåẾẽẂẅẒẓẞẠɶɸʘʧʤʡʝʛꝀꜼ" + characters
-                    //if (isPass){characters = passwordChars}
+                    var passwordChars = "!@#$%^&*~" + characters
+                    if (isPass){characters = passwordChars}
                     var charactersLength = characters.length;
                     for (var i = 0; i < length; i++ ) {
                       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -1487,7 +1528,6 @@ function IpadGrahpic (type0) {
             Id('userName').data = Id('firstName').data + "_" + makeid(7)
             Id('codephrase').data  = makeid(20, true);
             Id('codephrase').data1  = makeid(130, true);
-            L(Id('codephrase').data1)
             Id('submitButton').data = "✓ " + 'לחץ לכניסה'
             Id('passportIMG').data =  'data/passports/passport ('+getRandomInt(19)+').jpg';
             // seting the number of questions per stageNames
@@ -1512,8 +1552,11 @@ function IpadGrahpic (type0) {
 
 
         }
+        function colorBorderSubmit (element,c = 60,dlt = 1) {
+            element.style.backgroundColor =  ' rgb(' + c + ',255 ,0)'//'solid rgb(254,' + c + ',0) 0.5vmin';
+            if (c < 2) {dlt = 1} else if (c > 120) { dlt = -1}
+            setTimeout(()=>{colorBorderSubmit (element,c+ (30*dlt),dlt)}, 30)}
         function drawBaseForm (){
-
             function submittingForm (){
                 function DenyEntry () {
                     var deny = Elm ('deny');
@@ -1523,17 +1566,39 @@ function IpadGrahpic (type0) {
                     deny.innerHTML += '<br>' + 'הכניסה אסורה. '
                     setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
                 }
-                DenyEntry ()
+                G.hacks.numOfsuccess = G.mgmt.maxFormTofind
+                if (G.hacks.numOfsuccess === G.mgmt.maxFormTofind) {
+                    StylelFader(codephrase,40,false,true);
+                    StylelFader(submitButton,40,false,true);
+                    StylelFader(userName,40,false,true);
+                    setTimeout (()=>{
+                        let spn = Id("formP-2");
+                        spn.style = 'font-size: 4vmin; color: black; font-weight: bolder'
+                        spn.style.opacity = 0 ;
+                        spn.innerHTML = '<br><br>' + 'שלום, ' + '<br>' + 'כל הפרטים נכונים,' + '<br>' + 'ברוכים הבאים למערכת.'
+                        function fadingin (n) {
+                            spn.style.opacity = n / 100 ;
+                            ipadCover.style.backgroundColor = 'lightgreen';
+                            if (n < 110) {setTimeout(()=>{fadingin (n+1)},20 )} else consoleHackedUser()
+                        }
+                        fadingin (1)
+
+                    },1000)
+
+
+
+            } else {DenyEntry ()}
 
             }
             function addInput (name, typeOfElem =  "text", placeholder,stl0) {
                 var newInput = document.createElement('input');
+                var addon = ''; if(name ==='codephrase') { newInput.dir = "ltr" ; addon = ';text-align: right' }
                 newInput.id = name;
                 newInput.type= typeOfElem
                 newInput.name="userName"
                 newInput.placeholder = placeholder
                 newInput.autocomplete="off"
-                newInput.style = "font-size: 3vmin; width: 50%;height :1%%; padding: 1vmin 4vmin; margin: 1vmin 1vmin; border: 0.3vmin solid #ccc; border-radius: 1vmin; box-sizing: border-box;background-color: white;"
+                newInput.style = "font-size: 3vmin; width: 50%;height :1%%; padding: 1vmin 4vmin; margin: 1vmin 1vmin; border: 0.3vmin solid #ccc; border-radius: 1vmin; box-sizing: border-box;background-color: white;" + addon
                 if (stl0) stl (newInput, stl0);
 
                 newInput.innerHTML = '<br>'
@@ -1547,7 +1612,13 @@ function IpadGrahpic (type0) {
             submitButton.addEventListener('click', submittingForm );
             G.css.formBackColor = 'rgba(219, 250, 89 ,0.99)'
             var qArray = [firstName ,familyName,userName,codephrase,submitButton] ; let spanArr = [];
-            G.hacks.formQarray = [codephrase,codephrase,codephrase,firstName ,familyName,userName,codephrase,codephrase,submitButton]
+            G.mgmt.maxFormTofind = 6;
+
+            G.hacks.formQarray = [ firstName ,familyName,userName]
+            while (G.hacks.formQarray.length <  G.mgmt.maxFormTofind - 1) {
+                G.hacks.formQarray.push(codephrase);
+            } ; G.hacks.formQarray.push(submitButton)
+
 
 
             for (i = 0; i < qArray.length; i ++){
@@ -1581,7 +1652,7 @@ function IpadGrahpic (type0) {
             spanArr.forEach(e=>{userForm.appendChild(e)})
             img.onload = function() {}
             setFormData ();
-            retryPass(codephrase)
+            //retryPass(codephrase)
 
         }
         let ipadCover = Id ('ipadCover')
@@ -1606,7 +1677,8 @@ function IpadGrahpic (type0) {
                 if (q.id === 'familyName' && G.hacks.numOfsuccess === i1 ) {blureChanger (Id ('passportIMG'))}
                 if (q.id === 'codephrase' &&  G.hacks.formQarray[i1-1].id === 'codephrase'  && G.hacks.numOfsuccess === i1) {
                     retryPass(Id('codephrase')) }
-                if (q.id ===  'submitButton' ) { q.style.backgroundColor = 'rgb(144, 238, 144)'}
+                if (q.id ===  'submitButton' ) { q.style.backgroundColor = 'rgb(144, 238, 144)'; colorBorderSubmit (q,60, 1) }
+
             }
 
 
