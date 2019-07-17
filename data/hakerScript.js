@@ -19,7 +19,7 @@ global_object: {
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
-        G.mgmt.stageNumber = 3; //the stage number to begin /* safd */
+        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
         G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
@@ -835,6 +835,18 @@ function setQuestion (num) {
         setTimeout(()=>{typeWriterEfct (isCorect)},2);
         loopControl++
     }
+    function setDirectionBylanguage (element, text) {
+        function isHebrew(qtext) {
+            var hebLetters = /\s?[אבגדהוזחטיכלמנסעפצקרשתםןץףך]{2,30}\s?/g
+            let matchArry = qtext.match(hebLetters)
+            if (matchArry !== null){ return true} else {return false}
+
+        }
+        if (isHebrew(text)) {element.style.direction = "rtl"; element.style.textAlign = "right"} else {
+            {element.style.direction = "ltr"; element.style.textAlign = "left"}
+        }
+
+    }
     function resizeText (){
         fontSize = G.css.textFontSize;
         let fullText = "";
@@ -874,12 +886,15 @@ function setQuestion (num) {
 
     elements[2] = G.divs.question
     fulltextArray[2]  = G.Q[num][2]
-    for (let i = 1; i < 6; i++){
+    for (let i = 1; i < 7; i++){
+
 
         if (G.Q[num][i + 2] != "")    {
             elements[i + 2] = G.divs.ans[i] ;
             fulltextArray[i + 2] = G.Q[num][i + 2];
+
         }
+        setDirectionBylanguage(elements[i],fulltextArray[i])
 
     }
     typeWriterEfct ()
