@@ -14,6 +14,7 @@ global_object: {
         G.css.textFontSize = 2;
         G.css.resizeFontScale = 0.6;
         G.css.canvasBackground = "#00284d";
+        G.css.breakAfterQuestion = '<br><br><br>'
         G.mgmt = {};
         G.mgmt.solutionCol = 8;
         G.mgmt.isAnswering = false;
@@ -29,7 +30,7 @@ global_object: {
         G.mgmt.maxFirewallTofind = 2;
         G.mgmt.maxFormTofind = 5;
         G.mgmt.isFinalAnsInChapter = false;
-        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ;alert (G.hacks.current) }
+        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ; }
         G.divs = {};
         G.hacks = {};
         G.hacks.numOfsuccess = 0;
@@ -316,7 +317,7 @@ function clickAnswer (elem){
     function answerAnimation (text, isWin){
         G.mgmt.isAnswering = true;
         let e = 0
-        G.divs.question.innerHTML += "&nbsp&nbsp"
+        //G.divs.question.innerHTML += "&nbsp&nbsp"
 
         function typeSolution () {
 
@@ -592,6 +593,7 @@ function buildBoard (){
     G.divs.textBlock = Elm ('textBlock');
     G.divs.textBlock2 = Elm ('textBlock2');
     G.divs.infoText = Elm ('infoText');
+
     G.divs.question = Elm ('question');
     G.divs.holoUI = Elm ('holoUI');
     G.divs.led = Elm ('led','img')
@@ -793,6 +795,9 @@ function buildBoard (){
        'overflow': 'hidden',
         "resize": "both",})
 
+
+
+
     for (let i = 1; i < maxAnswers; i ++){
         let ansId = 'ans' + i;
         G.divs.ans[i] = Elm (ansId);
@@ -809,19 +814,25 @@ function buildBoard (){
 
 }
 function setQuestion (num) {
+
     function blinkCursor(){
 
         if (t < 5){return}
+
         if (G.divs.question.isCursorOn) {G.divs.question.isCursorOn = false } else
         {G.divs.question.isCursorOn = true};
-        let cursor = "▉"; // &nbsp
+        let cursor = "▉";
 
         let nocursor = "<font color = '" + G.css.backGroundtextcolor +
          "'> ▉</font>"
-        let addedText0 = G.css.typeSolution
+        let br = G.css.breakAfterQuestion;
+        let addedText0 = '';
+        if (G.css.typeSolution) {br = br.replace(/<br>/i,'') }
+        if (G.css.typeSolution) { addedText0 = '<br>' + G.css.typeSolution}
+
         let addedText1 = G.divs.question.isCursorOn ? cursor : nocursor ;
         let addedText = addedText0 + addedText1
-        G.divs.question.innerHTML = G.Q[num][2] + addedText ;
+        G.divs.question.innerHTML = G.Q[num][2]  + addedText +  br;
 
 
 
@@ -831,11 +842,13 @@ function setQuestion (num) {
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
         if (t > 6 || loopControl > 900) {return}
         if (fulltextArray[t]) {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
+
         position++; position++;
         setTimeout(()=>{typeWriterEfct (isCorect)},2);
         loopControl++
     }
     function setDirectionBylanguage (element, text) {
+        if (text && element) {} else return
         function isHebrew(qtext) {
             var hebLetters = /\s?[אבגדהוזחטיכלמנסעפצקרשתםןץףך]{2,30}\s?/g
             let matchArry = qtext.match(hebLetters)
@@ -885,23 +898,26 @@ function setQuestion (num) {
     fulltextArray[1] = G.Q[num][1]
 
     elements[2] = G.divs.question
-    fulltextArray[2]  = G.Q[num][2]
+    fulltextArray[2]  =   G.Q[num][2] + G.css.breakAfterQuestion
+    G.test = fulltextArray[2]
+
     for (let i = 1; i < 7; i++){
-
-
+        //fulltextArray[i + 2] = "";
+        //if (i === 1){ fulltextArray[2] += "<br><br>"}
         if (G.Q[num][i + 2] != "")    {
-            elements[i + 2] = G.divs.ans[i] ;
+            elements[i + 2] = G.divs.ans[i];
             fulltextArray[i + 2] = G.Q[num][i + 2];
-
         }
         setDirectionBylanguage(elements[i],fulltextArray[i])
 
     }
+
     typeWriterEfct ()
     G.mgmt.timer1 = setInterval(()=>{blinkCursor()},200)
 
 }
 function IpadGrahpic (type0) {
+
     function getIp (){
         function clickCanvas (e) {
             let x0  = e.clientX
@@ -1171,8 +1187,9 @@ function IpadGrahpic (type0) {
             }
             //var x = 200;
             function runIps (x){
-                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + "בוצעה כניסה מוצלחת למערכת, באמצעות המשתמש :" + "</p>"
-                G.divs.textBlock2.innerHTML += 'Finding weak Points inside-Firewall: x000fff' + (x + 212) + ' <br><br>';
+                let tx1 = '<p dir = "rtl" align="right">' + "חומת האש נסרקת, חולשות ופרצות אבטחה:" + "</p>";
+                let tx2 = 'Stack buffer Address: x000fff' + (x + 212) + ' <br><br>';
+                 G.divs.textBlock2.innerHTML = tx1 + tx2
                 for (i = 0 ; i < 19; i++){
                     if (i + x > 99) { continue}
                     G.divs.textBlock2.innerHTML += ipTxtArray[i + x]
@@ -1200,8 +1217,10 @@ function IpadGrahpic (type0) {
                 }
                 x++
                 if (x < 100) { setTimeout(()=>{runIps (x)},30)} else {
+                    let tx3 = '<p dir = "rtl" align="right">' + "נמצאה פרצה ברכיב הזיכרון:" + "</p>";
+
                     G.Q [500] = ["", "","","","","","","",""]
-                    G.Q [500][1] = G.divs.textBlock2.innerHTML + '<br><p dir=rtl style="text-align: right">'
+                    G.Q [500][1] = tx3 + tx2 + ipTxtArray[6] + '<br><p dir=rtl style="text-align: right">'
                     G.Q [500][2] = "כל ההגנות נעקפו ונמצאה חולשה מרכזית. להמשיך ?"
                     G.Q [500][3] = "המשך";
                     G.Q [500][4] = "ביצוע הסוואה של הפעילות"
@@ -1685,7 +1704,7 @@ function IpadGrahpic (type0) {
         for (i1 = 1; i1  <= G.hacks.numOfsuccess; i1++) {
             if (i   > G.hacks.formQarray.length) break;
             let q = G.hacks.formQarray[i1-1]
-            if (q === undefined) {alert ()} else {
+            if (q === undefined) {} else {
                 q.value =  q.data
                 if (q.id === 'firstName' && G.hacks.numOfsuccess === i1) {Id ('passportIMG').src = Id ('passportIMG').data;  'data/passports/passport (19).jpg';
                 let b = 'blur(' + 0.5 +'rem)'; Id ('passportIMG').style.filter = b;}
