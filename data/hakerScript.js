@@ -26,7 +26,7 @@ global_object: {
         G.mgmt.clickedAnswer = 0;
         G.mgmt.isQuestion = false;
         G.mgmt.isHolo = false// is the holo up
-        G.mgmt.maxIpsTofind = 2;
+        G.mgmt.maxIpsTofind = 10;
         G.mgmt.maxFirewallTofind = 2;
         G.mgmt.maxFormTofind = 5;
         G.mgmt.isFinalAnsInChapter = false;
@@ -39,6 +39,7 @@ global_object: {
         G.hacks.firewallFinishText = 'ההגנה נעקפה.'
         G.hacks.firewallScrambleColor = 'yellow'
         G.hacks.ipLocations = [];
+        G.testMode = true
       }
 util_functions: {
     function L (...args){
@@ -320,9 +321,11 @@ function clickAnswer (elem){
         //G.divs.question.innerHTML += "&nbsp&nbsp"
 
         function typeSolution () {
+            let ms = 100;
+            if (G.testMode) ms = 3
 
             let str = text.substring(e, 0);
-            if (text.length + 1 <= e ){ nextQuesion () ;return } else {G.css.typeSolution = " " + str;e++ ;setTimeout(()=>{typeSolution () },100)}
+            if (text.length + 1 <= e ){ nextQuesion () ;return } else {G.css.typeSolution = " " + str;e++ ;setTimeout(()=>{typeSolution () },ms)}
         }
         typeSolution ()
 
@@ -524,7 +527,7 @@ function buildBoard (){
     function keyPressFunc (e) {
 
 
-        if (e.charCode == 32 ) {
+        if (e.charCode == 32 && G.testMode) {
             clickAnswer ('rightAnswerClick');
             //IpadGrahpic ('right')
         }
@@ -1106,9 +1109,10 @@ function IpadGrahpic (type0) {
               ctx.restore();
               let ips = 5;
               G.hacks.rightIp = getRandomInt(ips)
-              for (let i = 1; i < ips; i++) {
+              for (let i = 1; i <= ips; i++) {
               let xPoint = getRandomInt (80) + 5;
               let yPoint = getRandomInt (70) + 5;
+               
               if (i == G.hacks.rightIp){ G.hacks.ipY = yPoint;G.hacks.ipX = xPoint }
               setTimeout(()=>{
                   ctx.save ();
