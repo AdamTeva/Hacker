@@ -20,17 +20,18 @@ global_object: {
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
-        G.mgmt.stageNumber = 2; //the stage number to begin /* safd */
+        /* STAGE */
+        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
         G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
         G.mgmt.isQuestion = false;
         G.mgmt.isHolo = false// is the holo up
-        G.mgmt.maxIpsTofind = 10;
-        G.mgmt.maxFirewallTofind = 2;
+        G.mgmt.maxIpsTofind = 3;
+        G.mgmt.maxFirewallTofind = 5;
         G.mgmt.maxFormTofind = 5;
         G.mgmt.isFinalAnsInChapter = false;
-        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ; }
+        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ;  }
         G.divs = {};
         G.hacks = {};
         G.hacks.numOfsuccess = 0;
@@ -354,11 +355,12 @@ function clickAnswer (elem){
             op =  op - opDelta;
             if (op > 0){setTimeout(()=>{fadeOut ()}, time)} else if (!G.mgmt.isFinalAnsInChapter){
 
-                if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.mgmt.lastqNumber};
+                if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.mgmt.lastqNumber} ;
 
             setQuestion(G.mgmt.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
 
-                G.mgmt.isFinalAnsInChapter = false; IpadGrahpic ('finishChaper')}
+                G.mgmt.isFinalAnsInChapter = false; IpadGrahpic ('finishChaper')
+            }
         }
         fadeOut ()
     }
@@ -527,7 +529,7 @@ function buildBoard (){
     function keyPressFunc (e) {
 
 
-        if (e.charCode == 32 && G.testMode) {
+        if (e.charCode == 32 && G.testMode && !G.mgmt.isFinalAnsInChapter) {
             clickAnswer ('rightAnswerClick');
             //IpadGrahpic ('right')
         }
@@ -1163,22 +1165,23 @@ function IpadGrahpic (type0) {
         canvas.style.color = 'white';
         var ctx = canvas.getContext("2d");
         if (answeris === 'right') {addRevieledLovation ()}
-        if (G.hacks.numOfsuccess >= G.mgmt.maxIpsTofind) {FullIpWasfoundAnimation ()}
-        if (!isFinishing) {drawIpIpad ()} else {consoleFoundIp()}
+        if (G.hacks.numOfsuccess >= G.mgmt.maxIpsTofind) {FullIpWasfoundAnimation (); consoleFoundIp()} else {drawIpIpad ()}
+
     }
     function fireWall (){
         function consoleHackedFirewall(isWaitingCrack = false) {
-            if (isWaitingCrack){ let tx3 = '<p dir = "rtl" align="right">' + "נמצאו מספר רכיבים בחומת האש." + "</p>";
-            G.Q [500] = ["", "","","","","","","",""]
-            G.Q [500][1] = tx3 + '<br><p dir=rtl style="text-align: right">'
-            G.Q [500][2] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
-            //G.Q [500][3] = "i"
-            // G.Q [500][4] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
-            // G.Q [500][5] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
-            G.Q [500][G.mgmt.solutionCol] = 1;
-            //G.divs.textContainer.removeChild(G.divs.textBlock2 )
-            //G.mgmt.isFinalAnsInChapter = true;
-            setQuestion (500); return; }
+            if (isWaitingCrack){
+                let tx3 = '<p dir = "rtl" align="right">' + "נמצאו מספר רכיבים בחומת האש." + "</p>";
+                G.Q [500] = ["", "","","","","","","",""]
+                G.Q [500][1] = tx3 + '<br><p dir=rtl style="text-align: right">'
+                G.Q [500][2] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
+                //G.Q [500][3] = "i"
+                // G.Q [500][4] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
+                // G.Q [500][5] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
+                G.Q [500][G.mgmt.solutionCol] = 1;
+                //G.divs.textContainer.removeChild(G.divs.textBlock2 )
+                G.mgmt.isFinalAnsInChapter = true;
+                setQuestion (500); return; }
             G.mgmt.isFinalAnsInChapter = false;
             let tb = Id('textBlock2');
             let tc = Id('textContainer');
@@ -1201,7 +1204,7 @@ function IpadGrahpic (type0) {
                 G.divs.textBlock2.innerHTML += txt
             }
             //var x = 200;
-            function runIps (x){
+            function runDefences (x){
                 let tx1 = '<p dir = "rtl" align="right">' + "חומת האש נסרקת, חולשות ופרצות אבטחה:" + "</p>";
                 let tx2 = 'Stack buffer Address: x000fff' + (x + 212) + ' <br><br>';
                  G.divs.textBlock2.innerHTML = tx1 + tx2
@@ -1231,7 +1234,7 @@ function IpadGrahpic (type0) {
 
                 }
                 x++
-                if (x < 100) { setTimeout(()=>{runIps (x)},30)} else {
+                if (x < 100) { setTimeout(()=>{runDefences (x)},30)} else {
                     let tx3 = '<p dir = "rtl" align="right">' + "נמצאה פרצה ברכיב הזיכרון:" + "</p>";
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = tx3 + tx2 + ipTxtArray[6] + '<br><p dir=rtl style="text-align: right">'
@@ -1246,7 +1249,7 @@ function IpadGrahpic (type0) {
                 };
             }
 
-            runIps (1)
+            runDefences (1)
 
 
 
@@ -1325,7 +1328,9 @@ function IpadGrahpic (type0) {
             function addHackOption (el){
                 function clickFirewallHack (el){
                     function hackFirewallElement(DomElement ,finishString = 'ok') {
+                            L(G.hacks.numOfsuccess  ,G.mgmt.maxFirewallTofind)
                         if(G.hacks.numOfsuccess >=G.mgmt.maxFirewallTofind){} else return;
+
                         var dictionary = "0123456789qwertyuiopasdfghjklzxcvbnm!?></\a`~+*=@#$%".split('');
                         var el = DomElement;
                         if (el.innerHTML.includes(finishString)) return;
@@ -1707,6 +1712,7 @@ function IpadGrahpic (type0) {
             //retryPass(codephrase)
 
         }
+        G.hacks.formQarray = G.hacks.formQarray || [];
         let ipadCover = Id ('ipadCover')
         if (answeris === 'right') {let ipadCover = Id ('ipadCover');
             ipadCover.style.filter = '';
@@ -1740,7 +1746,8 @@ function IpadGrahpic (type0) {
 
     }
 
-    var answeris = ''; var isFinishing = false; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper'){type0 = G.hacks.current; isFinishing = true}
+    var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper'){
+        type0 = G.hacks.current; }
     switch( type0) {
         case 'getIp':
         G.hacks.current = 'getIp';
