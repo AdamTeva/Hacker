@@ -20,7 +20,7 @@ global_object: {
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
-        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
+        G.mgmt.stageNumber = 2; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
         G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
@@ -1112,7 +1112,7 @@ function IpadGrahpic (type0) {
               for (let i = 1; i <= ips; i++) {
               let xPoint = getRandomInt (80) + 5;
               let yPoint = getRandomInt (70) + 5;
-               
+
               if (i == G.hacks.rightIp){ G.hacks.ipY = yPoint;G.hacks.ipX = xPoint }
               setTimeout(()=>{
                   ctx.save ();
@@ -1167,7 +1167,18 @@ function IpadGrahpic (type0) {
         if (!isFinishing) {drawIpIpad ()} else {consoleFoundIp()}
     }
     function fireWall (){
-        function consoleHackedFirewall() {
+        function consoleHackedFirewall(isWaitingCrack = false) {
+            if (isWaitingCrack){ let tx3 = '<p dir = "rtl" align="right">' + "נמצאו מספר רכיבים בחומת האש." + "</p>";
+            G.Q [500] = ["", "","","","","","","",""]
+            G.Q [500][1] = tx3 + '<br><p dir=rtl style="text-align: right">'
+            G.Q [500][2] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
+            //G.Q [500][3] = "i"
+            // G.Q [500][4] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
+            // G.Q [500][5] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
+            G.Q [500][G.mgmt.solutionCol] = 1;
+            //G.divs.textContainer.removeChild(G.divs.textBlock2 )
+            //G.mgmt.isFinalAnsInChapter = true;
+            setQuestion (500); return; }
             G.mgmt.isFinalAnsInChapter = false;
             let tb = Id('textBlock2');
             let tc = Id('textContainer');
@@ -1222,7 +1233,6 @@ function IpadGrahpic (type0) {
                 x++
                 if (x < 100) { setTimeout(()=>{runIps (x)},30)} else {
                     let tx3 = '<p dir = "rtl" align="right">' + "נמצאה פרצה ברכיב הזיכרון:" + "</p>";
-
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = tx3 + tx2 + ipTxtArray[6] + '<br><p dir=rtl style="text-align: right">'
                     G.Q [500][2] = "כל ההגנות נעקפו ונמצאה חולשה מרכזית. להמשיך ?"
@@ -1230,7 +1240,6 @@ function IpadGrahpic (type0) {
                     G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                     G.Q [500][G.mgmt.solutionCol] = 1;
                     G.mgmt.nextStage ()
-
                     G.divs.textContainer.removeChild(G.divs.textBlock2 )
                     setQuestion (500)
 
@@ -1309,6 +1318,7 @@ function IpadGrahpic (type0) {
             var img = G.divs.ipadContent;
             let num = 1
             img.src  =  "data/mother-board (" + 1 + ").png"
+            //consoleHackedFirewall(isWaitingCrack = false)
 
             img.onload = function() {
 
@@ -1373,7 +1383,6 @@ function IpadGrahpic (type0) {
 
                 }
                 el = Id (el)
-
                 el.addEventListener('click',clickFirewallHack, true)
 
             }
@@ -1392,7 +1401,6 @@ function IpadGrahpic (type0) {
                     if (allfinished) {consoleHackedFirewall()}
 
             }
-
             function fadIntext (){
 
                 if (ipadCover.style.opacity < 0.2 || ipadCover.style.opacity > 0.8) {
@@ -1407,6 +1415,11 @@ function IpadGrahpic (type0) {
                 ms = 400;
                 if  (answeris === 'wrong') {ms=10}
                 var canvas = Id ('ipad');
+                var preW = Pre2Num (G.divs.ipadContainer.style.width) / 100;
+                var preH = Pre2Num (G.divs.ipadContainer.style.height) / 100;
+                const highRes = 2;
+                canvas.height =  preH * window.innerHeight * highRes;
+                canvas.width =  preW * window.innerWidth * highRes;
                 var ctx = canvas.getContext("2d");
                 ctx.drawImage(img, G.hacks.piecesOfFirewall[num1+1].randX,  G.hacks.piecesOfFirewall[num1+1].randY);
                 spanId = G.hacks.firewallCodeId  + num1+1;
@@ -1417,8 +1430,9 @@ function IpadGrahpic (type0) {
                     setTimeout(()=>{showChips (num1+1)},ms)} else {
                         fadIntext();
                         if (G.hacks.numOfsuccess >=G.mgmt.maxFirewallTofind ){
+                            consoleHackedFirewall(true)
                             let txt = 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.'
-                        ipadCover.innerHTML += '<br><br><div id = "'  + '"style = "font-size:4.3vmin; background-color:rgb(0,191,255); font-weight: bold; color:black;width:90% ;margin: 0 auto; margin-top:3%; padding:2% ;border: 0.3vmin solid black;border-radius: 3vmin ; overflow: hidden">' +  txt + '</div>';}
+                        ipadCover.innerHTML += '<br><br><div id = "'  + '"style = "font-size:4.3vmin; background-color:rgb(0,191,255); font-weight: bold; color:black;width:90% ;margin: 0 auto; margin-top:3%; padding:2% ;border: 0.3vmin solid black;border-radius: 1vmin ; overflow: hidden">' +  txt + '</div>';}
                         ipadCover.childNodes.forEach(a=>{
                             if (!a.id) {return}
                             if (a.id.includes(G.hacks.firewallCodeId)) {addHackOption (a.id)}
