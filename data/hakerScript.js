@@ -21,7 +21,7 @@ global_object: {
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
         /* STAGE */
-        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
+        G.mgmt.stageNumber = 2; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
         G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
@@ -922,6 +922,7 @@ function setQuestion (num) {
 
 }
 function IpadGrahpic (type0) {
+    L(type0)
 
     function getIp (){
         function clickCanvas (e) {
@@ -1305,6 +1306,7 @@ function IpadGrahpic (type0) {
         }
         function addFirewallClue (){G.hacks.numOfsuccess++;}
         function drawFireWallIpad () {
+
             var ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
@@ -1325,131 +1327,137 @@ function IpadGrahpic (type0) {
 
             img.onload = function() {
 
-            function addHackOption (el){
-                function clickFirewallHack (el){
-                    function hackFirewallElement(DomElement ,finishString = 'ok') {
-                            L(G.hacks.numOfsuccess  ,G.mgmt.maxFirewallTofind)
-                        if(G.hacks.numOfsuccess >=G.mgmt.maxFirewallTofind){} else return;
+                function addHackOption (el){
+                    function clickFirewallHack (el){
+                        function hackFirewallElement(DomElement ,finishString = 'ok') {
 
-                        var dictionary = "0123456789qwertyuiopasdfghjklzxcvbnm!?></\a`~+*=@#$%".split('');
-                        var el = DomElement;
-                        if (el.innerHTML.includes(finishString)) return;
-                        var before = '', after = '';
-                        var virtualHtml = ''
+                            if(G.hacks.numOfsuccess >=G.mgmt.maxFirewallTofind){} else return;
 
-                        var Whtml =  () =>{ el.innerHTML = before + virtualHtml + after}
-                        var ran = function() {
-                         return Math.floor(Math.random() * dictionary.length)
-                        }
-                        var ranString = function(amt) {
-                          var string = '';
-                          for(var i = 0; i < amt; i++) {
-                            string += dictionary[ran()];
-                          }
-                          return string;
-                        }
-                        var init = function(str) {
-                          var count = str.length;
-                          var delay = 50;
-                          virtualHtml = '';
-                          Whtml ();
+                            var dictionary = "0123456789qwertyuiopasdfghjklzxcvbnm!?></\a`~+*=@#$%".split('');
+                            var el = DomElement;
+                            if (el.innerHTML.includes(finishString)) return;
+                            var before = '', after = '';
+                            var virtualHtml = ''
 
-                          var gen = setInterval(function() {
-                              let hackColor = G.hacks.firewallScrambleColor
-
-                            before = '<span style="opacity: 0.5; color: '  + hackColor + '"> ' + ranString(count) + '</span>'
-                            after = '<span style="opacity: 0.5; color: '  + hackColor + '"> ' + ranString(count) + '</span>'
-                            Whtml ()
-
-                            if(delay > 0) {
-                              delay--;
+                            var Whtml =  () =>{ el.innerHTML = before + virtualHtml + after}
+                            var ran = function() {
+                             return Math.floor(Math.random() * dictionary.length)
                             }
-                            else {
-                              if(count < str.length) {
-                                virtualHtml += str[str.length - count-1];
-                                Whtml ();
-
+                            var ranString = function(amt) {
+                              var string = '';
+                              for(var i = 0; i < amt; i++) {
+                                string += dictionary[ran()];
                               }
-                              count--;
-                              if(count === -1) {
-                                 CheckIfAllDefencesDown()
-                                clearInterval(gen);
-                                //showButton();
-                              }
+                              return string;
                             }
-                          }, 32);
+                            var init = function(str) {
+                              var count = str.length;
+                              var delay = 50;
+                              virtualHtml = '';
+                              Whtml ();
+
+                              var gen = setInterval(function() {
+                                  let hackColor = G.hacks.firewallScrambleColor
+
+                                before = '<span style="opacity: 0.5; color: '  + hackColor + '"> ' + ranString(count) + '</span>'
+                                after = '<span style="opacity: 0.5; color: '  + hackColor + '"> ' + ranString(count) + '</span>'
+                                Whtml ()
+
+                                if(delay > 0) {
+                                  delay--;
+                                }
+                                else {
+                                  if(count < str.length) {
+                                    virtualHtml += str[str.length - count-1];
+                                    Whtml ();
+
+                                  }
+                                  count--;
+                                  if(count === -1) {
+                                     CheckIfAllDefencesDown()
+                                    clearInterval(gen);
+                                    //showButton();
+                                  }
+                                }
+                              }, 32);
+
+                            }
+                            /* my code */
+                            init (finishString)
 
                         }
-                        /* my code */
-                        init (finishString)
+                        hackFirewallElement (this,G.hacks.firewallFinishText);
 
                     }
-                    hackFirewallElement (this,G.hacks.firewallFinishText);
+                    el = Id (el)
+                    el.addEventListener('click',clickFirewallHack, true)
 
                 }
-                el = Id (el)
-                el.addEventListener('click',clickFirewallHack, true)
+                function CheckIfAllDefencesDown()  {
+                    let ipadCover = Id ('ipadCover')
+                    let hacksArray = [];
+                    ipadCover.childNodes.forEach(a=>{
+                        if (!a.id) {return}
+                        if (a.id.includes(G.hacks.firewallCodeId)) {
+                            let isFinished = a.innerHTML.includes(G.hacks.firewallFinishText)
+                            hacksArray.push(isFinished);
+                        }
+                    })
+                    let allfinished = hacksArray.every ((e) => {
+                        return e})
+                        if (allfinished) {consoleHackedFirewall()}
+
+                }
+                function fadIntext (){
+
+                    if (ipadCover.style.opacity < 0.2 || ipadCover.style.opacity > 0.8) {
+                        StylelFader(ipadCover,30,true)
+                        var textToReplace = 'מזהה רכיבים:'
+                        var altText = 'הרכיבים שזוהו:'
+                        var origin = ipadCover.innerHTML;
+                        ipadCover.innerHTML = ipadCover.innerHTML.replace(textToReplace,altText)
+                    } else {setTimeout(()=>{fadIntext ()},500)}
+                }
+                function showChips (num1) {
+
+
+                    ms = 400;
+                    if  (answeris === 'wrong') {ms=10}
+                    var canvas = Id ('ipad');
+                    var preW = Pre2Num (G.divs.ipadContainer.style.width) / 100;
+                    var preH = Pre2Num (G.divs.ipadContainer.style.height) / 100;
+                    const highRes = 2;
+                    canvas.height =  preH * window.innerHeight * highRes;
+                    canvas.width =  preW * window.innerWidth * highRes;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, G.hacks.piecesOfFirewall[num1].randX,  G.hacks.piecesOfFirewall[num1].randY);
+                    spanId = G.hacks.firewallCodeId  + num1;
+                    ipadCover.innerHTML += '<div id = "' + spanId + '"style = "font-size:3vmin; background-color:rgba(10,0,0,0.7); width:80% ; height:5% ;margin: 0 auto; margin-top:1%;">' +  G.hacks.NamesOfPiecesOfFirewall[num1] + '</div>';
+                    let sp = Id (spanId);
+                    if (num1  < G.hacks.numOfsuccess ) {
+
+                        setTimeout(()=>{showChips (num1+1)},ms)}
+                    else {
+                            fadIntext();
+                            if (G.hacks.numOfsuccess >=G.mgmt.maxFirewallTofind ){
+                                consoleHackedFirewall(true)
+                                let txt = 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.'
+                            ipadCover.innerHTML += '<br><br><div id = "defMessage"'  + ' style = "font-size:4.3vmin; background-color:rgb(0,191,255); font-weight: bold; color:black;width:90% ;margin: 0 auto; margin-top:3%; padding:2% ;border: 0.3vmin solid black;border-radius: 1vmin ; overflow: hidden">' +  txt + '</div>';}
+                            let  breakForeach = false
+                            ipadCover.childNodes.forEach(a=>{
+
+                                if (!a.id || breakForeach) {return}
+                                if (a.id === 'defMessage'){breakForeach = true}
+                                if (a.id.includes(G.hacks.firewallCodeId)) {addHackOption (a.id)}
+                            });
+                            return;
+
+                        };
+                }
+                if (G.hacks.numOfsuccess > 0 && G.hacks.numOfsuccess <= G.mgmt.maxFirewallTofind  ) {showChips (num)};
+
 
             }
-            function CheckIfAllDefencesDown()  {
-                let ipadCover = Id ('ipadCover')
-                let hacksArray = [];
-                ipadCover.childNodes.forEach(a=>{
-                    if (!a.id) {return}
-                    if (a.id.includes(G.hacks.firewallCodeId)) {
-                        let isFinished = a.innerHTML.includes(G.hacks.firewallFinishText)
-                        hacksArray.push(isFinished);
-                    }
-                })
-                let allfinished = hacksArray.every ((e) => {
-                    return e})
-                    if (allfinished) {consoleHackedFirewall()}
-
-            }
-            function fadIntext (){
-
-                if (ipadCover.style.opacity < 0.2 || ipadCover.style.opacity > 0.8) {
-                    StylelFader(ipadCover,30,true)
-                    var textToReplace = 'מזהה רכיבים:'
-                    var altText = 'הרכיבים שזוהו:'
-                    var origin = ipadCover.innerHTML;
-                    ipadCover.innerHTML = ipadCover.innerHTML.replace(textToReplace,altText)
-                } else {setTimeout(()=>{fadIntext ()},500)}
-            }
-            function showChips (num1) {
-                ms = 400;
-                if  (answeris === 'wrong') {ms=10}
-                var canvas = Id ('ipad');
-                var preW = Pre2Num (G.divs.ipadContainer.style.width) / 100;
-                var preH = Pre2Num (G.divs.ipadContainer.style.height) / 100;
-                const highRes = 2;
-                canvas.height =  preH * window.innerHeight * highRes;
-                canvas.width =  preW * window.innerWidth * highRes;
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, G.hacks.piecesOfFirewall[num1+1].randX,  G.hacks.piecesOfFirewall[num1+1].randY);
-                spanId = G.hacks.firewallCodeId  + num1+1;
-                ipadCover.innerHTML += '<div id = "' + spanId + '"style = "font-size:3vmin; background-color:rgba(10,0,0,0.7); width:80% ; height:5% ;margin: 0 auto; margin-top:1%;">' +  G.hacks.NamesOfPiecesOfFirewall[num1+1] + '</div>';
-                let sp = Id (spanId);
-                if (num1  < G.hacks.numOfsuccess ) {
-
-                    setTimeout(()=>{showChips (num1+1)},ms)} else {
-                        fadIntext();
-                        if (G.hacks.numOfsuccess >=G.mgmt.maxFirewallTofind ){
-                            consoleHackedFirewall(true)
-                            let txt = 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.'
-                        ipadCover.innerHTML += '<br><br><div id = "'  + '"style = "font-size:4.3vmin; background-color:rgb(0,191,255); font-weight: bold; color:black;width:90% ;margin: 0 auto; margin-top:3%; padding:2% ;border: 0.3vmin solid black;border-radius: 1vmin ; overflow: hidden">' +  txt + '</div>';}
-                        ipadCover.childNodes.forEach(a=>{
-                            if (!a.id) {return}
-                            if (a.id.includes(G.hacks.firewallCodeId)) {addHackOption (a.id)}
-                        })
-
-                    };
-
-            }
-                if (G.hacks.numOfsuccess) showChips (num);
-
-
-              }
         }
         var ipadFireWallBGColor = "linear-gradient(135deg, rgba(78,92,90,1) 0%,rgba(78,92,90,0.57) 25%,rgba(78,92,90,0.9) 57%,rgba(101,118,119,0.89) 83%,rgba(25,26,63,1) 100%"
         if (answeris === 'right') {let ipadCover = Id ('ipadCover');
@@ -1458,6 +1466,8 @@ function IpadGrahpic (type0) {
             addFirewallClue ()}
             else if (answeris === 'wrong') {blureChanger ();setBG(ipadFireWallBGColor)}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
+        if(G.hacks.numOfsuccess + 1 >G.mgmt.maxFirewallTofind){G.mgmt.isFinalAnsInChapter = true } //current
+
         drawFireWallIpad ()
     }
     function user (){
@@ -1746,7 +1756,7 @@ function IpadGrahpic (type0) {
 
     }
 
-    var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper'){
+    var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
         type0 = G.hacks.current; }
     switch( type0) {
         case 'getIp':
