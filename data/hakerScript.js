@@ -21,8 +21,16 @@ global_object: {
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
         /* STAGE */
-        G.mgmt.stageNumber = 2; //the stage number to begin /* safd */
+        G.mgmt.stageNumber = 3; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
+        G.mgmt.stagesInfo = {
+            'getIp' : 'למציאת כתובת הרשת ',
+            'firewall': ' לזיהוי חולשות בחומת האש',
+            'user' : ' לחדירה למערכת באמצעות שם משתמש',
+            'server': '',
+            'virus': '',
+
+        }
         G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
         G.mgmt.clickedAnswer = 0;
         G.mgmt.isQuestion = false;
@@ -334,7 +342,7 @@ function clickAnswer (elem){
     function nextQuesion () {
 
 
-        IpadGrahpic ('right');
+        if (G.mgmt.qNumber !== 500) {IpadGrahpic ('right');}
         G.mgmt.isAnswering = true;
 
         let op  = 1;
@@ -355,7 +363,7 @@ function clickAnswer (elem){
             op =  op - opDelta;
             if (op > 0){setTimeout(()=>{fadeOut ()}, time)} else if (!G.mgmt.isFinalAnsInChapter){
 
-                if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.mgmt.lastqNumber} ;
+                if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.mgmt.lastqNumber; IpadGrahpic (G.mgmt.stage)} ;
 
             setQuestion(G.mgmt.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
 
@@ -531,7 +539,7 @@ function buildBoard (){
 
         if (e.charCode == 32 && G.testMode && !G.mgmt.isFinalAnsInChapter) {
             clickAnswer ('rightAnswerClick');
-            //IpadGrahpic ('right')
+
         }
     }
     function mOverAnswer (elem){
@@ -1042,7 +1050,9 @@ function IpadGrahpic (type0) {
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = G.divs.textBlock2.innerHTML;
                     G.Q [500][2] = "כתובת רשת נמצאה. להמשיך ?";
-                    G.Q [500][3] = "המשך";
+                    let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
+                    G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
+
                     G.Q [500][4] = "בדיקה נוספת";
                     G.Q [500][G.mgmt.solutionCol] = 1;
                     G.mgmt.nextStage ()
@@ -1240,7 +1250,8 @@ function IpadGrahpic (type0) {
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = tx3 + tx2 + ipTxtArray[6] + '<br><p dir=rtl style="text-align: right">'
                     G.Q [500][2] = "כל ההגנות נעקפו ונמצאה חולשה מרכזית. להמשיך ?"
-                    G.Q [500][3] = "המשך";
+                    let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
+                    G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
                     G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                     G.Q [500][G.mgmt.solutionCol] = 1;
                     G.mgmt.nextStage ()
@@ -1494,8 +1505,9 @@ function IpadGrahpic (type0) {
                 if (x < 100) { setTimeout(()=>{},30)} else {
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = G.divs.textBlock2.innerHTML + '<br><p dir=rtl style="text-align: right">'
-                    G.Q [500][2] = "כל ההגנות נעקפו ונמצאה חולשה מרכזית. להמשיך ?"
-                    G.Q [500][3] = "המשך";
+                    G.Q [500][2] = "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש רגיל. האם להמשיך ?"
+                    let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
+                    G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
                     G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                     G.Q [500][G.mgmt.solutionCol] = 1;
                     G.mgmt.nextStage ()
