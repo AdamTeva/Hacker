@@ -21,8 +21,8 @@ global_object: {
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
         /* STAGE */
-        G.mgmt.stageNumber = 3; //the stage number to begin /* safd */
-        G.mgmt.stageNames = ["",'getIp','firewall','user','server','virus'];
+        G.mgmt.stageNumber = 4; //the stage number to begin /* safd */
+        G.mgmt.stageNames = ["",'getIp','firewall','user','virus', 'server'];
         G.mgmt.stagesInfo = {
             'getIp' : 'למציאת כתובת הרשת ',
             'firewall': ' לזיהוי חולשות בחומת האש',
@@ -1757,11 +1757,66 @@ function IpadGrahpic (type0) {
         }
         if(G.hacks.numOfsuccess + 1 >G.mgmt.maxFormTofind) {  G.mgmt.isFinalAnsInChapter = true; consoleHackedUser () }
     }
+    function virus () {
+        function asciImage () {
+            let asci = `                    11010101
+                 uu$$$$$$$$$$$uu
+              uuoo$1$$$o$$$$o$o$$uu
+             u$$$$$$$$$$$$$$$$$$$$$u
+            u$$$$$o$$$$o$$$o$$$1$$$$u
+           u$$o$$$1$$$o$$$$$o$$$$o$$$u
+           u$$$$o$$o$$$$$o$$$$$o$$$$$u
+           u$$o$$*   *$$$*   *$$$$$$u
+           *$$$$*      u$u       $$o$*
+            $o$u       u$u       u$o$
+            $$$u      u$$$u      u$$$
+             *$$$$uu$$$   $$$uu$$$$*
+              *$o$$o$$*   *$o$o$$$*
+                u$$$$$$$u$$$$$$$u
+                 u$*$*$*$*$*$*$u
+      uuu        $$u$ H H H $u$$       uuu
+     u$$$$        $$$$$u$u$u$$$       u$$$$
+      $$$$$uu      *$$$$$$$$$*     uu$$$$$$
+    u$$H$$$H$$$$uu    *****    uuuu$$H$$H$$$$
+    $$$$***$$$$$$$$$$uuu   uu$$$$H$$$$***$$$*
+     ***      **$$H$$H$$$$$uu **$***
+               uuuu **$$H$$H$$$$uuu
+      u$$$uuu$$$$$$$$$uu **$$$$$$$$$$$uuu$$$
+      $H$$H$$H$$****           **$$$$$H$$$$$*
+       *$$$$$*                      **$$$$**
+         $$$*                         $$$$*            `
+            return asci
+        }
+        function asciRending (asc) {
+            asc = asc.replace(' ', '&nbsp')
+            asc = '<pre><br><br>' + asc;
+            return asc
+        }
+        function conseal(txt, number = 0) {
+            let regexArray = [/\$/g,/o/g,/u/g,/H/g, /\*/g ]
+            if (number > regexArray.length){ number = 0}
+            let result = txt.replace(regexArray[number], '&nbsp')
+            return result
+        }
+        let t = asciImage();
+        t = asciRending (t)
+        let consealed = conseal(t,0)
+        let ipadCover = Id('ipadCover');
+        ipadCover.style.fontSize = "1.8vmin";
+        ipadCover.style.color = 'white';
+        ipadCover.innerHTML = consealed;
+        function lesandless (n) {
+           let s = ipadCover.innerHTML
+           s = conseal(s,n)
+           ipadCover.innerHTML = s
+           if (n === 4) {n = -1; ipadCover.innerHTML = t}
+           setTimeout(()=>{lesandless (n + 1)}, 900)
+        }
+         lesandless (0)
 
-
+    }
     var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
         type0 = G.hacks.current; }
-
     switch( type0) {
         case 'getIp':
         G.hacks.current = 'getIp';
@@ -1771,10 +1826,13 @@ function IpadGrahpic (type0) {
         G.hacks.current = 'firewall';
          fireWall ()
          break;
-         case 'user':
+        case 'user':
          G.hacks.current = 'user';
           user ()
           break;
+        case 'virus':
+         G.hacks.current = 'virus'
+        virus ()
 
 
     }
