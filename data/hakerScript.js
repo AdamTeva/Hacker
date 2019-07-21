@@ -273,7 +273,7 @@ util_functions: {
                 let real = Is(element);
                 if ((op <= finOp) || (!real) || element.fadeProccess === 'fadeIn') {
                     clearInterval(timerOut) ;
-                    if (deleteElm) { element.parentNode.removeChild(element)};
+                    if (deleteElm &&  element.parentNode ) { element.parentNode.removeChild(element)};
                     return}
 
                 element.style.opacity = op;
@@ -930,8 +930,6 @@ function setQuestion (num) {
 
 }
 function IpadGrahpic (type0) {
-    L(type0)
-
     function getIp (){
         function clickCanvas (e) {
             let x0  = e.clientX
@@ -1186,9 +1184,7 @@ function IpadGrahpic (type0) {
                 G.Q [500] = ["", "","","","","","","",""]
                 G.Q [500][1] = tx3 + '<br><p dir=rtl style="text-align: right">'
                 G.Q [500][2] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
-                //G.Q [500][3] = "i"
-                // G.Q [500][4] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
-                // G.Q [500][5] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
+
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 //G.divs.textContainer.removeChild(G.divs.textBlock2 )
                 G.mgmt.isFinalAnsInChapter = true;
@@ -1482,43 +1478,39 @@ function IpadGrahpic (type0) {
         drawFireWallIpad ()
     }
     function user (){
-        function consoleHackedUser() {
-            G.mgmt.isFinalAnsInChapter = false;
+        function consoleHackedUser(stage = 1) {
+            L('consoleuser')
+            //G.mgmt.isFinalAnsInChapter = false;
             let tb = Id('textBlock2');
             let tc = Id('textContainer');
             G.divs.textContainer.appendChild(G.divs.textBlock2 )
             G.divs.textBlock2.style.overflow = "hidden";
 
-            //tb.style.color =  G.css.textcolor
-            var ipArray = [];
-            var ipTxtArray = [];
 
-            //var x = 200;
-            function runIps (x){
-                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + "בוצעה כניסה מוצלחת למערכת, באמצעות המשתמש :" + "</p>"
+            function stage1 (){
+                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + "ניתן כעת לקיים חדירה מוצלחת למערכת, באמצעות המשתמש :" + "</p>"
                 G.divs.textBlock2.innerHTML += 'user_Name: ' + familyName.data +', '+ firstName.data + ' <br><br>';
                 G.divs.textBlock2.innerHTML += 'user_Id: ' +  Id('userName').data + '<br><br>';
+                G.divs.textBlock2.innerHTML += 'user_codephrase: ' +  Id('codephrase').data + '<br><br>';
 
+            }
+            function stage2 (){
+                G.Q [500] = ["", "","","","","","","",""]
+                G.Q [500][1] =  '<br><p dir=rtl style="text-align: right">Welcome !'
+                G.Q [500][2] = "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש ." + "<br>"
+                G.Q [500][2] += 'האם להמשיך ?'
+                let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
+                G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
+                G.Q [500][4] = "ביצוע הסוואה של הפעילות"
+                G.Q [500][G.mgmt.solutionCol] = 1;
+                G.mgmt.nextStage ()
 
+                G.divs.textContainer.removeChild(G.divs.textBlock2 )
 
-                x++
-                if (x < 100) { setTimeout(()=>{},30)} else {
-                    G.Q [500] = ["", "","","","","","","",""]
-                    G.Q [500][1] = G.divs.textBlock2.innerHTML + '<br><p dir=rtl style="text-align: right">'
-                    G.Q [500][2] = "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש רגיל. האם להמשיך ?"
-                    let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
-                    G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
-                    G.Q [500][4] = "ביצוע הסוואה של הפעילות"
-                    G.Q [500][G.mgmt.solutionCol] = 1;
-                    G.mgmt.nextStage ()
-
-                    G.divs.textContainer.removeChild(G.divs.textBlock2 )
-                    setQuestion (500)
-
-                };
+                setQuestion (500)
             }
 
-            runIps (101)
+            if (stage === 1){stage1();} else if (stage === 2) {stage2 ()}
 
 
 
@@ -1645,7 +1637,8 @@ function IpadGrahpic (type0) {
                     deny.innerHTML += '<br>' + 'הכניסה אסורה. '
                     setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
                 }
-                G.hacks.numOfsuccess = G.mgmt.maxFormTofind
+                //G.hacks.numOfsuccess = G.mgmt.maxFormTofind
+                L(G.hacks.numOfsuccess ,G.mgmt.maxFormTofind)
                 if (G.hacks.numOfsuccess === G.mgmt.maxFormTofind) {
                     StylelFader(codephrase,40,false,true);
                     StylelFader(submitButton,40,false,true);
@@ -1658,7 +1651,7 @@ function IpadGrahpic (type0) {
                         function fadingin (n) {
                             spn.style.opacity = n / 100 ;
                             ipadCover.style.backgroundColor = 'lightgreen';
-                            if (n < 110) {setTimeout(()=>{fadingin (n+1)},20 )} else consoleHackedUser()
+                            if (n < 110) {setTimeout(()=>{fadingin (n+1)},20 )} else {consoleHackedUser(2)} //consoleHackedUser()
                         }
                         fadingin (1)
 
@@ -1691,7 +1684,7 @@ function IpadGrahpic (type0) {
             submitButton.addEventListener('click', submittingForm );
             G.css.formBackColor = 'rgba(219, 250, 89 ,0.99)'
             var qArray = [firstName ,familyName,userName,codephrase,submitButton] ; let spanArr = [];
-            G.mgmt.maxFormTofind = 6;
+            //G.mgmt.maxFormTofind = 6;
 
             G.hacks.formQarray = [ firstName ,familyName,userName]
             while (G.hacks.formQarray.length <  G.mgmt.maxFormTofind - 1) {
@@ -1744,9 +1737,8 @@ function IpadGrahpic (type0) {
             var img = G.divs.ipadContent;
             img.src = "data/White-Noise (1).jpg"
             let rnd = getRandomInt (100) + 30
-            whiteNoise (rnd,img); ipadCover.style.opacity = '0.5'} else {drawBaseForm ();}
-
-
+            whiteNoise (rnd,img); ipadCover.style.opacity = '0.5'}
+        else {drawBaseForm ();}
         for (i1 = 1; i1  <= G.hacks.numOfsuccess; i1++) {
             if (i   > G.hacks.formQarray.length) break;
             let q = G.hacks.formQarray[i1-1]
@@ -1757,19 +1749,19 @@ function IpadGrahpic (type0) {
                 if (q.id === 'familyName' && G.hacks.numOfsuccess === i1 ) {blureChanger (Id ('passportIMG'))}
                 if (q.id === 'codephrase' &&  G.hacks.formQarray[i1-1].id === 'codephrase'  && G.hacks.numOfsuccess === i1) {
                     retryPass(Id('codephrase')) }
-                if (q.id ===  'submitButton' ) { q.style.backgroundColor = 'rgb(144, 238, 144)'; colorBorderSubmit (q,60, 1) }
+                if (q.id ===  'submitButton' ) { q.style.backgroundColor = 'rgb(144, 238, 144)'; colorBorderSubmit (q,60, 1);
 
             }
 
-
+            }
         }
-
-
-
+        if(G.hacks.numOfsuccess + 1 >G.mgmt.maxFormTofind) {  G.mgmt.isFinalAnsInChapter = true; consoleHackedUser () }
     }
+
 
     var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
         type0 = G.hacks.current; }
+
     switch( type0) {
         case 'getIp':
         G.hacks.current = 'getIp';
