@@ -1479,7 +1479,7 @@ function IpadGrahpic (type0) {
     }
     function user (){
         function consoleHackedUser(stage = 1) {
-            L('consoleuser')
+
             //G.mgmt.isFinalAnsInChapter = false;
             let tb = Id('textBlock2');
             let tc = Id('textContainer');
@@ -1637,8 +1637,6 @@ function IpadGrahpic (type0) {
                     deny.innerHTML += '<br>' + 'הכניסה אסורה. '
                     setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
                 }
-                //G.hacks.numOfsuccess = G.mgmt.maxFormTofind
-                L(G.hacks.numOfsuccess ,G.mgmt.maxFormTofind)
                 if (G.hacks.numOfsuccess === G.mgmt.maxFormTofind) {
                     StylelFader(codephrase,40,false,true);
                     StylelFader(submitButton,40,false,true);
@@ -1759,7 +1757,8 @@ function IpadGrahpic (type0) {
     }
     function virus () {
         function asciImage () {
-            let asci = `MMMMMMMMMMMMMMMMN0d:'.      .':d0NMMMMMMMMMMMMMMMM
+            let asciArr = [];
+            asciArr[1] = `MMMMMMMMMMMMMMMMN0d:'.      .':d0NMMMMMMMMMMMMMMMM
 MMMMMMMMMMMMMNOl;.              .;oONMMMMMMMMMMMMM
 MMMMMMMMMMWKo'                      'oKWMMMMMMMMMM
 MMMMMMMMMNx.                          .xNMMMMMMMMM
@@ -1785,12 +1784,80 @@ MMMMMMMMO' .xWMMMMMMMMMMMMMMMMMMMMMMWx. 'OMMMMMMMM
 
 
             `
-            return asci
+        asciArr[2] = `
+MX01101MX01101W0xdoxkO0KKKK0Okxoox0WMX01101MX01101
+MX01K01MMMMMMNkc:::::::cccc:::::::ckNMX01101MMMMMM
+MX01101MMMMMWOl                    lOWMX01101MMMMM
+MXKJ101MMMMMNd                      dXMX01101MMMMM
+MX01101MMMMMKo                      oKMX01101MMMMM
+MX01101MMWWNOl                      lONWMX01101MMM
+MMMMMMWN0xdoc::::::::::::::::::::::::cldx0NWMMMMMM
+MMMMMMXd:::::::::::::::::::::::::::::::::cdXMMMMMM
+MMMMMMXxc::::::::::::::::::::::::::::::::cxXMMMMMM
+MX01A01WXOkd:;;;;;;;;;;;;;;;;;;;;;;;;:okOKNWMMMMMM
+MX01B01MMMM0:'''     ;'''''';     ''':0MX01101MMMM
+MX01101MMMMKc'''lO00Oo,'''',oO00Ol'''cKMX01101MMMM
+MX01101MMMMNx;,,       ,'''',     ,,;xNMX01101MMMM
+MX01101MMMMMN0kkkkkkkkkkkkkkkkkkkkkO0NMX01101MMMMM
+MX01101MMMMMMWXKKKKKKKKKKKKKKKKKKKKXWMX01101MMMMMM
+MX01101MMMNKO0XNXKKKKKKKKKKKKKKKKXNX0OKNMX01101MMM
+MX01101MNOdc:cd0XNXKKKKKKKKKKKKXNN0dc:cdONMX01101M
+MX01101Xxl:::::cdk0KXXXXXXXXXXK0kdc:::::lkXMX01101
+MMMMMMNOo:;,;;:::ccoxk0XNNX0kxolc:::;;,;:oONMMMMMM
+MMMMWOl;......,,;;::::o0NN0o::::;;,,......;lONMMMM
+MMMNx;...........,,;::cd00xc::;,,...........;xNMMM
+MMWk;''''''''''''''',;:cllc:;,''''''''''''''';kWMM
+MMKl'''''''''''''''''',;;:;,''''''''''''''''''lKMM
+MMO:',''''''''''',''''',,,,'''','''''''''''',':OMM
+MMKdoooooooooooooooooooooooooooooooooooooooooodKMM
+`
+
+asciArr[3] = `
+WWWWWWKxodxkOKXNWWWWWWWWWWWWWWWWWWWNX0OxxdoxXWWWWW
+WWWWNxcxKWWWW1WWWWX0100100WWWW1123WWWdfrWN0lcOWWWW
+WWWxc0WWWWWWWX0100100WWWWX0100100WWW00000023WxlKWW
+WWXldWWWWWWWNNNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWKcxWW
+WWkc0WWNOdol:;,,:lxKWWWWWWWWWWWWKkdlc::clxKWWWolNW
+WWdlNWXkkO0Oo;'... .cOWWWWWWWXx;. ....'cxxxONMxcKW
+WXldWWNNWWWWNXOo:     .OWWWWWNl  .,:odkKWWWXXMO:kW
+WKcxWWWWWWWWWWWWXx;',oXWWWWWWk;.'ckXWWWWWWWWWWK:xW
+WOckWWWWWX0OkkOKNWXc.:KWWWWWWOcl0NWNXKKXWWWWWMXlxM
+WkcOWNk/””””””””\ck0; lNWWWKKNKd/””””””””\ckNMXoxM
+Wxc0WWk.          .xc ,KWWWWWWW0,         .xWMNokW
+MxcKMWOo_--_____)OKK: ,KWWWWWWWN0k________kXWWNdkW
+WKclXWWWWWWWWWWWWWWd  cNWWWWWWWWWWWWWWWWWWWWWWKlkW
+WNc.oXWWWWWWWWWWWWK,  lWWWWWWWWWWWWWWWWWWWWWWNdcKW
+WXloo:xKNNXXKKKN0o,  .xWWWWWWN00NWWWWWWWWWWX0oc0WW
+WWNllkcoc.oXWWWNd.   lWWWWWWWWWNNWWWNXk,.oclklkWWW
+WWWKcoOdo:.'oOXWWW. .lNWWWN00NWWWWWWKd''xxoOolXWWW
+WWWW0coKxc:' .,clc'cxe\cc:,..:kOOxo:..:koo0dc0WWWW
+WWWWWKcoXk:col;..                  .ckd;oKdc0WWWWW
+WWWWWWKcoXO,.l0X0kdddk0OOOOl;:clodOXW0lxKolKWWWWWW
+WWWWWWWKclX0, ,OXXNWWWWNNNNNWWWWWWWWKk00ldXWWWWWWW
+WWWWWWWWXlcK0';KWNXXKxcccccxNWWWWWWX0XOlkWWWWWWWWW
+WWWWWWWWWNdcOkl0W0-WWk.   .xNWWWWWKKXxl0WWWWWWWWWW
+WWWWWWWWWWWWWNxcOWWWK,    .xWWWWXdcOWWWWWWWWWWWWWW
+WWWWWWWWWWWWWWWOcoXWWl    ;XWWNkldXWWWWWWWWWWWWWWW
+WWWWWWWWWWWWWWWWXdlokl010KcOkdodKWWWWWWWWWWWWWWWWW
+
+`
+let rnd = getRandomInt(asciArr.length - 1);
+            return asciArr[rnd]
         }
         function asciRending (asc) {
             asc = asc.replace(' ', '&nbsp')
             asc = '<pre><br><br>' + asc;
             return asc
+        }
+        function asciPasrseToSpan (txt0){
+            let array = txt0.split(/\r?\n/); let htmltxt = '';
+            for (i = 0; i < array.length; i++){
+                numberOfrows = i;
+
+             let line = '<span id="' + ascispanId + i + '" style="font-size:inherit; opacity : 0;">' + array[i] + '</span><br>';
+             htmltxt  += line
+            }
+            return htmltxt
         }
         function conseal(txt, number = 0) {
             let regexArray = [/\$/g,/o/g,/u/g,/H/g, /\*/g ]
@@ -1798,13 +1865,6 @@ MMMMMMMMO' .xWMMMMMMMMMMMMMMMMMMMMMMWx. 'OMMMMMMMM
             let result = txt.replace(regexArray[number], '&nbsp')
             return result
         }
-        let t = asciImage();
-        t = asciRending (t)
-        let consealed = conseal(t,0)
-        let ipadCover = Id('ipadCover');
-        ipadCover.style.fontSize = "2vmin";
-        ipadCover.style.color = 'white';
-        ipadCover.innerHTML = consealed;
         function lesandless (n) {
            let s = ipadCover.innerHTML
            s = conseal(s,n)
@@ -1816,9 +1876,39 @@ MMMMMMMMO' .xWMMMMMMMMMMMMMMMMMMMMMMWx. 'OMMMMMMMM
            //if (n === 4) {n = -1; ipadCover.innerHTML = t}
            setTimeout(()=>{lesandless (n + 1)}, 20)
         }
-         lesandless (0)
+        function revealvirus (numberToreveal){
+            var saftyCounter = 0;
 
-        L( t.match(new RegExp("\n", "g")).length)
+            function revealOne (){
+
+                if (saftyCounter > 1000) return; saftyCounter++
+                let rnd = getRandomInt (numberOfrows+1)
+                L(rnd);
+                let span = Id (ascispanId + (rnd - 1) )
+                if (!span || span.style.opacity === '1'){revealOne ()} else {span.style.opacity = 1; return}
+
+            }
+            revealOne ()
+            numberToreveal--
+            if (numberToreveal > 0) setTimeout(()=>{revealvirus (numberToreveal)},20)
+
+
+        }
+        var numberOfrows = 0 ;
+        const ascispanId = 'asciSpan';
+        let t = asciImage();
+        t = asciRending (t);
+        t = asciPasrseToSpan (t);
+
+        let ipadCover = Id('ipadCover');
+        ipadCover.style.fontSize = "2vmin";
+        ipadCover.style.color = 'white';
+        ipadCover.innerHTML = t;
+        revealvirus (40)
+
+        // lesandless (0)
+
+
 
     }
     var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
