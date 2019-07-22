@@ -1759,32 +1759,32 @@ function IpadGrahpic (type0) {
     }
     function virus () {
         function asciImage () {
-            let asci = `                    11010101
-                 uu$$$$$$$$$$$uu
-              uuoo$1$$$o$$$$o$o$$uu
-             u$$$$$$$$$$$$$$$$$$$$$u
-            u$$$$$o$$$$o$$$o$$$1$$$$u
-           u$$o$$$1$$$o$$$$$o$$$$o$$$u
-           u$$$$o$$o$$$$$o$$$$$o$$$$$u
-           u$$o$$*   *$$$*   *$$$$$$u
-           *$$$$*      u$u       $$o$*
-            $o$u       u$u       u$o$
-            $$$u      u$$$u      u$$$
-             *$$$$uu$$$   $$$uu$$$$*
-              *$o$$o$$*   *$o$o$$$*
-                u$$$$$$$u$$$$$$$u
-                 u$*$*$*$*$*$*$u
-      uuu        $$u$ H H H $u$$       uuu
-     u$$$$        $$$$$u$u$u$$$       u$$$$
-      $$$$$uu      *$$$$$$$$$*     uu$$$$$$
-    u$$H$$$H$$$$uu    *****    uuuu$$H$$H$$$$
-    $$$$***$$$$$$$$$$uuu   uu$$$$H$$$$***$$$*
-     ***      **$$H$$H$$$$$uu **$***
-               uuuu **$$H$$H$$$$uuu
-      u$$$uuu$$$$$$$$$uu **$$$$$$$$$$$uuu$$$
-      $H$$H$$H$$****           **$$$$$H$$$$$*
-       *$$$$$*                      **$$$$**
-         $$$*                         $$$$*            `
+            let asci = `MMMMMMMMMMMMMMMMN0d:'.      .':d0NMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMNOl;.              .;oONMMMMMMMMMMMMM
+MMMMMMMMMMWKo'                      'oKWMMMMMMMMMM
+MMMMMMMMMNx.                          .xNMMMMMMMMM
+MMMMMMMMWx.                            .xWMMMMMMMM
+MMMMMMMMWl                              lWMMMMMMMM
+MMMMMMMMWd.                            .dWMMMMMMMM
+MMMMMMMMMO.                            .OMMMMMMMMM
+MMMMMMMMMK;                            ,KMMMMMMMMM
+XOxOWMMMMNc   .','.            .','.   cNMMMMNOxOX
+;  .OMMMMNl  ,0NWNKOd;.    .;dOKNWN0;  lNMMMMO.  ;
+c   ,OWMNo.  lWMMMMMMX:    :XMMMMMMWl  .oNMWO,   c
+0'   .;x0l.  :XMMMMWKo.    .oKWMMMMX:  .l0x;.   '0
+:       ;kx' .:ddol;.  .cc.  .;lodd;  'xO;       :
+:::;;,'..'dOc         ,OWWO,        .cOd'..',;;:::
+MMMWWWNX0kkKNkc;'     cxddx:     ';ckNKkk0XNWWWMMM
+MMMMMMMMMMMMMMMWX:              :XWMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMWXKNOc;.        .;cONKKWMMMMMMMMMMMMM
+MMMMMNXK0Okoc,..x0docc:;::;:ccodKx..,coxO0KXNMMMMM
+MMMMK:...       'kNKxxolddloxxKNk'       ...:KMMMM
+MMMMXxc.      .lOXWMMMMWMWWMMMMWXOl.      .cxXMMMM
+MMMMMMWK;   .oXWMMMMMMMMMMMMMMMMMMMXo.   ;KWMMMMMM
+MMMMMMMMO' .xWMMMMMMMMMMMMMMMMMMMMMMWx. 'OMMMMMMMM
+
+
+            `
             return asci
         }
         function asciRending (asc) {
@@ -1802,17 +1802,23 @@ function IpadGrahpic (type0) {
         t = asciRending (t)
         let consealed = conseal(t,0)
         let ipadCover = Id('ipadCover');
-        ipadCover.style.fontSize = "1.8vmin";
+        ipadCover.style.fontSize = "2vmin";
         ipadCover.style.color = 'white';
         ipadCover.innerHTML = consealed;
         function lesandless (n) {
            let s = ipadCover.innerHTML
            s = conseal(s,n)
-           ipadCover.innerHTML = s
-           if (n === 4) {n = -1; ipadCover.innerHTML = t}
-           setTimeout(()=>{lesandless (n + 1)}, 900)
+           let anti = n * 0.1
+           let vmin = 10 - anti
+           if (vmin < 2) return
+          // ipadCover.style.fontSize = vmin + "vmin"
+           //ipadCover.innerHTML = s
+           //if (n === 4) {n = -1; ipadCover.innerHTML = t}
+           setTimeout(()=>{lesandless (n + 1)}, 20)
         }
          lesandless (0)
+
+        L( t.match(new RegExp("\n", "g")).length)
 
     }
     var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
