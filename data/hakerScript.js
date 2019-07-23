@@ -35,6 +35,12 @@ global_object: {
         G.mgmt.clickedAnswer = 0;
         G.mgmt.isQuestion = false;
         G.mgmt.isHolo = false// is the holo up
+        G.mgmt.max_Tofind = {}
+        G.mgmt.max_Tofind.ip = 3;
+        G.mgmt.max_Tofind.firewall = 3
+        G.mgmt.max_Tofind.form = 5
+        G.mgmt.max_Tofind.virus = 3
+
         G.mgmt.maxIpsTofind = 3;
         G.mgmt.maxFirewallTofind = 5;
         G.mgmt.maxFormTofind = 5;
