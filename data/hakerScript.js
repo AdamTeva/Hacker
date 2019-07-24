@@ -41,9 +41,9 @@ global_object: {
         G.mgmt.max_Tofind.form = 5
         G.mgmt.max_Tofind.virus = 3
 
-        G.mgmt.maxIpsTofind = 3;
-        G.mgmt.maxFirewallTofind = 5;
-        G.mgmt.maxFormTofind = 5;
+        G.mgmt.max_Tofind.ip = 3;
+        G.mgmt.max_Tofind.firewall = 5;
+        G.mgmt.max_Tofind.form = 5;
         G.mgmt.isFinalAnsInChapter = false;
         G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ;  }
         G.divs = {};
@@ -53,6 +53,7 @@ global_object: {
         G.hacks.firewallCodeId = 'FWhacksId';
         G.hacks.firewallFinishText = 'ההגנה נעקפה.'
         G.hacks.firewallScrambleColor = 'yellow'
+        G.hacks.visrusNumberOfrows = 0;
         G.hacks.ipLocations = [];
         G.testMode = true
       }
@@ -1180,7 +1181,7 @@ function IpadGrahpic (type0) {
         canvas.style.color = 'white';
         var ctx = canvas.getContext("2d");
         if (answeris === 'right') {addRevieledLovation ()}
-        if (G.hacks.numOfsuccess >= G.mgmt.maxIpsTofind) {FullIpWasfoundAnimation (); consoleFoundIp()} else {drawIpIpad ()}
+        if (G.hacks.numOfsuccess >= G.mgmt.max_Tofind.ip) {FullIpWasfoundAnimation (); consoleFoundIp()} else {drawIpIpad ()}
 
     }
     function fireWall (){
@@ -1344,7 +1345,7 @@ function IpadGrahpic (type0) {
                     function clickFirewallHack (el){
                         function hackFirewallElement(DomElement ,finishString = 'ok') {
 
-                            if(G.hacks.numOfsuccess >=G.mgmt.maxFirewallTofind){} else return;
+                            if(G.hacks.numOfsuccess >=G.mgmt.max_Tofind.firewall){} else return;
 
                             var dictionary = "0123456789qwertyuiopasdfghjklzxcvbnm!?></\a`~+*=@#$%".split('');
                             var el = DomElement;
@@ -1452,7 +1453,7 @@ function IpadGrahpic (type0) {
                         setTimeout(()=>{showChips (num1+1)},ms)}
                     else {
                             fadIntext();
-                            if (G.hacks.numOfsuccess >=G.mgmt.maxFirewallTofind ){
+                            if (G.hacks.numOfsuccess >=G.mgmt.max_Tofind.firewall ){
                                 consoleHackedFirewall(true)
                                 let txt = 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.'
                             ipadCover.innerHTML += '<br><br><div id = "defMessage"'  + ' style = "font-size:4.3vmin; background-color:rgb(0,191,255); font-weight: bold; color:black;width:90% ;margin: 0 auto; margin-top:3%; padding:2% ;border: 0.3vmin solid black;border-radius: 1vmin ; overflow: hidden">' +  txt + '</div>';}
@@ -1467,7 +1468,7 @@ function IpadGrahpic (type0) {
 
                         };
                 }
-                if (G.hacks.numOfsuccess > 0 && G.hacks.numOfsuccess <= G.mgmt.maxFirewallTofind  ) {showChips (num)};
+                if (G.hacks.numOfsuccess > 0 && G.hacks.numOfsuccess <= G.mgmt.max_Tofind.firewall  ) {showChips (num)};
 
 
             }
@@ -1479,7 +1480,7 @@ function IpadGrahpic (type0) {
             addFirewallClue ()}
             else if (answeris === 'wrong') {blureChanger ();setBG(ipadFireWallBGColor)}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
-        if(G.hacks.numOfsuccess + 1 >G.mgmt.maxFirewallTofind){G.mgmt.isFinalAnsInChapter = true } //current
+        if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.firewall){G.mgmt.isFinalAnsInChapter = true } //current
 
         drawFireWallIpad ()
     }
@@ -1643,7 +1644,7 @@ function IpadGrahpic (type0) {
                     deny.innerHTML += '<br>' + 'הכניסה אסורה. '
                     setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
                 }
-                if (G.hacks.numOfsuccess === G.mgmt.maxFormTofind) {
+                if (G.hacks.numOfsuccess === G.mgmt.max_Tofind.form) {
                     StylelFader(codephrase,40,false,true);
                     StylelFader(submitButton,40,false,true);
                     StylelFader(userName,40,false,true);
@@ -1688,10 +1689,10 @@ function IpadGrahpic (type0) {
             submitButton.addEventListener('click', submittingForm );
             G.css.formBackColor = 'rgba(219, 250, 89 ,0.99)'
             var qArray = [firstName ,familyName,userName,codephrase,submitButton] ; let spanArr = [];
-            //G.mgmt.maxFormTofind = 6;
+            //G.mgmt.max_Tofind.form = 6;
 
             G.hacks.formQarray = [ firstName ,familyName,userName]
-            while (G.hacks.formQarray.length <  G.mgmt.maxFormTofind - 1) {
+            while (G.hacks.formQarray.length <  G.mgmt.max_Tofind.form - 1) {
                 G.hacks.formQarray.push(codephrase);
             } ; G.hacks.formQarray.push(submitButton)
 
@@ -1759,9 +1760,31 @@ function IpadGrahpic (type0) {
 
             }
         }
-        if(G.hacks.numOfsuccess + 1 >G.mgmt.maxFormTofind) {  G.mgmt.isFinalAnsInChapter = true; consoleHackedUser () }
+        if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.form) {  G.mgmt.isFinalAnsInChapter = true; consoleHackedUser () }
     }
     function virus () {
+        function virusComplete () {
+            for (let t = 0; t < G.hacks.visrusNumberOfrows; t++){
+                let sp = Id('asciSpan' + t);
+                sp.style.color = "";
+                sp.style.opacity = 1;
+            }
+            let status = 1;
+            let c1 =  "white";
+            let c2 =  "black";
+            let times = 0;
+            function reversColors(){
+                if (times>31) return ; times++
+
+
+                ipadCover.style.background = c1  ;
+                ipadCover.style.color =  c2 ;
+                setTimeout( ()=> {[c1 ,c2] = [c2 ,c1];reversColors()},200);
+
+            }
+            reversColors()
+
+        }
         function asciImage () {
             let asciArr = [];
             asciArr[1] = `MMMMMMMMMMMMMMMMN0d:'.      .':d0NMMMMMMMMMMMMMMMM
@@ -1852,70 +1875,86 @@ let rnd = getRandomInt(asciArr.length - 1);
         }
         function asciRending (asc) {
             asc = asc.replace(' ', '&nbsp')
-            asc = '<pre><br><br>' + asc;
+            asc = '<pre><p style="text-align: center"> <font style="font-size: 3vmin"> בונה וירוס תקיפה </font></p>' + asc;
             return asc
         }
         function asciPasrseToSpan (txt0){
             let array = txt0.split(/\r?\n/); let htmltxt = '';
             for (i = 0; i < array.length; i++){
-                numberOfrows = i;
+                G.hacks.visrusNumberOfrows = i;
 
              let line = '<span id="' + ascispanId + i + '" style="font-size:inherit; opacity : 0;">' + array[i] + '</span><br>';
              htmltxt  += line
             }
             return htmltxt
         }
-        function conseal(txt, number = 0) {
-            let regexArray = [/\$/g,/o/g,/u/g,/H/g, /\*/g ]
-            if (number > regexArray.length){ number = 0}
-            let result = txt.replace(regexArray[number], '&nbsp')
-            return result
+        function rightAnswer (){
+            G.hacks.numOfsuccess++;
+            let numberToreveal0 = Math.floor(G.hacks.visrusNumberOfrows/ G.mgmt.max_Tofind.virus)
+            revealvirus(numberToreveal0);
         }
-        function lesandless (n) {
-           let s = ipadCover.innerHTML
-           s = conseal(s,n)
-           let anti = n * 0.1
-           let vmin = 10 - anti
-           if (vmin < 2) return
-          // ipadCover.style.fontSize = vmin + "vmin"
-           //ipadCover.innerHTML = s
-           //if (n === 4) {n = -1; ipadCover.innerHTML = t}
-           setTimeout(()=>{lesandless (n + 1)}, 20)
+        function wrongAnser (){
+            function blinkingRow (elem) {
+                let color = elem.style.color;
+                function blink (b) {
+
+                    if ( b % 2 == 0) {elem.style.color = 'red'} else {elem.style.color = 'yellow'}
+                    L(b, b % 2, color)
+
+                    b++;
+                    if (b>20){setTimeout(()=>{elem.style.color = 'white' },4000) ;return }
+                    setTimeout (()=>{ blink (b)},100 )
+                }
+                blink (1 )
+            }
+            let children = ipadCover.childNodes;
+            let asciSpanId = 'asciSpan';
+            let destenationOfRedRows = (G.hacks.numOfsuccess / G.mgmt.max_Tofind.virus ) * 3;
+            let redRows = 0
+            for (q = 0; q < G.hacks.visrusNumberOfrows; q++){
+                let rnd = getRandomInt (3)
+                let spn = Id(asciSpanId + q);
+
+                if (rnd === 1) { spn.style.color = 'red'; blinkingRow (spn) ; redRows++}
+
+                //if (redRows > destenationOfRedRows) {break}
+            }
+
+
         }
         function revealvirus (numberToreveal){
-            var saftyCounter = 0;
 
+            let isVirusFinished = false;
+            if (G.hacks.numOfsuccess >= G.mgmt.max_Tofind.virus) {isVirusFinished = true }
+            var saftyCounter = 0;
             function revealOne (){
 
-                if (saftyCounter > 1000) return; saftyCounter++
-                let rnd = getRandomInt (numberOfrows+1)
-                L(rnd);
+                if (saftyCounter > 60) return; saftyCounter++
+                let rnd = getRandomInt (G.hacks.visrusNumberOfrows+1)
                 let span = Id (ascispanId + (rnd - 1) )
-                if (!span || span.style.opacity === '1'){revealOne ()} else {span.style.opacity = 1; return}
+                span.style.color = 'white';
+                if (!span || span.style.opacity === '1'){revealOne ()} else { StylelFader (span,30,true)   ; return}
 
             }
             revealOne ()
             numberToreveal--
-            if (numberToreveal > 0) setTimeout(()=>{revealvirus (numberToreveal)},20)
+            if (numberToreveal > 0) {setTimeout(()=>{revealvirus (numberToreveal)},200)} else if (isVirusFinished)  virusComplete ()
 
 
         }
-        var numberOfrows = 0 ;
-        const ascispanId = 'asciSpan';
-        let t = asciImage();
-        t = asciRending (t);
-        t = asciPasrseToSpan (t);
-
-        let ipadCover = Id('ipadCover');
-        ipadCover.style.fontSize = "2vmin";
-        ipadCover.style.color = 'white';
-        ipadCover.innerHTML = t;
-        revealvirus (40)
-
-        // lesandless (0)
+        function BuildVirus () {
+            let t = asciImage ()
+             t = asciRending (t);
+             t = asciPasrseToSpan (t);
+             ipadCover.style.fontSize = "2vmin";
+             ipadCover.style.color = 'white';
+             ipadCover.innerHTML = t;
 
 
-
+         }
+        const ascispanId = 'asciSpan'; //
+        var ipadCover = Id('ipadCover');
+        if (answeris === 'right') { rightAnswer ()} else if (answeris === 'wrong') {wrongAnser ()} else{ BuildVirus ()};
     }
     var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
         type0 = G.hacks.current; }
