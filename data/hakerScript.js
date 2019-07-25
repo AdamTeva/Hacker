@@ -281,7 +281,8 @@ util_functions: {
                 if ((op <= finOp) || (!real) || element.fadeProccess === 'fadeIn') {
                     clearInterval(timerOut) ;
                     if (deleteElm &&  element.parentNode ) { element.parentNode.removeChild(element)};
-                    return}
+                    return true
+                }
 
                 element.style.opacity = op;
                 element.style.filter = 'alpha(opacity=' + op * 100 + ")";
@@ -400,7 +401,7 @@ function clickAnswer (elem){
 
 }
 function holoMenu () { // creats the menue inside the holo;
-    G.divs.holoMenuoptions = G.divs.holoMenuoptions || [];
+    //G.divs.holoMenuoptions = G.divs.holoMenuoptions || [];
     function holoAnimation (dir, sz ){
         dir = dir || 1
         sz = sz || 2
@@ -442,26 +443,44 @@ function holoMenu () { // creats the menue inside the holo;
             ;
 
          }
+    function createMenu (arrayOfText) {
+        //G.divs.holoScreen.innerHTML = '';
+        setTimeout(()=>{StylelFader (G.divs.holoScreen, 30)},2000);
+        arrayOfText.forEach (function (i){addOption(i)})
+        }
     function addOption (text) {
-         var option = Elm (text);
+         var option = Elm (text[0]);
          G.divs.holoScreen.appendChild (option)
          stl (option, { 'fontFamily': 'david', 'fontSize': '5vmin', 'color' : 'rgba(3,100,100)', 'opacity' : 0.7, 'textShadow' : "6px 2px 8px yellow",})
-         option.innerHTML = text
+         option.innerHTML = text[1]
          option.addEventListener('mouseout',mouseInOut);
-         option.addEventListener('mouseover',mouseInOut);
+         option.addEventListener('mouseover',mouseInOut)
+         option.addEventListener('click',clickSubMenu);
     }
-         var optionArray = [ "אפשרוית", "נקודות", "שמירה", "עזרה"]
-         optionArray.forEach (function (i){addOption(i)})
-        // addOption ("אפשרויות")
-         //addOption ("נקודות")
+    function optionsMenu () {
+        let op = [['soundOff','השתק צלילים'],['soundOn','הפעל צלילים'],['mainMenu', 'חזרה']]
+        createMenu (op)
+    }
+    function clickSubMenu () {
+        switch (event.target.id) {
+            case 'optionsMenu': optionsMenu ();break;
+            case 'progressMenu': progressMenu ();break;
+            case 'saveMenu': saveMenu ();break;
+            case 'helpMenu': helpMenu ();break;mainMenu
+            case 'mainMenu': mainMenu ();break;
+            case 'soundOff': optionsMenu ();break;
 
-    let htm = "אפשרויות"  + "<br><br>"
-    htm += "נקודות" + "<br>"
-    htm += "שמירה" + "<br>"
-    htm += "הסבר" + "<br>"
-    //G.divs.holoScreen.innerHTML = htm
+
+            //case optionArray
+        }
+    }
+    function mainMenu (){
+         let optionArray = [['optionsMenu','אפשרויות'],['progressMenu', 'התקדמות'] ,['saveMenu','שמירה'],['helpMenu','עזרה']]
+         createMenu (optionArray)
+     }
 
     holoAnimation ();
+    mainMenu ();
     G.divs.holoContainer.style.opacity = "0";
 }
 function ledEvent (e){
@@ -1982,4 +2001,5 @@ let rnd = getRandomInt(asciArr.length - 1);
 buildBoard ();
 setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
-holoMenu(); //test ('holo')
+holoMenu();
+test ('holo')
