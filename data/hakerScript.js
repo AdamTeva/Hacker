@@ -40,11 +40,11 @@ global_object: {
         G.mgmt.max_Tofind.firewall = 3
         G.mgmt.max_Tofind.form = 5
         G.mgmt.max_Tofind.virus = 3
-
         G.mgmt.max_Tofind.ip = 3;
         G.mgmt.max_Tofind.firewall = 5;
         G.mgmt.max_Tofind.form = 5;
         G.mgmt.isFinalAnsInChapter = false;
+        G.mgmt.soundIsOn = true;
         G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ;  }
         G.divs = {};
         G.hacks = {};
@@ -444,21 +444,42 @@ function holoMenu () { // creats the menue inside the holo;
 
          }
     function createMenu (arrayOfText) {
-        G.divs.holoScreen.innerHTML = '';
-        //setTimeout(()=>{StylelFader (G.divs.holoScreen, 30)},2000);
-        arrayOfText.forEach (function (i){addOption(i)})
+        fadeOutPromise (G.divs.holoScreen, 20).then((returnValue)=>{
+            G.divs.holoScreen.innerHTML = '';
+            StylelFader (G.divs.holoScreen, 30, true)
+            arrayOfText.forEach (function (i){addOption(i)})
+        })
+
+
         }
     function addOption (text) {
          var option = Elm (text[0]);
-         G.divs.holoScreen.appendChild (option)
-         stl (option, { 'fontFamily': 'david', 'fontSize': '5vmin', 'color' : 'rgba(3,100,100)', 'opacity' : 0.7, 'textShadow' : "6px 2px 8px yellow",})
-         option.innerHTML = text[1]
+         var extraStyle = {};
+         G.divs.holoScreen.appendChild (option) ;
+         stl (option, { 'fontFamily': 'david', 'fontSize': '5vmin', 'color' : 'rgba(3,100,100)', 'opacity' : 0.7, 'textShadow' : "6px 2px 8px yellow",}, extraStyle)
+         option.innerHTML = text[1] ;  if (text[0] === 'text') {option.style.fontSize = '2.8vmin'; option.style.paddingRight = "6vmin"; option.style.textAlign = "right"; return}
          option.addEventListener('mouseout',mouseInOut);
          option.addEventListener('mouseover',mouseInOut)
          option.addEventListener('click',clickSubMenu);
     }
+    progressMenu () {
+        let txt =  
+    }
+    function helpMenu  (){
+        let helpText = `ענו על השאלות כדי להתקדם במשחק.כדי לענות על השאלות יש ללחוץ על התשובה הנכונה.
+לכל שאלה יש רק תשובה אחת נכונה. אם לא עניתם על התשובה הנכונה, תוכלו לנסות שוב.
+<br><br>
+על ידי פתיחת תפריט ההולוגרמה תוכלו:<br>
+לשמור את המשחק על המחשב הזה,  לראות את ההתקדמות שלכם במשחק ולהפעיל ולהשתיק את הקול. <br><br>
+`
+        let op = [ ['text' , helpText],['mainMenu', 'חזרה']]
+        createMenu (op)
+
+    }
     function optionsMenu () {
-        let op = [['soundOff','השתק צלילים'],['soundOn','הפעל צלילים'],['mainMenu', 'חזרה']]
+        let sound;
+        if (G.mgmt.soundIsOn) { sound = ['soundOff','השתק צלילים']} else { sound = ['soundOn','הפעל צלילים']}
+        let op = [sound,['mainMenu', 'חזרה']]
         createMenu (op)
     }
     function clickSubMenu () {
@@ -468,7 +489,9 @@ function holoMenu () { // creats the menue inside the holo;
             case 'saveMenu': saveMenu ();break;
             case 'helpMenu': helpMenu ();break;mainMenu
             case 'mainMenu': mainMenu ();break;
-            case 'soundOff': optionsMenu ();break;
+            case 'soundOff': case 'soundOn':
+            G.mgmt.soundIsOn = !G.mgmt.soundIsOn;
+            optionsMenu () ;break;
 
 
             //case optionArray
@@ -480,7 +503,7 @@ function holoMenu () { // creats the menue inside the holo;
      }
     function fadeOutPromise (element0, tm = 30){
         let opct = 1;
-         let delta = 0.05;
+         let delta = 0.1;
             let promise0 = new Promise((resolve, reject) => {
                 function faderEngine (opct) {
                     element0.style.opacity = opct;
@@ -506,7 +529,7 @@ function holoMenu () { // creats the menue inside the holo;
     //page.style.opacity = 0;
     //StylelFader (element,ms = 30,fadeIn = false
 
-    fadeOutPromise (page, 20)//.then((resolve,reject)=>{alert ('ss')})
+
 
 
 }
