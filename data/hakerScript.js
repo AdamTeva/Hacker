@@ -444,8 +444,8 @@ function holoMenu () { // creats the menue inside the holo;
 
          }
     function createMenu (arrayOfText) {
-        //G.divs.holoScreen.innerHTML = '';
-        setTimeout(()=>{StylelFader (G.divs.holoScreen, 30)},2000);
+        G.divs.holoScreen.innerHTML = '';
+        //setTimeout(()=>{StylelFader (G.divs.holoScreen, 30)},2000);
         arrayOfText.forEach (function (i){addOption(i)})
         }
     function addOption (text) {
@@ -478,10 +478,37 @@ function holoMenu () { // creats the menue inside the holo;
          let optionArray = [['optionsMenu','אפשרויות'],['progressMenu', 'התקדמות'] ,['saveMenu','שמירה'],['helpMenu','עזרה']]
          createMenu (optionArray)
      }
+    function fadeOutPromise (element0, tm = 30){
+        let opct = 1;
+         let delta = 0.05;
+            let promise0 = new Promise((resolve, reject) => {
+                function faderEngine (opct) {
+                    element0.style.opacity = opct;
+                    opct -= delta
+                    if (opct<0){ resolve ('worked');}
+                    else { setTimeout(()=>faderEngine (opct),tm)}
+
+                }
+                faderEngine (1)
+
+                // let wait = setTimeout(() => {
+                //     clearTimout(wait);
+                //     resolve('Promise A win!');
+                // }, 200)
+            })
+            return promise0
+     }
 
     holoAnimation ();
     mainMenu ();
     G.divs.holoContainer.style.opacity = "0";
+    let page = Id('laptopKeyboard')
+    //page.style.opacity = 0;
+    //StylelFader (element,ms = 30,fadeIn = false
+
+    fadeOutPromise (page, 20)//.then((resolve,reject)=>{alert ('ss')})
+
+
 }
 function ledEvent (e){
     function fadeHolo (op = 1,diro = 1.1,tm = 50) {
