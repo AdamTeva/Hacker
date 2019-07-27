@@ -20,6 +20,8 @@ global_object: {
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
         G.mgmt.qNumber = 0; // question number
+        G.mgmt.progressArray = [];
+        G.mgmt.numberOftriesPerQuestion = 0;
         /* STAGE */
         G.mgmt.stageNumber = 4; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','virus', 'server'];
@@ -320,6 +322,9 @@ function clickAnswer (elem){
     let div = Id(idName); elem.target = div}
 
     function wrongAnswerAnimation (num) {
+        if (G.mgmt.qNumber !== 500) {G.mgmt.numberOftriesPerQuestion++}
+
+
 
         G.mgmt.isAnswering = true;
         let text = G.Q[G.mgmt.qNumber][2 + num]
@@ -350,7 +355,13 @@ function clickAnswer (elem){
     function nextQuesion () {
 
 
-        if (G.mgmt.qNumber !== 500) {IpadGrahpic ('right');}
+        if (G.mgmt.qNumber !== 500) {
+            IpadGrahpic ('right');
+            G.mgmt.numberOftriesPerQuestion++;
+            G.mgmt.progressArray.push(G.mgmt.numberOftriesPerQuestion);
+            G.mgmt.numberOftriesPerQuestion = 0;
+
+        }
         G.mgmt.isAnswering = true;
 
         let op  = 1;
@@ -462,8 +473,41 @@ function holoMenu () { // creats the menue inside the holo;
          option.addEventListener('mouseover',mouseInOut)
          option.addEventListener('click',clickSubMenu);
     }
-    progressMenu () {
-        let txt =  
+    function progressMenu () {
+        function checkForUpdate (tim) {
+            if(G.divs.holoScreen.innerHTML.includes(txt0)){
+                if (qAnswered === G.mgmt.progressArray.length){setTimeout(()=>{checkForUpdate (5000)},3000 )} else {progressMenu ()}
+            }
+        }
+
+        function preCent (small,big) {
+            if (small && big){} else return '0%'
+            let double = Math.floor(100*(small / big))
+            return double + '%'
+
+        }
+        let qTotal = G.Q.length || 0;
+        let qAnswered = G.mgmt.progressArray.length || 0 ;
+        L(G.mgmt.progressArray)
+        let qNumBytry = [];
+        let qprecent = preCent (qAnswered,qTotal)
+        for (let a= 0; a < 4; a++){
+            var countOfTries = 0
+            G.mgmt.progressArray.forEach((e)=>{if (e === (a+1)){countOfTries++}})
+            qNumBytry[a] = countOfTries;
+        }
+        let q0=0, q1=0, q23=0, p0='0%', p1='0%', p23='0%';
+        q0 = qNumBytry[0]; q1 = qNumBytry[1]; q23 = qNumBytry[2] + qNumBytry[3]
+        p0 = preCent(q0,qAnswered); p1 =  preCent(q1,qAnswered); p23=  preCent(q23,qAnswered)
+        let txt0 =  'נתוני ההתקדמות במשחק:';
+        let txt1 = `<br><br>עניתם על ` +  qAnswered + ' מתוך ' + qTotal + ' שאלות, שהן ' + qprecent + '&nbsp'+ 'מכלל השאלות.'
+        let table = `<table style="width:100% ; border: solid 0.2vmin;  border-collapse: collapse; ; text-align: center"> <tr style="border:solid 0.2vmin">   <th  style="border:solid 0.2vmin" >סוג המענה</th>   <th  style="border: solid 0.2vmin">במספרים</th>   <th  style="border: solid 0.2vmin">באחוזים</th> </tr> <tr  style="border: solid 0.2vmin">  <td>ללא טעויות</td>   <td>${q0}</td> <td>${p0}</td> </tr> <tr>   <td>בנסיון שני</td>   <td>${q1}</td> <td>${p1}</td> </tr> <tr>   <td> אחרי נסיון שני</td>   <td>${q23}</td> <td>${p23}</td> </tr></table>`
+
+        txt = txt0 + txt1 + table;
+        let op = [ ['text' , txt],['mainMenu', 'חזרה']]
+        createMenu (op)
+        setTimeout(()=>{checkForUpdate (3000)},3000 )
+
     }
     function helpMenu  (){
         let helpText = `ענו על השאלות כדי להתקדם במשחק.כדי לענות על השאלות יש ללחוץ על התשובה הנכונה.
@@ -1968,7 +2012,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                 function blink (b) {
 
                     if ( b % 2 == 0) {elem.style.color = 'red'} else {elem.style.color = 'yellow'}
-                    L(b, b % 2, color)
+
 
                     b++;
                     if (b>20){setTimeout(()=>{elem.style.color = 'white' },4000) ;return }
