@@ -22,9 +22,10 @@ global_object: {
 
         G.mgmt.numberOftriesPerQuestion = 0;
         G.mgmt.savedSession = {};
-
-        G.mgmt.qNumber = 0; // question number
-        G.mgmt.progressArray = [];
+        /* savings  */
+        G.saves = {};
+        G.saves.qNumber = 0; // question number
+        G.saves.progressArray = [];
         /* STAGE */
         G.mgmt.stageNumber = 4; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','virus', 'server'];
@@ -189,10 +190,10 @@ util_functions: {
                 //    let ansDiv = Id(ansId);
                 //    let numOfans =  Number(ansId.replace("ans", ''))
                 //    let html = ansDiv.innerHTML;
-                //ansDiv.innerHTML = G.Q[G.mgmt.qNumber][numOfans + 2] // newHtml;
+                //ansDiv.innerHTML = G.Q[G.saves.qNumber][numOfans + 2] // newHtml;
                 for (let i = 1; i < 5; i++) {
                     //if (i == numOfans) {continue}
-                    if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
+                    if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
                 }
 
 
@@ -213,13 +214,13 @@ util_functions: {
         if (numOfans === 0){return}
 
         G.css.lastHoverEvent = numOfans;
-        let html = G.Q[G.mgmt.qNumber][numOfans + 2];
+        let html = G.Q[G.saves.qNumber][numOfans + 2];
         let newHtml = "<span style='background-color:" +  G.css.textcolor + "; color : " + G.css.backGroundtextcolor + "'>" + html + "</span>";
         ansDiv.innerHTML = newHtml;
 
         for (let i = 1; i < 5; i++) {
             if (i == numOfans) {continue}
-            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
+            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
         }
         G.css.mouseOnTimer = 2000;
         if (G.css.isMouseOutTimer) {return}
@@ -320,17 +321,17 @@ util_functions: {
 
 function clickAnswer (elem){
     /* for testing */
-    if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]
+    if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.saves.qNumber][G.mgmt.solutionCol]
     let idName = 'ans'+ rightAnswer;
     let div = Id(idName); elem.target = div}
 
     function wrongAnswerAnimation (num) {
-        if (G.mgmt.qNumber !== 500) {G.mgmt.numberOftriesPerQuestion++}
+        if (G.saves.qNumber !== 500) {G.mgmt.numberOftriesPerQuestion++}
 
 
 
         G.mgmt.isAnswering = true;
-        let text = G.Q[G.mgmt.qNumber][2 + num]
+        let text = G.Q[G.saves.qNumber][2 + num]
 
         let e = 0;
         function deletAnswer () {
@@ -358,10 +359,10 @@ function clickAnswer (elem){
     function nextQuesion () {
 
 
-        if (G.mgmt.qNumber !== 500) {
+        if (G.saves.qNumber !== 500) {
             IpadGrahpic ('right');
             G.mgmt.numberOftriesPerQuestion++;
-            G.mgmt.progressArray.push(G.mgmt.numberOftriesPerQuestion);
+            G.saves.progressArray.push(G.mgmt.numberOftriesPerQuestion);
             G.mgmt.numberOftriesPerQuestion = 0;
 
         }
@@ -375,7 +376,7 @@ function clickAnswer (elem){
         let rgbPartialTxt = "rgba(" + rgnObj.r + "," + rgnObj.g + "," + rgnObj.b + ",";
         for (let i = 1; i < 5; i++) {
 
-            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
+            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
         }
         function fadeOut () {
 
@@ -385,9 +386,9 @@ function clickAnswer (elem){
             op =  op - opDelta;
             if (op > 0){setTimeout(()=>{fadeOut ()}, time)} else if (!G.mgmt.isFinalAnsInChapter){
 
-                if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.mgmt.lastqNumber; IpadGrahpic (G.mgmt.stage)} ;
+                if (G.saves.qNumber === 500){G.saves.qNumber = G.mgmt.lastqNumber; IpadGrahpic (G.mgmt.stage)} ;
 
-            setQuestion(G.mgmt.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
+            setQuestion(G.saves.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
 
                 G.mgmt.isFinalAnsInChapter = false; IpadGrahpic ('finishChaper')
             }
@@ -405,10 +406,10 @@ function clickAnswer (elem){
     let numOfans =  Number(ansId.replace("ans", ''))
 
      G.mgmt.clickedAnswer = numOfans;
-    let solutionNumber = G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]
-    let solutionText = G.Q[G.mgmt.qNumber][2 + Number(solutionNumber)]
+    let solutionNumber = G.Q[G.saves.qNumber][G.mgmt.solutionCol]
+    let solutionText = G.Q[G.saves.qNumber][2 + Number(solutionNumber)]
 
-    if (numOfans == G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]) {answerAnimation(solutionText)} else {
+    if (numOfans == G.Q[G.saves.qNumber][G.mgmt.solutionCol]) {answerAnimation(solutionText)} else {
 
         wrongAnswerAnimation (numOfans)
         }
@@ -416,6 +417,57 @@ function clickAnswer (elem){
 }
 function holoMenu () { // creats the menue inside the holo;
     //G.divs.holoMenuoptions = G.divs.holoMenuoptions || [];
+    function submitF(formArray) {
+        let Formtext = Id('Formtext');
+       if (formArray === 'clear'){
+           if (!storeInLocal ('check')){ Formtext.innerHTML = 'לא נמצא מידע שמור. ניתן להתחיל משחק חדש על ידי רענון החלון.' ;
+           return;
+       }
+           let tx = 'האם אתם מעוניינים למחוק את כל ההתקדמות ולהתחיל משחק חדש ?'
+           if (confirm(tx)) { storeInLocal ('reset'); location.reload()}
+           return
+       }
+       let input = Id('input').value
+       if (input.length < 2){Formtext.innerHTML = 'שם צריך להכיל לפחות 2 אותיות' + '<br>'; return}
+       G.saves.nameOfplayer = input;
+       //visuaGamelLoader (true);
+       Formtext.innerHTML = '&nbsp';
+       let inputName = input;
+       inputName += ", מעכשיו ההתקדמות שלך במשחק תישמר"
+       setTimeout(()=>{StylelFader (Formtext,50,true)
+       Formtext.innerHTML = inputName;},50 )
+       storeInLocal ('save')
+
+
+
+    }
+
+
+    function saveMenu () {
+        let userMessage = '  ניתן לשמור את ההתקדמות על המחשב הזה';
+        //let
+        let formStyle = `font-family: david; font-size: 4vmin; color:rgba(3,100,100); opacity:0.7; text-shadow :6px 2px 8px yellow ; border-radius:1vmin;font-weight:bold;`
+
+       if (storeInLocal ('check')){userMessage = G.saves.nameOfplayer + ', ';
+       userMessage  += ' ההתקדמות שלך במשחק נשמרת'
+       }
+       userMessage += ' <br>'
+
+
+        let form = `<form id='saveForm' method="post" action="javascript:" style="text-align: center ;font-size: 3vmins">
+<div id ="Formtext"> ${userMessage}</div><br>
+  <input id='input' type="text" name="name" value="" style="${formStyle} ; color:rgba(3,3,3) ;background: transparent; border-radius: 0.5vmin ; width:70%;" ><br>
+
+  <br>
+
+  <input id="saveButton" type="submit" value="שמירה" style=" ${formStyle}font-size: 4vmin">
+ <input id="clear" type="submit" value="משחק חדש" style=" ${formStyle}font-size: 4vmin">
+</form><br><br>`
+let op = [ ['form' , form],['mainMenu', 'חזרה']]
+createMenu (op)
+
+
+    }
     function holoAnimation (dir, sz ){
         dir = dir || 1
         sz = sz || 2
@@ -471,7 +523,12 @@ function holoMenu () { // creats the menue inside the holo;
          var extraStyle = {};
          G.divs.holoScreen.appendChild (option) ;
          stl (option, { 'fontFamily': 'david', 'fontSize': '5vmin', 'color' : 'rgba(3,100,100)', 'opacity' : 0.7, 'textShadow' : "6px 2px 8px yellow",}, extraStyle)
-         option.innerHTML = text[1] ;  if (text[0] === 'text') {option.style.fontSize = '2.8vmin'; option.style.paddingRight = "6vmin"; option.style.textAlign = "right"; return}
+         option.innerHTML = text[1] ;
+         if (text[0] === 'form') {
+             let save = Id('saveButton');  save.addEventListener('submit',(f)=>{submitF(f)})
+             let clear = Id('clear');  clear.addEventListener('submit',(f)=>{submitF('clear')})
+         }
+         if (text[0] === 'text' || text[0] === 'form') {option.style.fontSize = '2.8vmin'; option.style.paddingRight = "6vmin"; option.style.textAlign = "right"; return}
          option.addEventListener('mouseout',mouseInOut);
          option.addEventListener('mouseover',mouseInOut)
          option.addEventListener('click',clickSubMenu);
@@ -479,7 +536,7 @@ function holoMenu () { // creats the menue inside the holo;
     function progressMenu () {
         function checkForUpdate (tim) {
             if(G.divs.holoScreen.innerHTML.includes(txt0)){
-                if (qAnswered === G.mgmt.progressArray.length){setTimeout(()=>{checkForUpdate (5000)},3000 )} else {progressMenu ()}
+                if (qAnswered === G.saves.progressArray.length){setTimeout(()=>{checkForUpdate (5000)},3000 )} else {progressMenu ()}
             }
         }
 
@@ -490,13 +547,13 @@ function holoMenu () { // creats the menue inside the holo;
 
         }
         let qTotal = G.Q.length || 0;
-        let qAnswered = G.mgmt.progressArray.length || 0 ;
-        L(G.mgmt.progressArray)
+        let qAnswered = G.saves.progressArray.length || 0 ;
+        L(G.saves.progressArray)
         let qNumBytry = [];
         let qprecent = preCent (qAnswered,qTotal)
         for (let a= 0; a < 4; a++){
             var countOfTries = 0
-            G.mgmt.progressArray.forEach((e)=>{if (e === (a+1)){countOfTries++}})
+            G.saves.progressArray.forEach((e)=>{if (e === (a+1)){countOfTries++}})
             qNumBytry[a] = countOfTries;
         }
         let q0=0, q1=0, q23=0, p0='0%', p1='0%', p23='0%';
@@ -568,33 +625,11 @@ function holoMenu () { // creats the menue inside the holo;
             })
             return promise0
      }
-    function storeInLocal (command){
-        let myFileName = location.pathname //.split("/").slice(-1)
-        let htmlFileName = myFileName ;//[0];
-        switch (command){
-            case 'check':
-            let chk = localStorage.getItem('isSaved' + htmlFileName);
-            if (chk == 'true'){return true} else {return false}
-            break;
 
-            case 'save':
-            localStorage.setItem('global' + htmlFileName, JSON.stringify(G.mgmt.savedSession));
-            localStorage.setItem('isSaved' + htmlFileName, 'true');
-            break;
-
-            case 'load':
-            var retrievedObject = localStorage.getItem('global' + htmlFileName);
-            G.mgmt.savedSession = JSON.parse(retrievedObject);
-            break;
-
-            case 'reset':
-            localStorage.setItem('isSaved' + htmlFileName, 'false')
-            break;
-        }
-    }
 
     holoAnimation ();
-    mainMenu ();
+    //mainMenu ();
+    saveMenu ()
     G.divs.holoContainer.style.opacity = "0";
     let page = Id('laptopKeyboard')
     //page.style.opacity = 0;
@@ -703,7 +738,7 @@ function buildBoard (){
 
                 for (let i = 1; i < 5; i++) {
                     //if (i == numOfans) {continue}
-                    if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
+                    if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
                 }
 
 
@@ -724,13 +759,13 @@ function buildBoard (){
         if (numOfans === 0){return}
 
         G.css.lastHoverEvent = numOfans;
-        let html = G.Q[G.mgmt.qNumber][numOfans + 2];
+        let html = G.Q[G.saves.qNumber][numOfans + 2];
         let newHtml = "<span style='background-color:" +  G.css.textcolor + "; color : " + G.css.backGroundtextcolor + "'>" + html + "</span>";
         ansDiv.innerHTML = newHtml;
 
         for (let i = 1; i < 5; i++) {
             if (i == numOfans) {continue}
-            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
+            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
         }
         G.css.mouseOnTimer = 2000;
         if (G.css.isMouseOutTimer) {return}
@@ -1051,8 +1086,8 @@ function setQuestion (num) {
     let elements = [];
     let t = 1;
     let position = 1;
-    if (G.mgmt.qNumber < 499) {G.mgmt.lastqNumber = G.mgmt.qNumber;}
-    G.mgmt.qNumber = num;
+    if (G.saves.qNumber < 499) {G.mgmt.lastqNumber = G.saves.qNumber;}
+    G.saves.qNumber = num;
 
     elements[1] = G.divs.infoText
     fulltextArray[1] = G.Q[num][1]
@@ -2118,7 +2153,32 @@ let rnd = getRandomInt(asciArr.length - 1);
 
     }
 }
+function storeInLocal (command){
+    let myFileName = location.pathname //.split("/").slice(-1)
+    let htmlFileName = myFileName ;//[0];
+    switch (command){
+        case 'check':
+        let chk = localStorage.getItem('isSaved' + htmlFileName);
+        if (chk == 'true'){return true} else {return false}
+        break;
+
+        case 'save':
+        localStorage.setItem('global' + htmlFileName, JSON.stringify(G.saves));
+        localStorage.setItem('isSaved' + htmlFileName, 'true');
+        break;
+
+        case 'load':
+        var retrievedObject = localStorage.getItem('global' + htmlFileName);
+        G.saves = JSON.parse(retrievedObject);
+        break;
+
+        case 'reset':
+        localStorage.setItem('isSaved' + htmlFileName, 'false')
+        break;
+    }
+}
 // main:
+if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
 setQuestion (1);
 IpadGrahpic (G.mgmt.stage);
