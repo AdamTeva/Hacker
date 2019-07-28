@@ -19,9 +19,12 @@ global_object: {
         G.mgmt.solutionCol = 8;
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
+
+        G.mgmt.numberOftriesPerQuestion = 0;
+        G.mgmt.savedSession = {};
+
         G.mgmt.qNumber = 0; // question number
         G.mgmt.progressArray = [];
-        G.mgmt.numberOftriesPerQuestion = 0;
         /* STAGE */
         G.mgmt.stageNumber = 4; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'getIp','firewall','user','virus', 'server'];
@@ -565,6 +568,30 @@ function holoMenu () { // creats the menue inside the holo;
             })
             return promise0
      }
+    function storeInLocal (command){
+        let myFileName = location.pathname //.split("/").slice(-1)
+        let htmlFileName = myFileName ;//[0];
+        switch (command){
+            case 'check':
+            let chk = localStorage.getItem('isSaved' + htmlFileName);
+            if (chk == 'true'){return true} else {return false}
+            break;
+
+            case 'save':
+            localStorage.setItem('global' + htmlFileName, JSON.stringify(G.mgmt.savedSession));
+            localStorage.setItem('isSaved' + htmlFileName, 'true');
+            break;
+
+            case 'load':
+            var retrievedObject = localStorage.getItem('global' + htmlFileName);
+            G.mgmt.savedSession = JSON.parse(retrievedObject);
+            break;
+
+            case 'reset':
+            localStorage.setItem('isSaved' + htmlFileName, 'false')
+            break;
+        }
+    }
 
     holoAnimation ();
     mainMenu ();
