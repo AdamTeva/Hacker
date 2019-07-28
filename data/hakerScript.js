@@ -19,7 +19,6 @@ global_object: {
         G.mgmt.solutionCol = 8;
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
-
         G.mgmt.numberOftriesPerQuestion = 0;
         G.mgmt.savedSession = {};
         /* savings  */
@@ -367,6 +366,7 @@ function clickAnswer (elem){
 
         }
         G.mgmt.isAnswering = true;
+        if(storeInLocal ('check')) {storeInLocal ('save')}
 
         let op  = 1;
         let opDelta = 0.05
@@ -441,8 +441,6 @@ function holoMenu () { // creats the menue inside the holo;
 
 
     }
-
-
     function saveMenu () {
         let userMessage = '  ניתן לשמור את ההתקדמות על המחשב הזה';
         //let
@@ -455,12 +453,12 @@ function holoMenu () { // creats the menue inside the holo;
 
 
         let form = `<form id='saveForm' method="post" action="javascript:" style="text-align: center ;font-size: 3vmins">
-<div id ="Formtext"> ${userMessage}</div><br>
+<div id ="Formtext" style="height:7vmin;"> ${userMessage}</div><br>
   <input id='input' type="text" name="name" value="" style="${formStyle} ; color:rgba(3,3,3) ;background: transparent; border-radius: 0.5vmin ; width:70%;" ><br>
 
   <br>
 
-  <input id="saveButton" type="submit" value="שמירה" style=" ${formStyle}font-size: 4vmin">
+  <input id="saveButton" type="submit" value="שמירה" style=" ${formStyle}font-size: 4vmin">&nbsp&nbsp
  <input id="clear" type="submit" value="משחק חדש" style=" ${formStyle}font-size: 4vmin">
 </form><br><br>`
 let op = [ ['form' , form],['mainMenu', 'חזרה']]
@@ -525,8 +523,8 @@ createMenu (op)
          stl (option, { 'fontFamily': 'david', 'fontSize': '5vmin', 'color' : 'rgba(3,100,100)', 'opacity' : 0.7, 'textShadow' : "6px 2px 8px yellow",}, extraStyle)
          option.innerHTML = text[1] ;
          if (text[0] === 'form') {
-             let save = Id('saveButton');  save.addEventListener('submit',(f)=>{submitF(f)})
-             let clear = Id('clear');  clear.addEventListener('submit',(f)=>{submitF('clear')})
+             let save = Id('saveButton');  save.addEventListener('click',(f)=>{submitF(f)})
+             let clear = Id('clear');  clear.addEventListener('click',(f)=>{submitF('clear')})
          }
          if (text[0] === 'text' || text[0] === 'form') {option.style.fontSize = '2.8vmin'; option.style.paddingRight = "6vmin"; option.style.textAlign = "right"; return}
          option.addEventListener('mouseout',mouseInOut);
@@ -2180,7 +2178,7 @@ function storeInLocal (command){
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
-setQuestion (1);
+setQuestion (G.saves.qNumber + 1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu();
 test ('holo')
