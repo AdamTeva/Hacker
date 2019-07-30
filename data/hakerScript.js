@@ -26,8 +26,8 @@ global_object: {
         G.saves.qNumber = 0; // question number
         G.saves.progressArray = [];
         /* STAGE */
-        G.mgmt.stageNumber = 4; //the stage number to begin /* safd */
-        G.mgmt.stageNames = ["",'getIp','firewall','user','virus', 'server'];
+        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
+        G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus', 'server'];
         G.mgmt.stagesInfo = {
             'getIp' : 'למציאת כתובת הרשת ',
             'firewall': ' לזיהוי חולשות בחומת האש',
@@ -626,12 +626,10 @@ createMenu (op)
 
 
     holoAnimation ();
-    //mainMenu ();
-    saveMenu ()
+    mainMenu ();
     G.divs.holoContainer.style.opacity = "0";
     let page = Id('laptopKeyboard')
-    //page.style.opacity = 0;
-    //StylelFader (element,ms = 30,fadeIn = false
+
 
 
 
@@ -877,6 +875,7 @@ function buildBoard (){
             'width':'18%',
             'border': '0.5vmin solid black',
             "borderRadius": "4vmin",
+            overflow: 'hidden',
 
             "resize": "both",})
     stl (G.divs.ipad , myStyle('text'), {
@@ -1005,6 +1004,30 @@ function buildBoard (){
     G.divs.led.addEventListener('mouseout',ledEvent,true);
     G.divs.led.addEventListener('click',ledEvent,true);
 
+}
+function storeInLocal (command){
+    let myFileName = location.pathname //.split("/").slice(-1)
+    let htmlFileName = myFileName ;//[0];
+    switch (command){
+        case 'check':
+        let chk = localStorage.getItem('isSaved' + htmlFileName);
+        if (chk == 'true'){return true} else {return false}
+        break;
+
+        case 'save':
+        localStorage.setItem('global' + htmlFileName, JSON.stringify(G.saves));
+        localStorage.setItem('isSaved' + htmlFileName, 'true');
+        break;
+
+        case 'load':
+        var retrievedObject = localStorage.getItem('global' + htmlFileName);
+        G.saves = JSON.parse(retrievedObject);
+        break;
+
+        case 'reset':
+        localStorage.setItem('isSaved' + htmlFileName, 'false')
+        break;
+    }
 }
 function setQuestion (num) {
 
@@ -2129,6 +2152,50 @@ let rnd = getRandomInt(asciArr.length - 1);
         var ipadCover = Id('ipadCover');
         if (answeris === 'right') { rightAnswer ()} else if (answeris === 'wrong') {wrongAnser ()} else{ BuildVirus ()};
     }
+    function webSite () {
+        function getSVGs () {
+
+            var svgHTML = [`<svg version="1.1" id="chat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58 58" style="enable-background:new 0 0 58 58;" xml:space="preserve"><g><path style="fill:#226BAC;" d="M0,58l4.042-12.125c-2.05-3.45-3.231-7.476-3.231-11.78C0.81,21.34,11.15,11,23.905,11 S47,21.34,47,34.095S36.66,57.19,23.905,57.19c-3.881,0-7.535-0.961-10.745-2.653L0,58z"/>	<path style="fill:#3BA58B;" d="M23.905,11C36.66,11,47,21.34,47,34.095c0,3.378-0.731,6.583-2.034,9.475L58,47l-4.042-12.125 c2.05-3.45,3.231-7.476,3.231-11.78C57.19,10.34,46.85,0,34.095,0c-9.426,0-17.528,5.65-21.118,13.746 C16.231,11.995,19.951,11,23.905,11z"/>	<circle style="fill:#FFFFFF;" cx="13" cy="34" r="3"/><circle style="fill:#FFFFFF;" cx="24" cy="34" r="3"/> <circle style="fill:#FFFFFF;" cx="35" cy="34" r="3"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>`, `<svg version="1.1" id="music" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"      viewBox="0 0 54.888 54.888" style="enable-background:new 0 0 54.888 54.888;" xml:space="preserve"> <path style="fill:#EA6248;"d="M52.104,0.249c-0.216-0.189-0.501-0.275-0.789-0.241l-31,4.011c-0.499,0.065-0.872,0.489-0.872,0.992    v6.017v4.212v26.035C17.706,39.285,14.997,38,11.944,38c-5.247,0-9.5,3.781-9.5,8.444s4.253,8.444,9.5,8.444s9.5-3.781,9.5-8.444    c0-0.332-0.027-0.658-0.069-0.981c0.04-0.108,0.069-0.221,0.069-0.343V16.118l29-3.753v18.909C48.706,29.285,45.997,28,42.944,28    c-5.247,0-9.5,3.781-9.5,8.444s4.253,8.444,9.5,8.444s9.5-3.781,9.5-8.444c0-0.092-0.012-0.181-0.015-0.272    c0.002-0.027,0.015-0.05,0.015-0.077V11.227V7.016V1C52.444,0.712,52.32,0.438,52.104,0.249z"/> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>`, `<svg version="1.1" id="website" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"      viewBox="0 0 58 58" style="enable-background:new 0 0 58 58;" xml:space="preserve"> <circle style="fill:#7383BF;stroke:#556080;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" cx="29" cy="29" r="28"/> <line style="fill:none;stroke:#556080;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" x1="29" y1="57" x2="29" y2="1"/> <path style="fill:none;stroke:#556080;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" d="M29,1    c-0.214,0-0.426,0.011-0.639,0.016C20.213,7.616,15,17.697,15,29s5.213,21.384,13.361,27.984C28.574,56.989,28.786,57,29,57"/> <path style="fill:none;stroke:#556080;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" d="M8.698,9.728    C14.478,13.683,21.468,16,29,16s14.522-2.317,20.302-6.272"/> <path style="fill:none;stroke:#556080;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" d="M49.862,47.67    C43.975,43.475,36.779,41,29,41s-14.975,2.475-20.862,6.67"/> <path style="fill:none;stroke:#556080;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" d="M29,57    c0.214,0,0.426-0.011,0.639-0.016C37.787,50.384,43,40.303,43,29S37.787,7.616,29.639,1.016C29.426,1.011,29.214,1,29,1"/> <line style="fill:none;stroke:#556080;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" x1="1" y1="29" x2="57" y2="29"/> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>` , `<svg version="1.1" id="present" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"      viewBox="0 0 57 57" style="enable-background:new 0 0 57 57;" xml:space="preserve"> <rect x="1" y="13.002" style="fill:#CB465F;" width="55" height="12"/> <rect x="6" y="25.002" style="fill:#EF4D4D;" width="46" height="30"/> <path style="fill:#EBBA16;" d="M56,12.002H41.741C42.556,10.837,43,9.453,43,7.995c0-1.875-0.726-3.633-2.043-4.95    c-2.729-2.729-7.17-2.729-9.899,0l-2.829,2.829l-2.828-2.829c-2.729-2.729-7.17-2.729-9.899,0c-1.317,1.317-2.043,3.075-2.043,4.95    c0,1.458,0.444,2.842,1.259,4.007H1c-0.552,0-1,0.447-1,1s0.448,1,1,1h27v24H6c-0.552,0-1,0.447-1,1s0.448,1,1,1h22v15    c0,0.553,0.448,1,1,1s1-0.447,1-1v-15h22c0.552,0,1-0.447,1-1s-0.448-1-1-1H30v-24h26c0.552,0,1-0.447,1-1S56.552,12.002,56,12.002z      M32.472,4.459c1.95-1.949,5.122-1.949,7.071,0C40.482,5.399,41,6.654,41,7.995c0,1.34-0.518,2.596-1.457,3.535l-0.472,0.472H24.929    l4.006-4.006l0.001-0.001l0.001-0.001L32.472,4.459z M16.916,11.53c-0.939-0.939-1.457-2.195-1.457-3.535    c0-1.341,0.518-2.596,1.457-3.536c1.95-1.949,5.122-1.949,7.071,0l2.828,2.829l-3.536,3.536c-0.331,0.331-0.622,0.735-0.898,1.179    h-4.994L16.916,11.53z"/> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>`, `<svg version="1.1" id="thumb1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  viewBox="0 0 56 56" style="enable-background:new 0 0 56 56;" xml:space="preserve"> <rect x="1.5" y="20" style="fill:#4B6DAA;" width="14" height="36"/> <circle style="fill:#D8A852;" cx="8.5" cy="47" r="4"/> <path style="fill:#FBCE9D;" d="M53.5,26c0-2.209-1.791-4-4-4h-9h-3h-3.602l0.988-4.619c0.754-3.524,0.552-7.819,0.104-10.836 	C34.542,3.528,31.84,0,29.013,0h-0.239C26.364,0,25.5,2.659,25.5,6c0,16.25-8,16-8,16h-2v32h15h10h4c2.209,0,4-1.791,4-4 	c0-2.209-1.791-4-4-4h3c2.209,0,4-1.791,4-4c0-2.209-1.791-4-4-4h3c2.209,0,4-1.791,4-4c0-2.493-1.613-3.442-4-3.796 	C49.337,30.031,47.224,30,46.5,30h3C51.709,30,53.5,28.209,53.5,26z"/> <path style="fill:#F7B563;" d="M52.12,29H39.5c-0.552,0-1,0.447-1,1s0.448,1,1,1h13.456c-0.657-0.403-1.488-0.653-2.456-0.796 	C49.337,30.031,47.224,30,46.5,30h3C50.508,30,51.417,29.615,52.12,29z"/> <path style="fill:#F7B563;" d="M53.12,37H39.5c-0.552,0-1,0.447-1,1s0.448,1,1,1h10.621c-0.703-0.615-1.613-1-2.621-1h3 	C51.508,38,52.417,37.615,53.12,37z"/> <path style="fill:#F7B563;" d="M50.12,45H37.5c-0.552,0-1,0.447-1,1s0.448,1,1,1h9.621c-0.703-0.615-1.613-1-2.621-1h3 	C48.508,46,49.417,45.615,50.12,45z"/> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>`]
+
+            return  svgHTML}
+
+        let ipadCover = Id('ipadCover')
+        let appContainer = Elm ('appContainer');
+        let appHeader = Elm ('appHeader')
+        let ipadColor = Id('ipad').style.backgroundColor;
+
+
+        appHeader.innerHTML =   "מחפש אפליקציות ריגול" + '<font style="font-size: 0.2vmin"><br><br></font>'
+
+        stl (appHeader, {position: 'relative', color:'white', fontFamily: 'consolas', fontSize: '4.5vmin', textAlign: 'center', zIndex: '19', backgroundColor: ipadColor, hieght: '130%', overflow:'hidden'})
+
+        ipadCover.appendChild(appHeader)
+        ipadCover.appendChild(appContainer)
+        let SVGs = getSVGs ()
+        for (q = 1 ; q < 100; q++){
+            let div1 = Elm('app' + q)
+            let rndImg = getRandomInt( SVGs.length) - 1;
+            let rndR =  getRandomInt( 150) + 100 ; let rndG =  getRandomInt( 150) + 100 ; let rndB =  getRandomInt( 150) + 100
+            let bgColor = `rgba(${rndR},${rndB},${rndG})`
+
+            div1.innerHTML = SVGs[rndImg];
+            stl (div1, {position: 'static', float: 'left', width: '15%', height: '12%', backgroundColor: bgColor, padding: '1vmin', margin: '1.3vmin', borderRadius: '2vmin'})
+            appContainer.appendChild(div1)
+        }
+        appContainer.style.position = 'relative';
+        function scrollApps (h = 0){
+            appContainer.style.top = h + 'px';
+            h -= 3;
+            if (h < -1200) return
+            setTimeout (()=>{scrollApps(h)},10)
+        }
+        scrollApps()
+
+
+
+
+
+    }
     var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
         type0 = G.hacks.current; }
     switch( type0) {
@@ -2146,39 +2213,20 @@ let rnd = getRandomInt(asciArr.length - 1);
           break;
         case 'virus':
          G.hacks.current = 'virus'
-        virus ()
+        virus () ; break;
+        case 'webSite':
+        G.hacks.current = 'webSite'
+        webSite(); break;
 
 
     }
 }
-function storeInLocal (command){
-    let myFileName = location.pathname //.split("/").slice(-1)
-    let htmlFileName = myFileName ;//[0];
-    switch (command){
-        case 'check':
-        let chk = localStorage.getItem('isSaved' + htmlFileName);
-        if (chk == 'true'){return true} else {return false}
-        break;
 
-        case 'save':
-        localStorage.setItem('global' + htmlFileName, JSON.stringify(G.saves));
-        localStorage.setItem('isSaved' + htmlFileName, 'true');
-        break;
 
-        case 'load':
-        var retrievedObject = localStorage.getItem('global' + htmlFileName);
-        G.saves = JSON.parse(retrievedObject);
-        break;
-
-        case 'reset':
-        localStorage.setItem('isSaved' + htmlFileName, 'false')
-        break;
-    }
-}
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
 setQuestion (G.saves.qNumber + 1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu();
-test ('holo')
+//test ('holo')
