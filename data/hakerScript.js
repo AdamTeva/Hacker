@@ -418,6 +418,23 @@ function clickAnswer (elem){
 }
 function holoMenu () { // creats the menue inside the holo;
     //G.divs.holoMenuoptions = G.divs.holoMenuoptions || [];
+    function scanApps () {
+        if (Id('scanApps').innerHTML === 'סורק ישומים') {return}
+        let scanAppDiv = Id('scanApps');
+        scanAppDiv.innerHTML ='סורק ישומים';
+        scanAppDiv.style.color = 'blue'
+
+        function blinker (b) {
+            let o = Math.sin (b) + 1;
+            scanAppDiv.style.opacity = o + " "
+            b++;
+            L(b)
+            if (Id('scanApps') ){setTimeout(()=>blinker(b), 100)}
+
+        }
+        blinker (1)
+
+    }
     function submitF(formArray) {
         let Formtext = Id('Formtext');
        if (formArray === 'clear'){
@@ -592,6 +609,7 @@ createMenu (op)
             case 'saveMenu': saveMenu ();break;
             case 'helpMenu': helpMenu ();break;mainMenu
             case 'mainMenu': mainMenu ();break;
+            case 'scanApps': scanApps ();break;
             case 'soundOff': case 'soundOn':
             G.mgmt.soundIsOn = !G.mgmt.soundIsOn;
             optionsMenu () ;break;
@@ -603,7 +621,7 @@ createMenu (op)
     function mainMenu (){
          let optionArray = [['optionsMenu','אפשרויות'],['progressMenu', 'התקדמות'] ,['saveMenu','שמירה'],['helpMenu','עזרה']]
          if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.hacks.current === 'webSite')) {
-             optionArray.push(['scanApps','כלי סריקה'])
+             optionArray.push(['scanApps','תוכנת סריקה'])
          }
          createMenu (optionArray)
      }
@@ -1364,6 +1382,8 @@ function IpadGrahpic (type0) {
 
 
         }
+        let ipadCover = Id('ipadCover')
+        ipadCover.innerHTML = '';
         var canvas = Id ('ipad');
         canvas.addEventListener('click',clickCanvas,false);
         var preW = Pre2Num (G.divs.ipadContainer.style.width) / 100;
@@ -2175,21 +2195,64 @@ let rnd = getRandomInt(asciArr.length - 1);
                 txt += "אפליקציות חשודות." + '<br>'
                 txt += 'כדי לסרוק אותן ולגלות את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>'
                 txt += '.לחצו על הכפתור המהבהב' + "<br>"
-                txt += 'בתפריט בחרו על כלי סריקה.'
+                txt += 'בתפריט בחרו על תוכנת סריקה.'
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
                 //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
                 //G.divs.textBlock2.innerHTML += 'Aplications Origin: ' +  Id('userName').data + '<br><br>';
+                function wasScannerStarted () {
+                    if (Id('scanApps')) {
+                        if (Id('scanApps').innerHTML === 'סורק ישומים') {stage2 ()} else {setTimeout(()=>{wasScannerStarted () },500)}
+                    } else {setTimeout(()=>{wasScannerStarted () },500)}
+
+                }
+                wasScannerStarted ()
+
 
 
             }
             function stage2 (){
+                function makeid(length, isPass = false) {
+                        var result           = '';
+                        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                        var passwordChars = "!@#$%^&*~" + characters
+                        if (isPass){characters = passwordChars}
+                        var charactersLength = characters.length;
+                        for (var i = 0; i < length; i++ ) {
+                          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                        }
+                    return result;
+                }
+                let txt = "סורק ישומים בחיפוש אחר האתר של הארגון." + "<br>" + "אתרים ברשת האפילה:" + "<br>"
+                G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + "</p>"
+                G.divs.textBlock2.innerHTML += '<div id="irgunSite"></div>'
+                let siteDiv = Id('irgunSite');
+                function findSite (n){
+                    let id = makeid(Math.floor(n))
+                    n += 0.2;
+                    siteDiv.innerHTML = id + "Dark.onion";
+
+                    if (n < 15) {setTimeout (()=>{findSite (n)},100)} else {stage3(id + "Dark.onion")}
+                }
+                findSite(1)
+
+
+                }
+            function stage3 (address){
+                if(G.mgmt.isHolo) {
+                    if (Id('scanApps')){Id('scanApps').innerHTML=''}
+
+                let madeUpEvent = {}
+                madeUpEvent.type = 'click'
+
+                 ledEvent (madeUpEvent) }
+
                 G.Q [500] = ["", "","","","","","","",""]
-                G.Q [500][1] =  '<br><p dir=rtl style="text-align: right">Welcome !'
-                G.Q [500][2] = "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש ." + "<br>"
+                G.Q [500][1] =  '<br><p dir=rtl style="text-align: right"> All Applications Scanned'
+                G.Q [500][2] = "כל הישומים נסרקו." + "<br>" + ":על ידי הסריקה נמצא האתר של הארגון." + "<br><br>" + address + "<br><br>" ;
                 G.Q [500][2] += 'האם להמשיך ?'
                 let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
                 G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
-                G.Q [500][4] = "ביצוע הסוואה של הפעילות"
+                G.Q [500][4] = "דיווח לרשויות על האתר"
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 G.mgmt.nextStage ()
 
@@ -2238,7 +2301,7 @@ let rnd = getRandomInt(asciArr.length - 1);
         ipadCover.innerHTML = '';
 
 
-        appHeader.innerHTML =   "סורק אפליקציות חשודות "  + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
+        appHeader.innerHTML =   "מחפש אפליקציות חשודות "  + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
 
         stl (appHeader, {position: 'relative', color:'white', fontFamily: 'consolas', fontSize: '4.5vmin', textAlign: 'center', zIndex: '19', backgroundColor: ipadColor, hieght: '130%', overflow:'hidden'})
         stl (appContainer, { paddingLeft :'3vmin'})
