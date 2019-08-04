@@ -26,8 +26,8 @@ global_object: {
         G.saves.qNumber = 0; // question number
         G.saves.progressArray = [];
         /* STAGE */
-        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
-        G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus', 'server'];
+        G.mgmt.stageNumber = 5; //the stage number to begin /* safd */
+        G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
         G.mgmt.stagesInfo = {
             'getIp' : 'למציאת כתובת הרשת ',
             'firewall': ' לזיהוי חולשות בחומת האש',
@@ -435,6 +435,22 @@ function holoMenu () { // creats the menue inside the holo;
         blinker (1)
 
     }
+    function sendVirus () {
+        if (Id('sendVirus').innerHTML === 'מעלה וירוס') {return}
+        let sendVirusDiv = Id('sendVirus');
+        sendVirusDiv.innerHTML ='מעלה וירוס';
+        sendVirusDiv.style.color = 'gold'
+        function blinker (b) {
+            let o = Math.sin (b) + 1;
+            scanAppDiv.style.opacity = o + " "
+            b++;
+            L(b)
+            if (Id('sendVirus') ){setTimeout(()=>blinker(b), 100)}
+
+        }
+        blinker (1)
+
+    } // sendVirus ()
     function submitF(formArray) {
         let Formtext = Id('Formtext');
        if (formArray === 'clear'){
@@ -545,7 +561,7 @@ createMenu (op)
              let clear = Id('clear');  clear.addEventListener('click',(f)=>{submitF('clear')})
          }
          if (text[0] === 'text' || text[0] === 'form') {option.style.fontSize = '2.8vmin'; option.style.paddingRight = "6vmin"; option.style.textAlign = "right"; return}
-         if (text[0]  === 'scanApps' ){option.style.color = 'red'}
+         if (text[0]  === 'scanApps' || text[0]  === 'sendVirus'){option.style.color = 'red'}
          option.addEventListener('mouseout',mouseInOut);
          option.addEventListener('mouseover',mouseInOut)
          option.addEventListener('click',clickSubMenu);
@@ -609,6 +625,7 @@ createMenu (op)
             case 'saveMenu': saveMenu ();break;
             case 'helpMenu': helpMenu ();break;mainMenu
             case 'mainMenu': mainMenu ();break;
+            case 'sendVirus': sendVirus ();break;
             case 'scanApps': scanApps ();break;
             case 'soundOff': case 'soundOn':
             G.mgmt.soundIsOn = !G.mgmt.soundIsOn;
@@ -623,7 +640,12 @@ createMenu (op)
          if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.hacks.current === 'webSite')) {
              optionArray.push(['scanApps','תוכנת סריקה'])
          }
+         if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.hacks.current === 'virus')) {
+             optionArray.push(['sendVirus','שלח וירוס'])
+         }
+
          createMenu (optionArray)
+
      }
     function fadeOutPromise (element0, tm = 30){
         let opct = 1;
@@ -677,6 +699,7 @@ function ledEvent (e){
                 if (delta < 0) { G.divs.holoContainer.style.opacity = 0;fadeHolo (0.2,-1,80) ;
                      G.divs.holoContainer.style.visibility= "visible"; } else { G.divs.holoContainer.style.visibility= "hidden"; G.divs.holoContainer.style.opacity = 1 };
                      if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.hacks.current === 'webSite')) {holoMenu();}
+                      if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.hacks.current === 'virus')) {holoMenu();}
 
                  return
              }
@@ -1987,6 +2010,94 @@ function IpadGrahpic (type0) {
         if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.form) {  G.mgmt.isFinalAnsInChapter = true; consoleHackedUser () }
     }
     function virus () {
+        function consoleHackedVirus(stage = 1) {
+
+            //G.mgmt.isFinalAnsInChapter = false;
+            let tb = Id('textBlock2');
+            let tc = Id('textContainer');
+            G.divs.textContainer.appendChild(G.divs.textBlock2 )
+            G.divs.textBlock2.style.overflow = "hidden";
+
+
+            function stage1 (){
+                let txt = "נבנה וירוס  להפלת המחשבים של ה\"ארגון\"." + '<br>'
+                txt += "על ידי שליחת הוירוס הפעילות של הארגון תתפרק לזמן רב." + '<br>'
+                txt += 'כדי לשלוח את הוירוס ולהפיל את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>'
+                txt += '.לחצו על הכפתור המהבהב' + "<br>"
+                txt += "בתפריט בחרו - שלח וירוס."
+                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
+                //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
+                //G.divs.textBlock2.innerHTML += 'Aplications Origin: ' +  Id('userName').data + '<br><br>';
+                function wasVirusLoaderStarted () {
+                    //
+                    if (Id('sendVirus')) {
+                        if (Id('sendVirus').innerHTML === 'מעלה וירוס') {stage2 ()} else {setTimeout(()=>{wasVirusLoaderStarted  () },500)}
+                    } else {setTimeout(()=>{wasVirusLoaderStarted  () },500)}
+
+                }
+                wasVirusLoaderStarted  ()
+
+
+
+            }
+            function stage2 (){
+                function makeid(length, isPass = false) {
+                        var result           = '';
+                        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                        var passwordChars = "!@#$%^&*~" + characters
+                        if (isPass){characters = passwordChars}
+                        var charactersLength = characters.length;
+                        for (var i = 0; i < length; i++ ) {
+                          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                        }
+                    return result;
+                }
+                let txt = "סורק ישומים בחיפוש אחר האתר של הארגון." + "<br>" + "אתרים ברשת האפילה:" + "<br>"
+                G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + "</p>"
+                G.divs.textBlock2.innerHTML += '<div id="irgunSite"></div>'
+                let siteDiv = Id('irgunSite');
+                function findSite (n){
+                    let id = makeid(Math.floor(n))
+                    n += 0.2;
+                    siteDiv.innerHTML = id + "Dark.onion";
+
+                    if (n < 15) {setTimeout (()=>{findSite (n)},100)} else {stage3(id + "Dark.onion")}
+                }
+                findSite(1)
+
+
+                }
+            function stage3 (address){
+                if(G.mgmt.isHolo) {
+                    if (Id('scanApps')){Id('scanApps').innerHTML=''}
+
+                let madeUpEvent = {}
+                madeUpEvent.type = 'click'
+
+                 ledEvent (madeUpEvent) }
+
+                G.Q [500] = ["", "","","","","","","",""]
+                G.Q [500][1] =  '<br><p dir=rtl style="text-align: right"> All Applications Scanned'
+                G.Q [500][2] = "כל הישומים נסרקו." + "<br>" + ":על ידי הסריקה נמצא האתר של הארגון." + "<br><br>" + address + "<br><br>" ;
+                G.Q [500][2] += 'האם להמשיך ?'
+                let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
+                G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
+                G.Q [500][4] = "דיווח לרשויות על האתר"
+                G.Q [500][G.mgmt.solutionCol] = 1;
+                G.mgmt.nextStage ()
+
+                G.divs.textContainer.removeChild(G.divs.textBlock2 )
+
+                setQuestion (500)
+            }
+
+            if (stage === 1){stage1();} else if (stage === 2) {stage2 ()}
+
+
+
+
+
+        }
         function virusComplete () {
             for (let t = 0; t < G.hacks.visrusNumberOfrows; t++){
                 let sp = Id('asciSpan' + t);
@@ -2007,6 +2118,13 @@ function IpadGrahpic (type0) {
 
             }
             reversColors()
+            let madeUpEvent = {}
+            madeUpEvent.type = 'click'
+            madeUpEvent.isAtificial = true
+            ledEvent (madeUpEvent)
+
+
+            consoleHackedVirus(1)
 
         }
         function asciImage () {
@@ -2194,8 +2312,8 @@ let rnd = getRandomInt(asciArr.length - 1);
                 let txt = "נמצאו " + G.hacks.numOfsuccess + " "
                 txt += "אפליקציות חשודות." + '<br>'
                 txt += 'כדי לסרוק אותן ולגלות את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>'
-                txt += '.לחצו על הכפתור המהבהב' + "<br>"
-                txt += 'בתפריט בחרו על תוכנת סריקה.'
+                txt += '.לחצו על הכפתור המהבהב' + "<br>" + "<br>"
+                txt +=  'בתפריט בחרו תוכנת סריקה.' // txt += "בתפריט בחרו - שלח וירוס."
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
                 //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
                 //G.divs.textBlock2.innerHTML += 'Aplications Origin: ' +  Id('userName').data + '<br><br>';
