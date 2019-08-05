@@ -3,6 +3,7 @@ global_object: {
  var G = {} //
         "use strict";
         G.Q = A_; // question object
+
         G.css = {};
         G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
         G.css.typeSolution = "";
@@ -16,6 +17,7 @@ global_object: {
         G.css.canvasBackground = "#00284d";
         G.css.breakAfterQuestion = '<br><br><br>'
         G.mgmt = {};
+        G.mgmt.totalNumOfQuestions = G.Q.length
         G.mgmt.solutionCol = 8;
         G.mgmt.isAnswering = false;
         G.mgmt.mouseIsOver = 0;
@@ -26,31 +28,32 @@ global_object: {
         G.saves.qNumber = 0; // question number
         G.saves.progressArray = [];
         /* STAGE */
-        G.mgmt.stageNumber = 5; //the stage number to begin /* safd */
+        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
         G.mgmt.stagesInfo = {
             'getIp' : 'למציאת כתובת הרשת ',
             'firewall': ' לזיהוי חולשות בחומת האש',
             'user' : ' לחדירה למערכת באמצעות שם משתמש',
-            'server': '',
-            'virus': '',
+            'webSite': 'מציאת האתר דרך סריקת אפליקציות',
+            'virus': 'לבניית וירוס תקיפה נגד האתר',
 
         }
-        G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber];
+
         G.mgmt.clickedAnswer = 0;
         G.mgmt.isQuestion = false;
         G.mgmt.isHolo = false// is the holo up
         G.mgmt.max_Tofind = {}
-        G.mgmt.max_Tofind.ip = 3;
-        G.mgmt.max_Tofind.firewall = 3
-        G.mgmt.max_Tofind.form = 5
-        G.mgmt.max_Tofind.virus = 2
-        G.mgmt.max_Tofind.ip = 3;
-        G.mgmt.max_Tofind.firewall = 5;
-        G.mgmt.max_Tofind.form = 5;
-        G.mgmt.max_Tofind.webSite = 2;
+
+        G.mgmt.max_Tofind.firewall = 0
+        G.mgmt.max_Tofind.virus = 0
+        G.mgmt.max_Tofind.getIp = 0;
+        G.mgmt.max_Tofind.firewall = 0;
+        G.mgmt.max_Tofind.user = 0;
+        G.mgmt.max_Tofind.webSite = 0;
+
         G.mgmt.isFinalAnsInChapter = false;
         G.mgmt.soundIsOn = true;
+
         G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ;  }
         G.divs = {};
         G.hacks = {};
@@ -428,7 +431,6 @@ function holoMenu () { // creats the menue inside the holo;
             let o = Math.sin (b) + 1;
             scanAppDiv.style.opacity = o + " "
             b++;
-            L(b)
             if (Id('scanApps') ){setTimeout(()=>blinker(b), 100)}
 
         }
@@ -439,7 +441,7 @@ function holoMenu () { // creats the menue inside the holo;
         if (Id('sendVirus').innerHTML === 'מעלה וירוס') {return}
         let sendVirusDiv = Id('sendVirus');
         sendVirusDiv.innerHTML ='מעלה וירוס';
-        sendVirusDiv.style.color = 'gold'
+        sendVirusDiv.style.color = '#6B202F'
         function blinker (b) {
             let o = Math.sin (b) + 1;
             sendVirusDiv.style.opacity = o + " "
@@ -578,7 +580,7 @@ createMenu (op)
             return double + '%'
 
         }
-        let qTotal = G.Q.length || 0;
+        let qTotal = G.mgmt.totalNumOfQuestions || 0;
         let qAnswered = G.saves.progressArray.length || 0 ;
         let qNumBytry = [];
         let qprecent = preCent (qAnswered,qTotal)
@@ -759,6 +761,47 @@ function ledEvent (e){
 
 }
 function buildBoard (){
+
+
+    G.mgmt.totalNumOfQuestions = 3
+    arrangeStages (G.mgmt.totalNumOfQuestions)
+
+
+    function arrangeStages (t) {
+        let allQ = t //G.mgmt.totalNumOfQuestions //fsdfsdf
+        let originalNames = G.mgmt.stageNames;
+        let destenationStages = [];
+        const minimumQ = 4;
+        let numberOfStages = Math.floor (allQ/minimumQ);
+        if (numberOfStages < 1){numberOfStages = 1} else if (numberOfStages > 5){numberOfStages=5}
+        //console.log("Q : " + t + " , Stages: " + numberOfStages);
+        if (numberOfStages > 1) {destenationStages.push (G.mgmt.stageNames[1]) }
+        for (s = 2; s < numberOfStages; s++) {
+            destenationStages.push (G.mgmt.stageNames[s])
+        }
+        destenationStages.push (G.mgmt.stageNames[5])
+        let avrageQperStage = Math.floor (allQ/numberOfStages);
+        let modeloQuestions = allQ % numberOfStages
+
+        destenationStages.forEach((s)=>{
+            G.mgmt.max_Tofind[s] = avrageQperStage;
+        })
+        G.mgmt.max_Tofind[G.mgmt.stageNames[5]]  +=modeloQuestions
+        G.mgmt.stageNames = [""]
+        for (a = 0; a < destenationStages.length ; a++) {
+            G.mgmt.stageNames.push(destenationStages[a])
+
+        }
+        console.log("Q : " + t + " , G.mgmt.stageNames :" ,G.mgmt.stageNames );
+        G.mgmt.stage = G.mgmt.stageNames [1];
+
+
+        //G.mgmt.max_Tofind['user']
+
+
+
+
+    }
     function keyPressFunc (e) {
 
 
@@ -1427,7 +1470,7 @@ function IpadGrahpic (type0) {
         canvas.style.color = 'white';
         var ctx = canvas.getContext("2d");
         if (answeris === 'right') {addRevieledLovation ()}
-        if (G.hacks.numOfsuccess >= G.mgmt.max_Tofind.ip) {FullIpWasfoundAnimation (); consoleFoundIp()} else {drawIpIpad ()}
+        if (G.hacks.numOfsuccess >= G.mgmt.max_Tofind.getIp) {FullIpWasfoundAnimation (); consoleFoundIp()} else {drawIpIpad ()}
 
     }
     function fireWall (){
@@ -1890,7 +1933,7 @@ function IpadGrahpic (type0) {
                     deny.innerHTML += '<br>' + 'הכניסה אסורה. '
                     setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
                 }
-                if (G.hacks.numOfsuccess === G.mgmt.max_Tofind.form) {
+                if (G.hacks.numOfsuccess === G.mgmt.max_Tofind.user) {
                     StylelFader(codephrase,40,false,true);
                     StylelFader(submitButton,40,false,true);
                     StylelFader(userName,40,false,true);
@@ -1935,10 +1978,10 @@ function IpadGrahpic (type0) {
             submitButton.addEventListener('click', submittingForm );
             G.css.formBackColor = 'rgba(219, 250, 89 ,0.99)'
             var qArray = [firstName ,familyName,userName,codephrase,submitButton] ; let spanArr = [];
-            //G.mgmt.max_Tofind.form = 6;
+            //G.mgmt.max_Tofind.user = 6;
 
             G.hacks.formQarray = [ firstName ,familyName,userName]
-            while (G.hacks.formQarray.length <  G.mgmt.max_Tofind.form - 1) {
+            while (G.hacks.formQarray.length <  G.mgmt.max_Tofind.user - 1) {
                 G.hacks.formQarray.push(codephrase);
             } ; G.hacks.formQarray.push(submitButton)
 
@@ -2006,7 +2049,7 @@ function IpadGrahpic (type0) {
 
             }
         }
-        if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.form) {  G.mgmt.isFinalAnsInChapter = true; consoleHackedUser () }
+        if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.user) {  G.mgmt.isFinalAnsInChapter = true; consoleHackedUser () }
     }
     function virus () {
         function consoleHackedVirus(stage = 1) {
@@ -2040,7 +2083,7 @@ function IpadGrahpic (type0) {
 
             }
             function stage2 (){
-                L('stage2')
+
 
                 let txt = "מעלה וירוס לשרתים של הארגון." + "<br>" + "התקדמות שליחת הוירוס:"
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + ""
@@ -2287,8 +2330,10 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
          }
+
         const ascispanId = 'asciSpan'; //
         var ipadCover = Id('ipadCover');
+        stl (ipadCover, {backgroundColor:'#6B202F',  'borderRadius': '2vmin'})
         if (answeris === 'right') { rightAnswer ()} else if (answeris === 'wrong') {wrongAnser ()} else{ BuildVirus ()};
     }
     function webSite () {
