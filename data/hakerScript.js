@@ -44,7 +44,7 @@ global_object: {
         G.mgmt.max_Tofind.ip = 3;
         G.mgmt.max_Tofind.firewall = 3
         G.mgmt.max_Tofind.form = 5
-        G.mgmt.max_Tofind.virus = 3
+        G.mgmt.max_Tofind.virus = 2
         G.mgmt.max_Tofind.ip = 3;
         G.mgmt.max_Tofind.firewall = 5;
         G.mgmt.max_Tofind.form = 5;
@@ -442,9 +442,8 @@ function holoMenu () { // creats the menue inside the holo;
         sendVirusDiv.style.color = 'gold'
         function blinker (b) {
             let o = Math.sin (b) + 1;
-            scanAppDiv.style.opacity = o + " "
+            sendVirusDiv.style.opacity = o + " "
             b++;
-            L(b)
             if (Id('sendVirus') ){setTimeout(()=>blinker(b), 100)}
 
         }
@@ -2029,9 +2028,9 @@ function IpadGrahpic (type0) {
                 //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
                 //G.divs.textBlock2.innerHTML += 'Aplications Origin: ' +  Id('userName').data + '<br><br>';
                 function wasVirusLoaderStarted () {
-                    //
+                    if (Id('precentVirus')) return
                     if (Id('sendVirus')) {
-                        if (Id('sendVirus').innerHTML === 'מעלה וירוס') {stage2 ()} else {setTimeout(()=>{wasVirusLoaderStarted  () },500)}
+                        if (Id('sendVirus').innerHTML === 'מעלה וירוס') {stage2 (); return} else {setTimeout(()=>{wasVirusLoaderStarted  () },500)}
                     } else {setTimeout(()=>{wasVirusLoaderStarted  () },500)}
 
                 }
@@ -2041,27 +2040,21 @@ function IpadGrahpic (type0) {
 
             }
             function stage2 (){
-                function makeid(length, isPass = false) {
-                        var result           = '';
-                        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                        var passwordChars = "!@#$%^&*~" + characters
-                        if (isPass){characters = passwordChars}
-                        var charactersLength = characters.length;
-                        for (var i = 0; i < length; i++ ) {
-                          result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                        }
-                    return result;
-                }
-                let txt = "סורק ישומים בחיפוש אחר האתר של הארגון." + "<br>" + "אתרים ברשת האפילה:" + "<br>"
-                G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + "</p>"
-                G.divs.textBlock2.innerHTML += '<div id="irgunSite"></div>'
-                let siteDiv = Id('irgunSite');
-                function findSite (n){
-                    let id = makeid(Math.floor(n))
-                    n += 0.2;
-                    siteDiv.innerHTML = id + "Dark.onion";
+                L('stage2')
 
-                    if (n < 15) {setTimeout (()=>{findSite (n)},100)} else {stage3(id + "Dark.onion")}
+                let txt = "מעלה וירוס לשרתים של הארגון." + "<br>" + "התקדמות שליחת הוירוס:"
+                G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + ""
+                G.divs.textBlock2.innerHTML += '<p dir = "rtl"  align="right" id="precentVirus"></p> </p>'
+                let siteDiv = Id('precentVirus');
+                function findSite (n){
+                    let precent= Math.floor(n)
+                    n += 0.8;
+                    siteDiv.innerHTML = precent + "%";
+
+                    if (n < 100) {setTimeout (()=>{findSite (n)},100)} else {
+                        siteDiv.innerHTML = "100%"
+                        setTimeout(()=>{stage3("UpLoad Complete")},1000);
+                    }
                 }
                 findSite(1)
 
@@ -2076,19 +2069,19 @@ function IpadGrahpic (type0) {
 
                  ledEvent (madeUpEvent) }
 
-                G.Q [500] = ["", "","","","","","","",""]
-                G.Q [500][1] =  '<br><p dir=rtl style="text-align: right"> All Applications Scanned'
-                G.Q [500][2] = "כל הישומים נסרקו." + "<br>" + ":על ידי הסריקה נמצא האתר של הארגון." + "<br><br>" + address + "<br><br>" ;
-                G.Q [500][2] += 'האם להמשיך ?'
-                let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
-                G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
-                G.Q [500][4] = "דיווח לרשויות על האתר"
-                G.Q [500][G.mgmt.solutionCol] = 1;
+                G.Q [501] = ["", "","","","","","","",""]
+                G.Q [501][1] =  '<p dir=rtl style="text-align: right"> Virus Upload 100%.'
+                G.Q [501][2] =  "הצלחת להעלות את הוירוס למחשבים של הארגון ולהפיל את הארגון לתקופה הקרובה." + "<br>" + "כל הכבוד ! לחץ לסיום בשביל לראות את התוצאה שלך." + "<br>" + "<br>";
+                G.Q [501][2] += 'האם לסיים ?'
+
+                G.Q [501][3] = "סיום " + " וצפייה בתוצאות"
+                G.Q [501][4] = ""
+                G.Q [501][G.mgmt.solutionCol] = 1;
                 G.mgmt.nextStage ()
 
                 G.divs.textContainer.removeChild(G.divs.textBlock2 )
 
-                setQuestion (500)
+                setQuestion (501)
             }
 
             if (stage === 1){stage1();} else if (stage === 2) {stage2 ()}
