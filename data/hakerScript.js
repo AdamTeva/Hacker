@@ -1222,6 +1222,125 @@ function setQuestion (num) {
     G.mgmt.timer1 = setInterval(()=>{blinkCursor()},200)
 
 }
+function blackScreen () {
+    function returnASCI () {
+        return `MMMMMMMMMMMMWNWWWMMMWWWWWWWWMMMWWWMWNWMMWWWWWWMMMMMMMMMMMMMM
+MMMMMMMMMMMW0dddc:OWXxdddo;:0WXx;oXXl,xWXxdddc:kWMMMMMMMM0MM
+HHHH000001MMMWWWo :N0lxNNx.'0N0c.,:c,,OM0lxNWo ;XMMM[MM]MMMM
+H00XX011MMMMMMMMk'lNd :0d;l0WKd;:0Ko;lXMk'lNMx'lNMMMMMMMMMMM
+00011011MMMMMMMMWXNMO;dNXXWMMWNXXWMMNXWMWXNMMWXNMMMMMMMMMMMM
+M0M0MM0M000M0MMMMMMMWNXK0OkxxxxxxxO0KNWMMMXXXX00000000MMMMMM
+MMMMM0MMAMMMAAMMMN0dc;,,,,,;;:::;;,;,,;cdONU000AC10MMM0010MM
+MMMMAAAMMMMMMMWKo;,:ox0KNNWMMMMMMWWNKOxo:,;oKMMMMMMMMMMMMMMM
+MMM0MMMM0MMMMNd,;xXWMMMMMM00001MMMMMMMMMWXx;,dNMMMM0098AHSMM
+M00MM0MMMMMMX:'xNMMMMMM0MM0MMMMMMMMMMMMMMMMNd'cXMMMMMMMMMMMM
+MM00010M0MMNc'OMMM0000001100MMMMMMMMMMMMMMMMWk'lNSMMMG00GMMM
+0MM00H0MMMMO,dWWWMMMM{}MMMMMMM1110001MFUNMMWWWd,OMHHHX00MMMM
+MM110MMMMMMx;OKkKMMMMX000MMM100MM100MXFMMMMXk00;dMXXXH0000MM
+0MM000HHGMMk:O0:xMMGMM0000MMMM11000MMMGHMMMk:O0cxMM000100MMM
+100001MGHMMXoxNc,0MMMGG0001083HMMM000HMMMMK;:XOoKMMX0100XHMM
+M000100011MMKxXd.oWXOxdoloOWMMMMWOolodxkKWx.lXk0MMMM0168MMMM
+SMMMGGGGMMMMMX0c.ox.      '0MMMMK,      .xd.;0XWMM010000MMMM
+MSMMMNOkKWMMMM0,.xo       cXMMMMXl       oO'.OMMMMW0xkXMMMMM
+MXxMK:.''cKMMMk.,KXc    .dNWNXXNWNd.    :KX: dMMMK:',.:XMMMM
+HMMWd.;Kk';OWMk.,KMNOlco0WNd:lo:oNWKoclkNMX:.dMWO;,OX;.dWMMM
+MMKl.'kWMKocldx;.c0WMMMMMWd..cl..dWMMMMMN0l.'ddoloKMWk'.cKMM
+MWl .okxxkXWXOkdc,,:lxXMMWc 'od' cNMMXxl:,;cdkOXWXOxxko. lWM
+MMKo:;::c::coOXMWNkc;;dKWM0oONNOoOWMXd;;ckNWMNOoc::cc:;:oKMM
+H88010MMMWN0xodxOX0;.cx0KKK0000000KK0xc';0XOxdodOXWMMMMMMMMM
+H000010001H0MMWX0KO,'llolollllllllolllo,'OK0XWMXXXX0010MMMMM
+R001000HDFG00MMMWNk.,Oklccc:ccc::ccllk0,.xXNMMMMXXXX000MMGMM
+M80100MNK0XNKOxdk00;.dNKkdlccccccldk0Nd.,O0kddkKNX00KWMGGMMM
+X00MM0:';:ccclxKWWNx..oNMNX00O000XWMXo..dXWWXkoccc:;';OMMMMM
+10MMMO'.l0XNWWKkdxOK0l,;ok0NWMMWN0kl;,o0KOxdxKWWNNKo..kMMMMM
+X00MMWKc.,0WOc:okNMMMMXOdodkKNNXOdodOXMMMMNOo::OWK;.:0WMMMMM
+MM010MMX:.lo.:KMM00010MMM000011000FACMMHHMMMX:.oo.,KMMM0MMMM
+MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
+00MNNWMMWXKWMMGGMMM0000MMMMMMMMXOKMMM0000100MMMMW[MM00]GGMMM`
+
+    }
+    function setIpadBlack(){
+        let ipadCover = Id('ipadCover');
+        let OriginalTxt = returnASCI ();
+        let numberOfr0ws = OriginalTxt.match(/\n/g).length;
+        let rowsarray = OriginalTxt.split (/\n/g )
+        let txt2 = ""
+        for (q = 0; q <= numberOfr0ws; q++){
+            let scullId = "scullId" + q;
+            txt2 +=  `<span id=${scullId}>` + rowsarray[q] + `</span>\n`
+
+        }
+        ipadCover.innerHTML = '<pre><div dit="rtl"'  + txt2;
+        stl(ipadCover,{backgroundColor:'black', fontSize:"1.6vmin", color:G.css.textcolor, textAlign:"right",direction: 'rtl'})
+        return rowsarray
+    }
+    function changeScull(rows) {
+        let rndLine = () =>  {
+            let num = getRandomInt (rows.length - 1) +1
+            let row = Id("scullId"+ num )
+            while (row.animaAtate == true){
+                num = getRandomInt (rows.length - 1) +1
+                row = Id("scullId"+ num )
+            }
+             row.animaAtate = true; return num
+        }
+        function vanishTxt (t,line) {
+            let row = Id("scullId"+ line)
+            row.style.opacity = (Math.sin(t) + 1.5) + " ";
+            let inlarger = getRandomInt (10)
+            t += (inlarger / 40);
+            if (t < 20){setTimeout (()=>{vanishTxt (t,line)},20)} else {row.style.opacity = 1; row.animaAtate = false;vanishTxt (1,rndLine())}
+        }
+        function runText (line,start = 20,len = 2) {
+            function makeCode(length, isPass = false) {
+                    var result           = '';
+                    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                    var passwordChars = "!@#$%^&*~" + characters
+                    if (isPass){characters = passwordChars}
+                    var charactersLength = characters.length;
+                    for (var i = 0; i < length; i++ ) {
+                      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    }
+                return result;
+            }
+            let rowText = Id("scullId"+ line).innerHTML;
+            start = getRandomInt (rowText.length - 6);
+            let ranCode = makeCode(len)
+            let rowarray = [rowText.slice(0,start - 1),ranCode,rowText.slice(start + ranCode.len)];
+            let finalTxt = rowarray.join('');
+            Id("scullId"+ line).innerHTML = finalTxt
+            Id("scullId"+ line).style.color = 'yellow'
+            L(rowarray)
+
+            function runSameRow (t) {
+                rowarray[1] = makeCode(len);
+                Id("scullId"+ line).innerHTML = rowarray.join('')
+                t++;
+                if (t < 10) {setTimeout (()=>{runSameRow (t)},150 + (line * 3))} else {Id("scullId"+ line).innerHTML = rowText; Id("scullId"+ line).animaAtate = false; runText (rndLine())}
+
+
+            }
+            runSameRow (1 )
+
+
+
+
+        }
+        //vanishTxt (1,rndLine())
+        runText (rndLine())
+        runText (rndLine())
+        //vanishTxt (1,rndLine())
+
+
+    }
+     let pagecontainer = Id('pagecontainer')
+     let fullBlackScreen = Elm ('fullBlackScreen');
+     stl(fullBlackScreen,{backgroundColor:'black', 'position':'fixed', width:'100%',height:'100%'})
+     pagecontainer.appendChild(fullBlackScreen)
+     let originalRows = setIpadBlack()
+     changeScull(originalRows)
+
+}
 function IpadGrahpic (type0) {
 
     function getIp (){
@@ -2599,4 +2718,5 @@ buildBoard ();
 setQuestion (G.saves.qNumber + 1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu();
+blackScreen ()
 //test ('holo')
