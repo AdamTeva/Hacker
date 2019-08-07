@@ -323,6 +323,7 @@ util_functions: {
 }
 
 function clickAnswer (elem){
+    Id('ipadCover').innerHTML = '' //kill
     /* for testing */
     if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.saves.qNumber][G.mgmt.solutionCol]
     let idName = 'ans'+ rightAnswer;
@@ -1264,6 +1265,7 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
     }
     function setIpadBlack(){
         let ipadCover = Id('ipadCover');
+
         let OriginalTxt = returnASCI ();
         let numberOfr0ws = OriginalTxt.match(/\n/g).length;
         let rowsarray = OriginalTxt.split (/\n/g )
@@ -1273,14 +1275,17 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
             txt2 +=  `<span id=${scullId}>` + rowsarray[q] + `</span>\n`
 
         }
-        ipadCover.innerHTML = '<pre><div dit="rtl"'  + txt2;
+
+        ipadCover.innerHTML = '<pre><div id = "scullDiv" dit="rtl"'  + txt2;
         stl(ipadCover,{backgroundColor:'black', fontSize:"1.6vmin", color:G.css.textcolor, textAlign:"right",direction: 'rtl'})
         return rowsarray
     }
     function changeScull(rows) {
+        if (Id('scullDiv')) { } else return
         let rndLine = () =>  {
-            let num = getRandomInt (rows.length - 1) +1
+            let num = getRandomInt (rows.length - 2) +1
             let row = Id("scullId"+ num )
+            if (row){}else { return}
             while (row.animaAtate == true){
                 num = getRandomInt (rows.length - 1) +1
                 row = Id("scullId"+ num )
@@ -1288,6 +1293,7 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
              row.animaAtate = true; return num
         }
         function vanishTxt (t,line0) {
+            if (Id('scullDiv')) { } else return
             let row = Id("scullId"+ line0)
             if (row){ } else return
             row.style.opacity = (Math.sin(t) + 1.5) + " ";
@@ -1296,42 +1302,12 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
             if (t < 7){setTimeout (()=>{vanishTxt (t,line0)},45)} else {row.style.opacity = 1; row.animaAtate = false;
                  return}
         }
-        function deleteText (line,start = 10,len = 10) {
-            let rowText = Id("scullId"+ line).innerHTML;
-            start = getRandomInt (rowText.length - 10);
-            let rowarray = [rowText.slice(0,start ),deletedPart,rowText.slice(start + ranCode.length)];
-            let finalTxt = rowarray.join('');
-
-            Id("scullId"+ line).innerHTML = finalTxt
-            //Id("scullId"+ line).style.color = 'yellow'
-
-
-            function runSameRow (t) {
-                let isEven = (n) =>   n % 2 == 0;
-                let cursor = "&nbsp"
-                if (isEven (t)){cursor = blockIcon;}
-
-
-                rowarray[1] = makeCode(len);
-                if (isSquer) {rowarray[1] = cursor;}
-                Id("scullId"+ line).innerHTML = rowarray.join('')
-                t++;
-                if (t < 50) {setTimeout (()=>{runSameRow (t)},150 + (line * 3))} else {Id("scullId"+ line).innerHTML = rowText; Id("scullId"+ line).animaAtate = false; runText (rndLine(),start,len,isSquer)
-            }
-
-
-            }
-            runSameRow (1 )
-
-
-
-
-        }
-        function runText (line,start = 10,len = 3,isSquer = false) {
+        function runText (line,start = 10,len = 5,isSquer = false) {
+            if (Id('scullDiv')) { } else return
             var blockIcon = "█"
             function makeCode(length, isPass = false) {
                     var result           = '';
-                    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                    var characters       = `110000`//'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                     var passwordChars = "!@#$%^&*~" + characters
                     if (isPass){characters = passwordChars}
                     var charactersLength = characters.length;
@@ -1352,16 +1328,15 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
 
 
             function runSameRow (t) {
+                if (Id('scullDiv')) { } else return
                 let isEven = (n) =>   n % 2 == 0;
                 let cursor = "&nbsp"
                 if (isEven (t)){cursor = blockIcon;}
-
-
                 rowarray[1] = makeCode(len);
                 if (isSquer) {rowarray[1] = cursor;}
                 Id("scullId"+ line).innerHTML = rowarray.join('')
                 t++;
-                if (t < 50) {setTimeout (()=>{runSameRow (t)},350 + (line * 3))} else {Id("scullId"+ line).innerHTML = rowText; Id("scullId"+ line).animaAtate = false; runText (rndLine(),start,len,isSquer)
+                if (t < 50) {setTimeout (()=>{runSameRow (t)},150 + (line * 3))} else {Id("scullId"+ line).innerHTML = rowText; Id("scullId"+ line).animaAtate = false; runText (rndLine(),start,len,isSquer)
             }
 
 
@@ -1372,9 +1347,8 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
 
 
         }
-        runText (rndLine());runText (rndLine());runText (rndLine())
-        runText (rndLine(),1,20,true)
         function randomlyRunfade (){
+            if (Id('scullDiv')) { } else return
             let i;
             let fadeLine = getRandomInt(36)
             for (i = 1; i < 15; i++){
@@ -1387,7 +1361,34 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
             setTimeout (()=>{randomlyRunfade ()},3000)
 
         }
+        function blurScull (){
+
+            if (Id('scullDiv')) { } else return
+            let shouldIblur = getRandomInt(100)
+            if (shouldIblur > 70) {}  else {setTimeout (()=>{blurScull ()},2000) ; return}
+            let ipadCover = Id('ipadCover')
+            let e = 1;
+            let d = 1;
+            let blrer = () => {
+                L(e)
+                let blr = e/100
+                ipadCover.style.filter = `blur(${blr}vmin)`
+                e += d
+                if (e > 90) {d = -1}
+                if (e < 100 && e > 0) {setTimeout((e)=>{blrer (e)},3)} else {blurScull ()}
+            }
+            blrer()
+
+
+
+
+        }
+
+        runText (rndLine());runText (rndLine());runText (rndLine())
+        runText (rndLine(),1,20,true)
         randomlyRunfade ()
+        blurScull ()
+
 
 
 
