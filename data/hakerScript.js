@@ -792,7 +792,7 @@ function buildBoard (){
             G.mgmt.stageNames.push(destenationStages[a])
 
         }
-        console.log("Q : " + t + " , G.mgmt.stageNames :" ,G.mgmt.stageNames );
+
         G.mgmt.stage = G.mgmt.stageNames [1];
 
 
@@ -1224,16 +1224,19 @@ function setQuestion (num) {
 }
 function blackScreen () {
     function returnASCI () {
-        return `MMMMMMMMMMMMWNWWWMMMWWWWWWWWMMMWWWMWNWMMWWWWWWMMMMMMMMMMMMMM
-MMMMMMMMMMMW0dddc:OWXxdddo;:0WXx;oXXl,xWXxdddc:kWMMMMMMMM0MM
-HHHH000001MMMWWWo :N0lxNNx.'0N0c.,:c,,OM0lxNWo ;XMMM[MM]MMMM
-H00XX011MMMMMMMMk'lNd :0d;l0WKd;:0Ko;lXMk'lNMx'lNMMMMMMMMMMM
-00011011MMMMMMMMWXNMO;dNXXWMMWNXXWMMNXWMWXNMMWXNMMMMMMMMMMMM
-M0M0MM0M000M0MMMMMMMWNXK0OkxxxxxxxO0KNWMMMXXXX00000000MMMMMM
-MMMMM0MMAMMMAAMMMN0dc;,,,,,;;:::;;,;,,;cdONU000AC10MMM0010MM
-MMMMAAAMMMMMMMWKo;,:ox0KNNWMMMMMMWWNKOxo:,;oKMMMMMMMMMMMMMMM
+        return `00000011000001000MMMMM00001MMMMWWMMMMMMWW0001110110MMM0000MM
+MMMK:..... .,kWMWo.......   dMMNd' .cKWK, .kMXc........;xNMM
+MMMWXXXXKO:. .kMMNKKKKKKx.  dMMMWx.  'dl. ;XMWNXXXXKOl. .dWM
+M100MM1006K,  oWWkcckWMXl. 'OMMWx. ..   .cKMMXxclOMMMN:  :NM
+00000EHMMWK;  lWNc  :NX:  ,OWWM0' .xKl. .oXWM0,  oWWWWc  :NM
+X0010MM0MMK,  lWN:  :NO. .xWWMMx. '0MWO,  ,OW0,  oWMMNc  :NM
+0110000MMMN0xxKMN:  :NXOxkXMMWWKkxOWMMMXkxxONNOxkKMMMW0xx0WM
+0010001110100QXXNc  :NMMMM00000100011101000000100001100000MM
+00000011000001000HH0WNXK0OkxxxxxxxO0KNWMM0000001100X001000MM
+1000010000010MMMMN0dc;,,,,,;;:::;;,;,,;cdONMM0001000HWM010MM
+MM00AAAMMMXMMMWKo;,:ox0KNNWMMMMMMWWNKOxo:,;oKMMM00000100MMMM
 MMM0MMMM0MMMMNd,;xXWMMMMMM00001MMMMMMMMMWXx;,dNMMMM0098AHSMM
-M00MM0MMMMMMX:'xNMMMMMM0MM0MMMMMMMMMMMMMMMMNd'cXMMMMMMMMMMMM
+M00MM0MMMMMMX:'xNMMMMMM0MM0MMM000001000MMMMNd'cXMMMMMMMMMMMM
 MM00010M0MMNc'OMMM0000001100MMMMMMMMMMMMMMMMWk'lNSMMMG00GMMM
 0MM00H0MMMMO,dWWWMMMM{}MMMMMMM1110001MFUNMMWWWd,OMHHHX00MMMM
 MM110MMMMMMx;OKkKMMMMX000MMM100MM100MXFMMMMXk00;dMXXXH0000MM
@@ -1284,14 +1287,48 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
             }
              row.animaAtate = true; return num
         }
-        function vanishTxt (t,line) {
-            let row = Id("scullId"+ line)
+        function vanishTxt (t,line0) {
+            let row = Id("scullId"+ line0)
+            if (row){ } else return
             row.style.opacity = (Math.sin(t) + 1.5) + " ";
-            let inlarger = getRandomInt (10)
+            let inlarger = 5
             t += (inlarger / 40);
-            if (t < 20){setTimeout (()=>{vanishTxt (t,line)},20)} else {row.style.opacity = 1; row.animaAtate = false;vanishTxt (1,rndLine())}
+            if (t < 7){setTimeout (()=>{vanishTxt (t,line0)},45)} else {row.style.opacity = 1; row.animaAtate = false;
+                 return}
         }
-        function runText (line,start = 20,len = 2) {
+        function deleteText (line,start = 10,len = 10) {
+            let rowText = Id("scullId"+ line).innerHTML;
+            start = getRandomInt (rowText.length - 10);
+            let rowarray = [rowText.slice(0,start ),deletedPart,rowText.slice(start + ranCode.length)];
+            let finalTxt = rowarray.join('');
+
+            Id("scullId"+ line).innerHTML = finalTxt
+            //Id("scullId"+ line).style.color = 'yellow'
+
+
+            function runSameRow (t) {
+                let isEven = (n) =>   n % 2 == 0;
+                let cursor = "&nbsp"
+                if (isEven (t)){cursor = blockIcon;}
+
+
+                rowarray[1] = makeCode(len);
+                if (isSquer) {rowarray[1] = cursor;}
+                Id("scullId"+ line).innerHTML = rowarray.join('')
+                t++;
+                if (t < 50) {setTimeout (()=>{runSameRow (t)},150 + (line * 3))} else {Id("scullId"+ line).innerHTML = rowText; Id("scullId"+ line).animaAtate = false; runText (rndLine(),start,len,isSquer)
+            }
+
+
+            }
+            runSameRow (1 )
+
+
+
+
+        }
+        function runText (line,start = 10,len = 3,isSquer = false) {
+            var blockIcon = "█"
             function makeCode(length, isPass = false) {
                     var result           = '';
                     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -1306,17 +1343,26 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
             let rowText = Id("scullId"+ line).innerHTML;
             start = getRandomInt (rowText.length - 6);
             let ranCode = makeCode(len)
-            let rowarray = [rowText.slice(0,start - 1),ranCode,rowText.slice(start + ranCode.len)];
+            if (isSquer){len = 1; ranCode = blockIcon }
+            let rowarray = [rowText.slice(0,start ),ranCode,rowText.slice(start + ranCode.length)];
             let finalTxt = rowarray.join('');
+
             Id("scullId"+ line).innerHTML = finalTxt
-            Id("scullId"+ line).style.color = 'yellow'
-            L(rowarray)
+            //Id("scullId"+ line).style.color = 'yellow'
+
 
             function runSameRow (t) {
+                let isEven = (n) =>   n % 2 == 0;
+                let cursor = "&nbsp"
+                if (isEven (t)){cursor = blockIcon;}
+
+
                 rowarray[1] = makeCode(len);
+                if (isSquer) {rowarray[1] = cursor;}
                 Id("scullId"+ line).innerHTML = rowarray.join('')
                 t++;
-                if (t < 10) {setTimeout (()=>{runSameRow (t)},150 + (line * 3))} else {Id("scullId"+ line).innerHTML = rowText; Id("scullId"+ line).animaAtate = false; runText (rndLine())}
+                if (t < 50) {setTimeout (()=>{runSameRow (t)},350 + (line * 3))} else {Id("scullId"+ line).innerHTML = rowText; Id("scullId"+ line).animaAtate = false; runText (rndLine(),start,len,isSquer)
+            }
 
 
             }
@@ -1326,10 +1372,25 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
 
 
         }
-        //vanishTxt (1,rndLine())
-        runText (rndLine())
-        runText (rndLine())
-        //vanishTxt (1,rndLine())
+        runText (rndLine());runText (rndLine());runText (rndLine())
+        runText (rndLine(),1,20,true)
+        function randomlyRunfade (){
+            let i;
+            let fadeLine = getRandomInt(36)
+            for (i = 1; i < 15; i++){
+                let l = i; setTimeout(()=> {
+                    let nextLine = fadeLine+l
+                    if (fadeLine > 25) {nextLine= fadeLine-l}
+                    vanishTxt (1,nextLine)
+                }, i*80)
+            }
+            setTimeout (()=>{randomlyRunfade ()},3000)
+
+        }
+        randomlyRunfade ()
+
+
+
 
 
     }
