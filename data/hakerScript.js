@@ -28,7 +28,7 @@ global_object: {
         G.saves.qNumber = 0; // question number
         G.saves.progressArray = [];
         /* STAGE */
-        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
+        G.mgmt.stageNumber = 0; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
         G.mgmt.stagesInfo = {
             'getIp' : 'למציאת כתובת הרשת ',
@@ -64,7 +64,7 @@ global_object: {
         G.hacks.firewallScrambleColor = 'yellow'
         G.hacks.visrusNumberOfrows = 0;
         G.hacks.ipLocations = [];
-        G.testMode = true
+        G.testMode = false;
       }
 util_functions: {
     function L (...args){
@@ -762,12 +762,8 @@ function ledEvent (e){
 
 }
 function buildBoard (){
-
-
     G.mgmt.totalNumOfQuestions = 3
     arrangeStages (G.mgmt.totalNumOfQuestions)
-
-
     function arrangeStages (t) {
         let allQ = t //G.mgmt.totalNumOfQuestions //fsdfsdf
         let originalNames = G.mgmt.stageNames;
@@ -1151,7 +1147,7 @@ function setQuestion (num) {
         if (fulltextArray[t]) {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
 
         position++; position++;
-        setTimeout(()=>{typeWriterEfct (isCorect)},2);
+        setTimeout(()=>{typeWriterEfct (isCorect)},20); // 2 for testing  20 normal
         loopControl++
     }
     function setDirectionBylanguage (element, text) {
@@ -1370,7 +1366,6 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
             let e = 1;
             let d = 1;
             let blrer = () => {
-                L(e)
                 let blr = e/100
                 ipadCover.style.filter = `blur(${blr}vmin)`
                 e += d
@@ -1395,12 +1390,37 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
 
 
     }
+    function setStartText () {
+        let subject1 = ''
+        let subject2 = 'לוח הכפל';
+        let asci0 = `  _   _            _
+ | | | | __ _  ___| | _____ _ __         ${subject1}
+ | |_| |/ _' |/ __| |/ / _ \\ v__|
+ |  _  | (_| | (__|   <  __/ |
+ |_| |_|\\__,_|\\___|_|\\_\\___|_|`
+        asci0 = asci0.replace(/\n/g, '<br>')
+        //asci0 = asci0.replace(/\s/g, '&nbsp')
+        let txt1 = "<pre>" + asci0
+        G.Q [503] = ["", "","","","","","","",""]
+        G.Q [503][1] = txt1;
+        G.Q [503][2] = "<pre>" + `       <font style="color:red ;font-size:8vmin"><b>` + subject2 + `</b></font>
+
+     עליכם לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
+     כל תשובה נכונה תקדם שלב בתהליך הפריצה. ` + "טוען"
+        let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
+        G.Q [503][3] = "שלב ראשון - החל " + G.mgmt.stagesInfo[theNextStage]
+
+        G.Q [503][4] = "<b>";
+        G.Q [503][G.mgmt.solutionCol] = 1;
+        setQuestion (503);
+    }
      let pagecontainer = Id('pagecontainer')
      let fullBlackScreen = Elm ('fullBlackScreen');
      stl(fullBlackScreen,{backgroundColor:'black', 'position':'fixed', width:'100%',height:'100%'})
      pagecontainer.appendChild(fullBlackScreen)
      let originalRows = setIpadBlack()
      changeScull(originalRows)
+     setStartText ()
 
 }
 function IpadGrahpic (type0) {
@@ -2658,7 +2678,7 @@ let rnd = getRandomInt(asciArr.length - 1);
         }
         appContainer.style.position = 'relative';
         function scrollPromise (){
-            let delta = ((getRandomInt(10) + 1) / 10) + 6 // +2 for test 6
+            let delta = ((getRandomInt(10) + 1) / 10) + 2 // +2 for test 6
             let promise1 = new Promise((resolve, reject) => {
                 function scrollApps (h = -300){
                     appContainer.style.top = h + '%';
@@ -2777,8 +2797,6 @@ let rnd = getRandomInt(asciArr.length - 1);
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
-setQuestion (G.saves.qNumber + 1);
 IpadGrahpic (G.mgmt.stage);
 holoMenu();
 blackScreen ()
-//test ('holo')
