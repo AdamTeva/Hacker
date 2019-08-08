@@ -14,7 +14,7 @@ global_object: {
         G.css.backGroundtextcolor = 'black'
         G.css.textFontSize = 2;
         G.css.resizeFontScale = 0.6;
-        G.css.canvasBackground = "#00284d";
+        G.css.canvasBackground = 'black'//"#00284d";
         G.css.breakAfterQuestion = '<br><br><br>'
         G.mgmt = {};
         G.mgmt.totalNumOfQuestions = G.Q.length
@@ -25,7 +25,7 @@ global_object: {
         G.mgmt.savedSession = {};
         /* savings  */
         G.saves = {};
-        G.saves.qNumber = 0; // question number
+        G.saves.qNumber = 1; // question number
         G.saves.progressArray = [];
         /* STAGE */
         G.mgmt.stageNumber = 0; //the stage number to begin /* safd */
@@ -64,7 +64,7 @@ global_object: {
         G.hacks.firewallScrambleColor = 'yellow'
         G.hacks.visrusNumberOfrows = 0;
         G.hacks.ipLocations = [];
-        G.testMode = false;
+        G.testMode = true; // fast wrting
       }
 util_functions: {
     function L (...args){
@@ -323,7 +323,7 @@ util_functions: {
 }
 
 function clickAnswer (elem){
-    Id('ipadCover').innerHTML = '' //kill
+
     /* for testing */
     if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.saves.qNumber][G.mgmt.solutionCol]
     let idName = 'ans'+ rightAnswer;
@@ -361,9 +361,7 @@ function clickAnswer (elem){
 
     }
     function nextQuesion () {
-
-
-        if (G.saves.qNumber !== 500) {
+        if (G.saves.qNumber < 500) {
             IpadGrahpic ('right');
             G.mgmt.numberOftriesPerQuestion++;
             G.saves.progressArray.push(G.mgmt.numberOftriesPerQuestion);
@@ -391,7 +389,12 @@ function clickAnswer (elem){
             op =  op - opDelta;
             if (op > 0){setTimeout(()=>{fadeOut ()}, time)} else if (!G.mgmt.isFinalAnsInChapter){
 
+
                 if (G.saves.qNumber === 500){G.saves.qNumber = G.mgmt.lastqNumber; IpadGrahpic (G.mgmt.stage)} ;
+                if (G.saves.qNumber === 503) {
+
+                    blackScreen('startGame');
+                    return}
 
             setQuestion(G.saves.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
 
@@ -1145,9 +1148,11 @@ function setQuestion (num) {
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
         if (t > 6 || loopControl > 900) {return}
         if (fulltextArray[t]) {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
+        let speed0 = 20
+        if (G.testMode) {speed0 = 2 }
 
         position++; position++;
-        setTimeout(()=>{typeWriterEfct (isCorect)},20); // 2 for testing  20 normal
+        setTimeout(()=>{typeWriterEfct (isCorect)},speed0 ); // 2 for testing  20 normal
         loopControl++
     }
     function setDirectionBylanguage (element, text) {
@@ -1219,7 +1224,21 @@ function setQuestion (num) {
     G.mgmt.timer1 = setInterval(()=>{blinkCursor()},200)
 
 }
-function blackScreen () {
+function blackScreen (com) {
+    // function imagesLoader (){
+    //     let imagesToLoad ['mother-board (1).png','pagebackround.png','map.svg','holoUI2.png','keyboard.png'];
+    //     let I = {}
+    //     G.word[x].sign = new Image();
+    //     G.word[x].sign.id = "sign" + x;
+    //     let signUrl = "signs/sign (" + x + ").png";
+    //     G.loadImg[x].sign = G.WasNotloadedYet;
+    //     G.word[x].sign.onload = function(event) {
+    //         SetLoadValue(event, G.Wasloaded);
+    //     };
+    //     G.word[x].sign.onerror = function(event) {
+    //         SetLoadValue(event, G.loadingError)
+    //     };
+    // }
     function returnASCI () {
         return `00000011000001000MMMMM00001MMMMWWMMMMMMWW0001110110MMM0000MM
 MMMK:..... .,kWMWo.......   dMMNd' .cKWK, .kMXc........;xNMM
@@ -1259,6 +1278,26 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
 00MNNWMMWXKWMMGGMMM0000MMMMMMMMXOKMMM0000100MMMMW[MM00]GGMMM`
 
     }
+    function fadeOutPromise1 (element0, tm = 30){
+        let opct = 1;
+         let delta = 0.01;
+            let promise0 = new Promise((resolve, reject) => {
+                function faderEngine (opct) {
+                    element0.style.opacity = opct;
+                    opct -= delta
+                    if (opct<0){ resolve ('worked');}
+                    else { setTimeout(()=>faderEngine (opct),tm)}
+
+                }
+                faderEngine (1)
+
+                // let wait = setTimeout(() => {
+                //     clearTimout(wait);
+                //     resolve('Promise A win!');
+                // }, 200)
+            })
+            return promise0
+     }
     function setIpadBlack(){
         let ipadCover = Id('ipadCover');
 
@@ -1403,27 +1442,51 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
         let txt1 = "<pre>" + asci0
         G.Q [503] = ["", "","","","","","","",""]
         G.Q [503][1] = txt1;
-        G.Q [503][2] = "<pre>" + `       <font style="color:red ;font-size:8vmin"><b>` + subject2 + `</b></font>
+        G.Q [503][2] = "<pre>" + `       <font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b></font>
 
      עליכם לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
-     כל תשובה נכונה תקדם שלב בתהליך הפריצה. ` + "טוען"
+     כל תשובה נכונה תקדם שלב בתהליך הפריצה.
+     טוען`
         let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
         G.Q [503][3] = "שלב ראשון - החל " + G.mgmt.stagesInfo[theNextStage]
 
         G.Q [503][4] = "<b>";
         G.Q [503][G.mgmt.solutionCol] = 1;
         setQuestion (503);
+        let speed0 = 7000;
+        if (G.testMode){speed0 = 100}
+
+        setTimeout(()=> {
+
+            let t1 = `טוען`;
+            let t2 = `כל הקבצים נטענו. האם להמשיך? `;
+            G.Q [503][2] =G.Q [503][2].replace (t1,t2)
+        },speed0 )
     }
-     let pagecontainer = Id('pagecontainer')
-     let fullBlackScreen = Elm ('fullBlackScreen');
-     stl(fullBlackScreen,{backgroundColor:'black', 'position':'fixed', width:'100%',height:'100%'})
-     pagecontainer.appendChild(fullBlackScreen)
-     let originalRows = setIpadBlack()
-     changeScull(originalRows)
-     setStartText ()
+    function startScreen () {
+        let pagecontainer = Id('pagecontainer')
+        let fullBlackScreen = Elm ('fullBlackScreen');
+        stl(fullBlackScreen,{backgroundColor:'black', 'position':'fixed', width:'100%',height:'100%'})
+        pagecontainer.appendChild(fullBlackScreen)
+        let originalRows = setIpadBlack()
+        changeScull(originalRows)
+        setStartText ()
+
+    }
+    function startGame (){
+        let fullBlackScreen = Id('fullBlackScreen')
+        let ipadCover = Id('ipadCover')
+
+        fadeOutPromise1(ipadCover , 10).then(()=>{
+            fadeOutPromise1(fullBlackScreen , 50).then(()=>{fullBlackScreen.remove()})
+            ipadCover.innerHTML =''})
+    }
+    if (com === 'startGame') {startGame () } else {startScreen ()}
+
 
 }
 function IpadGrahpic (type0) {
+    L(type0)
 
     function getIp (){
         function clickCanvas (e) {
@@ -2797,6 +2860,6 @@ let rnd = getRandomInt(asciArr.length - 1);
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
-IpadGrahpic (G.mgmt.stage);
+//IpadGrahpic ("virus"); setQuestion(1)
 holoMenu();
 blackScreen ()
