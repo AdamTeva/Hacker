@@ -1497,15 +1497,16 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
 
 }
 function IpadGrahpic (type0) {
-    L(type0)
     function blankIpad () {
         let ipadCover = Id('ipadCover')
         let ipad = Id('ipad');
-        ipadCover.innerHTML = ''; ipadCover.innerHTML = ''; ipadCover.style.backgroundColor = 'transparent'
-        ipad.style.backgroundImage = ''; ipad.style.backgroundColor = 'transparent'
+        const context = ipad.getContext('2d');context.clearRect(0, 0, ipad.width, ipad.height)
+
+
+        ipadCover.innerHTML = ''; ipadCover.style.backgroundColor = 'transparent'; ipadCover.style.opacity = '1';
+        ipad.style.backgroundImage = ''; ipad.style.backgroundColor = 'transparent';  ipadCover.style.filter = '';
 
     }
-
     function getIp (){
         function clickCanvas (e) {
             let x0  = e.clientX
@@ -1855,7 +1856,7 @@ function IpadGrahpic (type0) {
             var delta = 0.01 ; top_blure = 0.2; bottom_blur = 0.06
             function bllr (n){
 
-                if (!ipadCover.isbluring) {return}
+                if (!ipadCover.isbluring || G.hacks.current !== 'firewall') {return}
                 let b = 'blur(' + n +'rem)';
                 ipadCover.style.filter = b;
                 if (n > top_blure) { delta *= -1}
@@ -1894,15 +1895,18 @@ function IpadGrahpic (type0) {
         function addFirewallClue (){G.hacks.numOfsuccess++;}
         function drawFireWallIpad () {
             blankIpad ()
+            let col = 'yellow'
+            let col2 = 'rgba(10,10,10,0.3)'
+            var textStl = `color: black; font-size: 4.5vmin; font-weight: bolder; text-shadow:0.05vmin 0.05vmin ${col2}, 0.10vmin 0.10vmin ${col2},0.20vmin 0.20vmin ${col2}, 2vmin 0vmin 2.5vmin ${col}, 0vmin 2vmin 2.5vmin ${col},-2vmin -2vmin 2.5vmin ${col}, 0vmin -2vmin 2.5vmin ${col}, -1vmin 0vmin 2.5vmin ${col}, 1vmin 1vmin 4.5vmin ${col},0vmin -1vmin 3.5vmin ${col}, -1vmin 0vmin 3.5vmin ${col}, 0vmin 0vmin 3.5vmin ${col}`
 
             var ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
-            ipadCover.innerHTML = '<mark><br><br> &nbsp' + 'זיהוי חומת אש'
-            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += "<br><br><mark>" + "מחפש רכיבים"; setBG (ipadFireWallBGColor) ;
+            ipadCover.innerHTML = `<br><br><font style="${textStl}">&nbsp` + 'זיהוי חומת אש'
+            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += `<br><br><font style="${textStl}">` + "מחפש רכיבים" + "</font>"; setBG (ipadFireWallBGColor) ;
             } else {
                 ipadCover.style.opacity = '1';
-                ipadCover.innerHTML += '<br><br><mark>' + 'מזהה רכיבים:' + '<br> '
+                ipadCover.innerHTML += `<br><br><font style="${textStl}">` + 'מזהה רכיבים:' + '<br> '
                 ipadCover.innerHTML += '<div style="line-height:10px">';
 
             }
@@ -2056,6 +2060,7 @@ function IpadGrahpic (type0) {
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
         if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.firewall){G.mgmt.isFinalAnsInChapter = true }
         if (G.mgmt.isChapterCheckout) {G.mgmt.isFinalAnsInChapter = false; return}
+        blankIpad ()
 
         drawFireWallIpad ()
     }
@@ -2889,6 +2894,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
+G.mgmt.stage = 'firewall'
 IpadGrahpic ( G.mgmt.stage); setQuestion(G.saves.qNumber)
 holoMenu();
 //blackScreen ()
