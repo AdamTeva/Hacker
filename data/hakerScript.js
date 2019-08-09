@@ -54,7 +54,7 @@ global_object: {
         G.mgmt.isFinalAnsInChapter = false;
         G.mgmt.soundIsOn = true;
 
-        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ;  }
+        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;  }
         G.divs = {};
         G.hacks = {};
         G.hacks.numOfsuccess = 0;
@@ -388,11 +388,11 @@ function clickAnswer (elem){
             tb.style.color = finRgb;
             op =  op - opDelta;
             if (op > 0){setTimeout(()=>{fadeOut ()}, time)} else if (!G.mgmt.isFinalAnsInChapter){
+                if (G.mgmt.isChapterCheckout) {G.mgmt.nextStage() }
 
 
                 if (G.saves.qNumber === 500){G.saves.qNumber = G.mgmt.lastqNumber; IpadGrahpic (G.mgmt.stage)} ;
                 if (G.saves.qNumber === 503) {
-
                     blackScreen('startGame');
                     return}
 
@@ -1498,6 +1498,13 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
 }
 function IpadGrahpic (type0) {
     L(type0)
+    function blankIpad () {
+        let ipadCover = Id('ipadCover')
+        let ipad = Id('ipad');
+        ipadCover.innerHTML = ''; ipadCover.innerHTML = ''; ipadCover.style.backgroundColor = 'transparent'
+        ipad.style.backgroundImage = ''; ipad.style.backgroundColor = 'transparent'
+
+    }
 
     function getIp (){
         function clickCanvas (e) {
@@ -1622,7 +1629,8 @@ function IpadGrahpic (type0) {
 
                     G.Q [500][4] = "בדיקה נוספת";
                     G.Q [500][G.mgmt.solutionCol] = 1;
-                    G.mgmt.nextStage ()
+                    G.mgmt.isChapterCheckout = true;
+                    //G.mgmt.nextStage ()
 
                     G.divs.textContainer.removeChild(G.divs.textBlock2 )
                     setQuestion (500)
@@ -1723,7 +1731,7 @@ function IpadGrahpic (type0) {
 
         }
         let ipadCover = Id('ipadCover')
-        ipadCover.innerHTML = ''; ipadCover.innerHTML = ''; ipadCover.style.backgroundColor = 'transparent'
+        blankIpad ()
         var canvas = Id ('ipad');
         canvas.addEventListener('click',clickCanvas,false);
         var preW = Pre2Num (G.divs.ipadContainer.style.width) / 100;
@@ -1821,7 +1829,8 @@ function IpadGrahpic (type0) {
                     G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
                     G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                     G.Q [500][G.mgmt.solutionCol] = 1;
-                    G.mgmt.nextStage ()
+                    G.mgmt.isChapterCheckout = true;
+                    //G.mgmt.nextStage ()
                     G.divs.textContainer.removeChild(G.divs.textBlock2 )
                     setQuestion (500)
 
@@ -1884,6 +1893,7 @@ function IpadGrahpic (type0) {
         }
         function addFirewallClue (){G.hacks.numOfsuccess++;}
         function drawFireWallIpad () {
+            blankIpad ()
 
             var ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
@@ -2044,7 +2054,8 @@ function IpadGrahpic (type0) {
             addFirewallClue ()}
             else if (answeris === 'wrong') {blureChanger ();setBG(ipadFireWallBGColor)}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
-        if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.firewall){G.mgmt.isFinalAnsInChapter = true } //current
+        if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.firewall){G.mgmt.isFinalAnsInChapter = true }
+        if (G.mgmt.isChapterCheckout) {G.mgmt.isFinalAnsInChapter = false; return}
 
         drawFireWallIpad ()
     }
@@ -2074,7 +2085,8 @@ function IpadGrahpic (type0) {
                 G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
                 G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                 G.Q [500][G.mgmt.solutionCol] = 1;
-                G.mgmt.nextStage ()
+                G.mgmt.isChapterCheckout = true;
+                //G.mgmt.nextStage ()
 
                 G.divs.textContainer.removeChild(G.divs.textBlock2 )
 
@@ -2245,6 +2257,7 @@ function IpadGrahpic (type0) {
                 newInput.innerHTML = '<br>'
                 return newInput;
             }
+            blankIpad ()
             var firstName = addInput ('firstName', 'text', 'שם פרטי', {'width': '45%'});
             var familyName = addInput ('familyName', 'text', 'שם משפחה', {'width': '45%'});
             var userName =  addInput ('userName', 'text', 'שם משתמש', {'width': '85%'});
@@ -2395,7 +2408,8 @@ function IpadGrahpic (type0) {
                 G.Q [501][3] = "סיום " + " וצפייה בתוצאות"
                 G.Q [501][4] = ""
                 G.Q [501][G.mgmt.solutionCol] = 1;
-                G.mgmt.nextStage ()
+                G.mgmt.isChapterCheckout = true;
+                //G.mgmt.nextStage ()
 
                 G.divs.textContainer.removeChild(G.divs.textBlock2 )
 
@@ -2605,6 +2619,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
          }
+        blankIpad ()
 
         const ascispanId = 'asciSpan'; //
         var ipadCover = Id('ipadCover');
@@ -2685,7 +2700,8 @@ let rnd = getRandomInt(asciArr.length - 1);
                 G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
                 G.Q [500][4] = "דיווח לרשויות על האתר"
                 G.Q [500][G.mgmt.solutionCol] = 1;
-                G.mgmt.nextStage ()
+                G.mgmt.isChapterCheckout = true;
+                //G.mgmt.nextStage ()
 
                 G.divs.textContainer.removeChild(G.divs.textBlock2 )
 
@@ -2728,7 +2744,7 @@ let rnd = getRandomInt(asciArr.length - 1);
         let appHeader = Elm ('appHeader')
         let ipadColor = Id('ipad').style.backgroundColor;
         let foundText =  `נמצאו ${G.hacks.numOfsuccess } אפליקציות חשודות`
-        ipadCover.innerHTML = '';
+        blankIpad ()
         let ipad = Id('ipad')
         ipad.style.backgroundImage = 'url( data/ipad_wallpaper.svg)' /////
         ipad.style.backgroundSize ='cover'
@@ -2873,6 +2889,6 @@ let rnd = getRandomInt(asciArr.length - 1);
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
-IpadGrahpic ("getIp"); setQuestion(G.saves.qNumber)
+IpadGrahpic ( G.mgmt.stage); setQuestion(G.saves.qNumber)
 holoMenu();
 //blackScreen ()
