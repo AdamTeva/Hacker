@@ -28,7 +28,7 @@ global_object: {
         G.saves.qNumber = 1; // question number
         G.saves.progressArray = [];
         /* STAGE */
-        G.mgmt.stageNumber = 0; //the stage number to begin /* safd */
+        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
         G.mgmt.stagesInfo = {
             'getIp' : 'למציאת כתובת הרשת ',
@@ -330,7 +330,7 @@ function clickAnswer (elem){
     let div = Id(idName); elem.target = div}
 
     function wrongAnswerAnimation (num) {
-        if (G.saves.qNumber !== 500) {G.mgmt.numberOftriesPerQuestion++}
+        if (G.saves.qNumber < 500) {G.mgmt.numberOftriesPerQuestion++}
 
 
 
@@ -765,7 +765,7 @@ function ledEvent (e){
 
 }
 function buildBoard (){
-    G.mgmt.totalNumOfQuestions = 3
+    G.mgmt.totalNumOfQuestions = 20 //kill
     arrangeStages (G.mgmt.totalNumOfQuestions)
     function arrangeStages (t) {
         let allQ = t //G.mgmt.totalNumOfQuestions //fsdfsdf
@@ -1452,6 +1452,10 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
 
         G.Q [503][4] = "<b>";
         G.Q [503][G.mgmt.solutionCol] = 1;
+
+        G.mgmt.lastqNumber = G.saves.qNumber
+        G.saves.qNumber = 503
+
         setQuestion (503);
         let speed0 = 7000;
         if (G.testMode){speed0 = 100}
@@ -1478,8 +1482,15 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
         let ipadCover = Id('ipadCover')
 
         fadeOutPromise1(ipadCover , 10).then(()=>{
-            fadeOutPromise1(fullBlackScreen , 50).then(()=>{fullBlackScreen.remove()})
-            ipadCover.innerHTML =''})
+            fadeOutPromise1(fullBlackScreen , 50).then(()=>{fullBlackScreen.remove()
+                G.saves.qNumber = G.mgmt.lastqNumber;
+                setQuestion (G.saves.qNumber)
+                IpadGrahpic (G.mgmt.stage)
+
+            })
+            ipadCover.innerHTML ='';
+            ipadCover.style.opacity = '1'
+        })
     }
     if (com === 'startGame') {startGame () } else {startScreen ()}
 
@@ -1712,7 +1723,7 @@ function IpadGrahpic (type0) {
 
         }
         let ipadCover = Id('ipadCover')
-        ipadCover.innerHTML = '';
+        ipadCover.innerHTML = ''; ipadCover.innerHTML = ''; ipadCover.style.backgroundColor = 'transparent'
         var canvas = Id ('ipad');
         canvas.addEventListener('click',clickCanvas,false);
         var preW = Pre2Num (G.divs.ipadContainer.style.width) / 100;
@@ -1772,7 +1783,7 @@ function IpadGrahpic (type0) {
             }
             //var x = 200;
             function runDefences (x){
-                let tx1 = '<p dir = "rtl" align="right">' + "חומת האש נסרקת, חולשות ופרצות אבטחה:" + "</p>";
+                let tx1 = '<p dir = "rtl" align="right">' + "חומת האש נסרקת, מחפש חולשות ופרצות אבטחה:" + "</p>";
                 let tx2 = 'Stack buffer Address: x000fff' + (x + 212) + ' <br><br>';
                  G.divs.textBlock2.innerHTML = tx1 + tx2
                 for (i = 0 ; i < 19; i++){
@@ -2697,7 +2708,6 @@ let rnd = getRandomInt(asciArr.length - 1);
              ledEvent (madeUpEvent)
 
         }
-
         function getSVGs () {
 
             var svgHTML = [` <svg version="1.1" id="social" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  viewBox="0 0 57.983 57.983" style="enable-background:new 0 0 57.983 57.983;" xml:space="preserve"> <g> 	<path style="fill:#A4E869;" d="M25.934,55.598l-4.177-2.67c-1.037-0.566-2.244-2.524-2.244-3.705v-3.24  c0,0,2.882-1.905,3.768-5.762c0.734-0.475,1.226-1.296,1.226-2.231c0,0,0-1.376,0-2.425c-3.207,1.021-6.014,1.418-6.014,1.418  c2.188-2.188,2.957-6.682,3.225-9.872c-1.139-1.544-2-3.264-2.549-5.098c-1.395-0.625-3.231-1.029-5.655-1.029c-10.803,0-10,8-10,8  v3.126c-0.54,0.488-0.993,1.555-0.993,2.335v3.546c0,0.934,0.491,1.756,1.226,2.231c0.886,3.857,3.768,5.762,3.768,5.762v3.24  c0,1.182-1.207,3.14-2.244,3.705l-4.177,2.67c-1.09,0.697-0.596,2.385,0.697,2.385h23.449  C26.53,57.983,27.023,56.295,25.934,55.598z"/> 	<path style="fill:#52C306;" d="M37.991,0c-10.77,0-19.5,7.827-19.5,17.483c0,3.558,1.189,6.866,3.225,9.628  c-0.268,3.19-1.037,7.684-3.225,9.872c0,0,6.686-0.938,11.214-3.673c2.515,1.06,5.322,1.656,8.286,1.656  c10.77,0,19.5-7.827,19.5-17.483S48.761,0,37.991,0z"/> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg> `, ` <svg version="1.1" id="Chat3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  viewBox="0 0 58 58" style="enable-background:new 0 0 58 58;" xml:space="preserve"> <g> 	<path style="fill:#FC852E;" d="M34.064,54.07c-0.539-0.12-0.879-0.654-0.76-1.193c0.121-0.539,0.663-0.874,1.193-0.759l7.252,1.614  c0.003-0.002,0.007-0.003,0.01-0.005l0.171,0.045l0.326,0.073c0.027,0.006,0.047,0.024,0.073,0.032L58,58l-4.988-14.963  C55.543,38.78,57,33.812,57,28.5C57,12.76,44.24,0,28.5,0S0,12.76,0,28.5S12.76,57,28.5,57c3.603,0,7.048-0.673,10.221-1.894  L34.064,54.07z"/> 	<path style="fill:#FFFFFF;" d="M29,22H15c-0.552,0-1-0.448-1-1s0.448-1,1-1h14c0.552,0,1,0.448,1,1S29.552,22,29,22z"/> 	<path style="fill:#FFFFFF;" d="M42,30H15c-0.552,0-1-0.448-1-1s0.448-1,1-1h27c0.552,0,1,0.448,1,1S42.552,30,42,30z"/> 	<path style="fill:#FFFFFF;" d="M42,38H15c-0.552,0-1-0.448-1-1s0.448-1,1-1h27c0.552,0,1,0.448,1,1S42.552,38,42,38z"/> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg> `, ` <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  viewBox="0 0 58 58" style="enable-background:new 0 0 58 58;" xml:space="preserve"> <g> 	<path style="fill:#2CB742;" d="M0,58l4.988-14.963C2.457,38.78,1,33.812,1,28.5C1,12.76,13.76,0,29.5,0S58,12.76,58,28.5  S45.24,57,29.5,57c-4.789,0-9.299-1.187-13.26-3.273L0,58z"/> 	<path style="fill:#FFFFFF;" d="M47.683,37.985c-1.316-2.487-6.169-5.331-6.169-5.331c-1.098-0.626-2.423-0.696-3.049,0.42  c0,0-1.577,1.891-1.978,2.163c-1.832,1.241-3.529,1.193-5.242-0.52l-3.981-3.981l-3.981-3.981c-1.713-1.713-1.761-3.41-0.52-5.242  c0.272-0.401,2.163-1.978,2.163-1.978c1.116-0.627,1.046-1.951,0.42-3.049c0,0-2.844-4.853-5.331-6.169  c-1.058-0.56-2.357-0.364-3.203,0.482l-1.758,1.758c-5.577,5.577-2.831,11.873,2.746,17.45l5.097,5.097l5.097,5.097  c5.577,5.577,11.873,8.323,17.45,2.746l1.758-1.758C48.048,40.341,48.243,39.042,47.683,37.985z"/> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg> `, ` <svg version="1.1" id="Coins" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  viewBox="0 0 58.007 58.007" style="enable-background:new 0 0 58.007 58.007;" xml:space="preserve"> <g id="XMLID_22_"> 	<path id="XMLID_143_" style="fill:#FCC62D;" d="M52.003,29.211v1.238c0,6.932-11.641,12.551-26,12.551  c-7.926,0-15.019-1.714-19.788-4.414C7.823,44.831,18.751,50,32.003,50c14.359,0,26-6.068,26-13  C58.003,33.952,55.747,31.266,52.003,29.211"/> 	<path id="XMLID_142_" style="fill:#E4AF18;" d="M32.003,50c-14.359,0-26-6.068-26-13v8.448c0,6.932,11.641,12.552,26,12.552  s26-5.62,26-12.552V37C58.003,43.932,46.362,50,32.003,50"/> 	<path id="XMLID_141_" style="fill:#CE9912;" d="M9.003,51.349c0.59,0.539,1.259,1.055,2,1.545v-8.291  c-0.741-0.51-1.41-1.045-2-1.603V51.349z"/> 	<path id="XMLID_140_" style="fill:#CE9912;" d="M53.003,44.603v8.291c0.741-0.489,1.41-1.006,2-1.545V43  C54.414,43.558,53.745,44.093,53.003,44.603"/> 	<path id="XMLID_139_" style="fill:#CE9912;" d="M13.003,54.06c0.632,0.327,1.3,0.636,2,0.929v-8.193  c-0.7-0.308-1.368-0.633-2-0.975V54.06z"/> 	<path id="XMLID_138_" style="fill:#CE9912;" d="M49.003,54.988c0.7-0.292,1.368-0.602,2-0.929V45.82  c-0.632,0.342-1.3,0.668-2,0.975V54.988z"/> 	<path id="XMLID_137_" style="fill:#CE9912;" d="M17.003,55.745c0.646,0.221,1.313,0.427,2,0.619V48.25  c-0.687-0.204-1.354-0.423-2-0.656V55.745z"/> 	<path id="XMLID_136_" style="fill:#CE9912;" d="M45.003,56.364c0.687-0.192,1.354-0.398,2-0.619v-8.151  c-0.646,0.233-1.313,0.452-2,0.656V56.364z"/> 	<path id="XMLID_135_" style="fill:#CE9912;" d="M22.003,57.084c0.653,0.132,1.321,0.25,2,0.355v-8.044  c-0.679-0.113-1.347-0.239-2-0.379V57.084z"/> 	<path id="XMLID_134_" style="fill:#CE9912;" d="M40.003,57.439c0.679-0.106,1.347-0.224,2-0.355v-8.069  c-0.653,0.14-1.321,0.266-2,0.38V57.439z"/> 	<path id="XMLID_133_" style="fill:#CE9912;" d="M28.003,57.899c0.658,0.049,1.326,0.083,2,0.107v-8.003  c-0.674-0.026-1.342-0.062-2-0.115V57.899z"/> 	<path id="XMLID_132_" style="fill:#CE9912;" d="M34.003,58.007c0.674-0.025,1.342-0.058,2-0.107v-8.012  c-0.658,0.053-1.326,0.089-2,0.116V58.007z"/> 	<path id="XMLID_131_" style="fill:#E4AF18;" d="M26.003,34.993c-14.359,0-26-6.068-26-13v8.448c0,6.932,11.641,12.552,26,12.552  s26-5.62,26-12.552v-8.448C52.003,28.925,40.362,34.993,26.003,34.993"/> 	<path id="XMLID_130_" style="fill:#CE9912;" d="M3.003,36.342c0.59,0.539,1.259,1.055,2,1.545v-8.291  c-0.741-0.51-1.41-1.045-2-1.602V36.342z"/> 	<path id="XMLID_129_" style="fill:#CE9912;" d="M47.003,29.596v8.291c0.741-0.489,1.41-1.006,2-1.545v-8.349  C48.414,28.551,47.745,29.086,47.003,29.596"/> 	<path id="XMLID_128_" style="fill:#CE9912;" d="M7.003,39.053c0.632,0.327,1.3,0.636,2,0.929v-8.193  c-0.7-0.308-1.368-0.633-2-0.975V39.053z"/> 	<path id="XMLID_127_" style="fill:#CE9912;" d="M43.003,39.981c0.7-0.292,1.368-0.601,2-0.929v-8.239  c-0.632,0.342-1.3,0.668-2,0.975V39.981z"/> 	<path id="XMLID_126_" style="fill:#CE9912;" d="M11.003,40.738c0.646,0.221,1.313,0.427,2,0.619v-8.114  c-0.687-0.204-1.354-0.423-2-0.656V40.738z"/> 	<path id="XMLID_125_" style="fill:#CE9912;" d="M39.003,41.357c0.687-0.192,1.354-0.398,2-0.619v-8.151  c-0.646,0.233-1.313,0.452-2,0.656V41.357z"/> 	<path id="XMLID_124_" style="fill:#CE9912;" d="M16.003,42.077c0.653,0.132,1.321,0.25,2,0.355v-8.044  c-0.679-0.113-1.347-0.239-2-0.379V42.077z"/> 	<path id="XMLID_123_" style="fill:#CE9912;" d="M34.003,42.433c0.679-0.106,1.347-0.224,2-0.355v-8.069  c-0.653,0.14-1.321,0.266-2,0.38V42.433z"/> 	<path id="XMLID_122_" style="fill:#CE9912;" d="M22.003,42.893c0.658,0.049,1.326,0.083,2,0.107v-8.003  c-0.674-0.026-1.342-0.062-2-0.115V42.893z"/> 	<path id="XMLID_121_" style="fill:#CE9912;" d="M28.003,43c0.674-0.025,1.342-0.058,2-0.107v-8.012  c-0.658,0.053-1.326,0.089-2,0.116V43z"/> 	<path id="XMLID_120_" style="fill:#FFD949;" d="M51.32,33.302C48.643,38.858,38.329,43,26.003,43c-4.604,0-8.926-0.58-12.677-1.593  c3.628,2.463,10.085,4.559,18.677,4.559c13.682,0,22-5.311,22-8.966C54.003,35.78,53.064,34.486,51.32,33.302"/> 	<path id="XMLID_119_" style="fill:#FFD949;" d="M31.003,33c-14.359,0-26-5.62-26-12.552v-5.652c-3.141,1.969-5,4.438-5,7.204  c0,6.932,11.641,13,26,13c6.914,0,13.192-1.409,17.849-3.642C40.061,32.401,35.678,33,31.003,33"/> 	<path id="XMLID_118_" style="fill:#E4AF18;" d="M31.003,24.993c-14.359,0-26-6.068-26-13v8.448c0,6.932,11.641,12.552,26,12.552  c14.359,0,26-5.62,26-12.552v-8.448C57.003,18.925,45.362,24.993,31.003,24.993"/> 	<path id="XMLID_117_" style="fill:#CE9912;" d="M8.003,26.342c0.59,0.539,1.259,1.055,2,1.545v-8.291  c-0.741-0.51-1.41-1.045-2-1.602V26.342z"/> 	<path id="XMLID_116_" style="fill:#CE9912;" d="M52.003,19.596v8.291c0.741-0.489,1.41-1.006,2-1.545v-8.349  C53.414,18.551,52.745,19.086,52.003,19.596"/> 	<path id="XMLID_115_" style="fill:#CE9912;" d="M12.003,29.053c0.632,0.327,1.3,0.636,2,0.929v-8.193  c-0.7-0.308-1.368-0.633-2-0.975V29.053z"/> 	<path id="XMLID_114_" style="fill:#CE9912;" d="M48.003,29.981c0.7-0.292,1.368-0.601,2-0.929v-8.239  c-0.632,0.342-1.3,0.668-2,0.975V29.981z"/> 	<path id="XMLID_113_" style="fill:#CE9912;" d="M16.003,30.738c0.646,0.221,1.313,0.427,2,0.619v-8.114  c-0.687-0.204-1.354-0.423-2-0.656V30.738z"/> 	<path id="XMLID_112_" style="fill:#CE9912;" d="M44.003,31.357c0.687-0.192,1.354-0.398,2-0.619v-8.151  c-0.646,0.233-1.313,0.452-2,0.656V31.357z"/> 	<path id="XMLID_111_" style="fill:#CE9912;" d="M21.003,32.077c0.653,0.132,1.321,0.25,2,0.355v-8.044  c-0.679-0.113-1.347-0.239-2-0.379V32.077z"/> 	<path id="XMLID_110_" style="fill:#CE9912;" d="M39.003,32.433c0.679-0.106,1.347-0.224,2-0.355v-8.069  c-0.653,0.14-1.321,0.266-2,0.38V32.433z"/> 	<path id="XMLID_109_" style="fill:#CE9912;" d="M27.003,32.893c0.658,0.049,1.326,0.083,2,0.107v-8.003  c-0.674-0.026-1.342-0.062-2-0.115V32.893z"/> 	<path id="XMLID_108_" style="fill:#CE9912;" d="M33.003,33c0.674-0.025,1.342-0.058,2-0.107v-8.012  c-0.658,0.053-1.326,0.089-2,0.116V33z"/> 	<path id="XMLID_107_" style="fill:#FCC62D;" d="M57.003,12c0,6.932-11.641,13-26,13c-14.359,0-26-6.068-26-13  c0-6.932,11.641-12,26-12C45.362,0,57.003,5.068,57.003,12"/> 	<path id="XMLID_106_" style="fill:#FFD949;" d="M31.003,20.966c-13.682,0-22-5.31-22-8.966c0-3.655,8.318-9,22-9  c13.682,0,22,5.345,22,9C53.003,15.656,44.685,20.966,31.003,20.966"/> 	<path id="XMLID_105_" style="fill:#F0C41B;" d="M37.784,13.359c0.82-0.174,1.301-0.68,1.124-1.257l-0.19-0.616  c-0.139-0.453-0.68-0.831-1.343-1.019c-0.902-1.927-3.202-2.625-6.618-2.625c-0.162,0-0.32,0.004-0.476,0.01  c-1.166,0.048-2.329-0.064-3.236-0.396c-0.37-0.135-0.671-0.276-0.87-0.423c-0.09-0.066-0.308-0.024-0.308,0.06  c0,0.146,0.011,0.319,0.043,0.511c0.124,0.747-0.024,0.635-0.762,1.38c-0.428,0.434-0.769,0.934-1.016,1.486  c-0.659,0.189-1.197,0.566-1.336,1.017l-0.19,0.616c-0.177,0.577,0.304,1.083,1.124,1.257c0.234,1.476,1.237,2.772,3.424,3.486  l-0.12,1.037c-0.032,0.277-0.271,0.533-0.619,0.659l-4.411,1.592C24.58,20.674,27.516,21,30.757,21  c3.196,0,6.095-0.317,8.645-0.842l-4.315-1.613c-0.341-0.128-0.575-0.382-0.606-0.654l-0.121-1.045  C36.547,16.132,37.55,14.835,37.784,13.359"/> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg> `
@@ -2719,11 +2729,14 @@ let rnd = getRandomInt(asciArr.length - 1);
         let ipadColor = Id('ipad').style.backgroundColor;
         let foundText =  `נמצאו ${G.hacks.numOfsuccess } אפליקציות חשודות`
         ipadCover.innerHTML = '';
+        let ipad = Id('ipad')
+        ipad.style.backgroundImage = 'url( data/ipad_wallpaper.svg)' /////
+        ipad.style.backgroundSize ='cover'
 
 
         appHeader.innerHTML =   "מחפש אפליקציות חשודות "  + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
 
-        stl (appHeader, {position: 'relative', color:'white', fontFamily: 'consolas', fontSize: '4.5vmin', textAlign: 'center', zIndex: '19', backgroundColor: ipadColor, hieght: '130%', overflow:'hidden'})
+        stl (appHeader, {position: 'relative', color:'white', fontFamily: 'consolas', fontSize: '4.5vmin', textAlign: 'center', zIndex: '19', backgroundColor: 'rgba(20,10,70,0.8)', hieght: '130%', overflow:'hidden', borderRadius:"30vmin"})
         stl (appContainer, { paddingLeft :'3vmin'})
 
         ipadCover.appendChild(appHeader)
@@ -2860,6 +2873,6 @@ let rnd = getRandomInt(asciArr.length - 1);
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
-//IpadGrahpic ("virus"); setQuestion(1)
+IpadGrahpic ("getIp"); setQuestion(G.saves.qNumber)
 holoMenu();
-blackScreen ()
+//blackScreen ()
