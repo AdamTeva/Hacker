@@ -395,6 +395,7 @@ function clickAnswer (elem){
                 if (G.saves.qNumber === 503) {
                     blackScreen('startGame');
                     return}
+                if (G.saves.qNumber === 501) {blackScreen('endGame'); return}
 
             setQuestion(G.saves.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
 
@@ -423,10 +424,12 @@ function clickAnswer (elem){
         }
 
 }
-function holoMenu () { // creats the menue inside the holo;
+function holoMenu (r) { // creats the menue inside the holo;
+
     //G.divs.holoMenuoptions = G.divs.holoMenuoptions || [];
     function scanApps () {
         if (Id('scanApps').innerHTML === 'סורק ישומים') {return}
+        if (G.mgmt.stage !== 'webSite') {Id('scanApps').innerHTML = ''}
         let scanAppDiv = Id('scanApps');
         scanAppDiv.innerHTML ='סורק ישומים';
         scanAppDiv.style.color = 'blue'
@@ -435,7 +438,7 @@ function holoMenu () { // creats the menue inside the holo;
             let o = Math.sin (b) + 1;
             scanAppDiv.style.opacity = o + " "
             b++;
-            if (Id('scanApps') ){setTimeout(()=>blinker(b), 100)}
+            if (Id('scanApps') && G.mgmt.stage === 'webSite' ){setTimeout(()=>blinker(b), 100)} else {if (Id('scanApps')){Id('scanApps').innerHTML = ''}}
 
         }
         blinker (1)
@@ -572,38 +575,51 @@ createMenu (op)
          option.addEventListener('click',clickSubMenu);
     }
     function progressMenu () {
-        function checkForUpdate (tim) {
+        function checkForUpdate (tim = 4000) {
+            let txt0 = 'אחרי נסיון שני'
+            let qAnswered = G.saves.progressArray.length || 0 ;
             if(G.divs.holoScreen.innerHTML.includes(txt0)){
-                if (qAnswered === G.saves.progressArray.length){setTimeout(()=>{checkForUpdate (5000)},3000 )} else {progressMenu ()}
+                // if (qAnswered === G.saves.progressArray.length){setTimeout(()=>{checkForUpdate (5000)},4000 )} else {progressMenu ()}
+                G.divs.holoScreen.querySelector("#text").innerHTML = progressText ();
+                setTimeout(()=>{checkForUpdate (tim)},tim )
+                //progressMenu ()
             }
         }
 
-        function preCent (small,big) {
-            if (small && big){} else return '0%'
-            let double = Math.floor(100*(small / big))
-            return double + '%'
+
+        function progressText (){
+            function preCent (small,big) {
+                if (small && big){} else return '0%'
+                let double = Math.floor(100*(small / big))
+                return double + '%'
+
+            }
+            let qTotal = G.mgmt.totalNumOfQuestions || 0;
+            let qAnswered = G.saves.progressArray.length || 0 ;
+            let qNumBytry = [];
+            let qprecent = preCent (qAnswered,qTotal)
+            for (let a= 0; a < 4; a++){
+                var countOfTries = 0
+                G.saves.progressArray.forEach((e)=>{if (e === (a+1)){countOfTries++}})
+                qNumBytry[a] = countOfTries;
+            }
+            let q0=0, q1=0, q23=0, p0='0%', p1='0%', p23='0%';
+            q0 = qNumBytry[0]; q1 = qNumBytry[1]; q23 = qNumBytry[2] + qNumBytry[3]
+            p0 = preCent(q0,qAnswered); p1 =  preCent(q1,qAnswered); p23=  preCent(q23,qAnswered)
+            let txt0 =  'נתוני ההתקדמות במשחק:';
+            let txt1 = `<br><br>עניתם על ` +  qAnswered + ' מתוך ' + qTotal + ' שאלות, שהן ' + qprecent + '&nbsp'+ 'מכלל השאלות.'
+            let table = `<table style="width:100% ; border: solid 0.2vmin;  border-collapse: collapse; ; text-align: center"> <tr style="border:solid 0.2vmin">   <th  style="border:solid 0.2vmin" >סוג המענה</th>   <th  style="border: solid 0.2vmin">במספרים</th>   <th  style="border: solid 0.2vmin">באחוזים</th> </tr> <tr  style="border: solid 0.2vmin">  <td>ללא טעויות</td>   <td>${q0}</td> <td>${p0}</td> </tr> <tr>   <td>בנסיון שני</td>   <td>${q1}</td> <td>${p1}</td> </tr> <tr>   <td> אחרי נסיון שני</td>   <td>${q23}</td> <td>${p23}</td> </tr></table>`
+
+            let txt = txt0 + txt1 + table;
+            return txt
 
         }
-        let qTotal = G.mgmt.totalNumOfQuestions || 0;
-        let qAnswered = G.saves.progressArray.length || 0 ;
-        let qNumBytry = [];
-        let qprecent = preCent (qAnswered,qTotal)
-        for (let a= 0; a < 4; a++){
-            var countOfTries = 0
-            G.saves.progressArray.forEach((e)=>{if (e === (a+1)){countOfTries++}})
-            qNumBytry[a] = countOfTries;
-        }
-        let q0=0, q1=0, q23=0, p0='0%', p1='0%', p23='0%';
-        q0 = qNumBytry[0]; q1 = qNumBytry[1]; q23 = qNumBytry[2] + qNumBytry[3]
-        p0 = preCent(q0,qAnswered); p1 =  preCent(q1,qAnswered); p23=  preCent(q23,qAnswered)
-        let txt0 =  'נתוני ההתקדמות במשחק:';
-        let txt1 = `<br><br>עניתם על ` +  qAnswered + ' מתוך ' + qTotal + ' שאלות, שהן ' + qprecent + '&nbsp'+ 'מכלל השאלות.'
-        let table = `<table style="width:100% ; border: solid 0.2vmin;  border-collapse: collapse; ; text-align: center"> <tr style="border:solid 0.2vmin">   <th  style="border:solid 0.2vmin" >סוג המענה</th>   <th  style="border: solid 0.2vmin">במספרים</th>   <th  style="border: solid 0.2vmin">באחוזים</th> </tr> <tr  style="border: solid 0.2vmin">  <td>ללא טעויות</td>   <td>${q0}</td> <td>${p0}</td> </tr> <tr>   <td>בנסיון שני</td>   <td>${q1}</td> <td>${p1}</td> </tr> <tr>   <td> אחרי נסיון שני</td>   <td>${q23}</td> <td>${p23}</td> </tr></table>`
+        let progTxt = progressText ();
 
-        txt = txt0 + txt1 + table;
-        let op = [ ['text' , txt],['mainMenu', 'חזרה']]
+
+        let op = [ ['text' , progTxt],['mainMenu', 'חזרה']]
         createMenu (op)
-        setTimeout(()=>{checkForUpdate (3000)},3000 )
+        setTimeout(()=>{checkForUpdate (3000)},4000 )
 
     }
     function helpMenu  (){
@@ -672,17 +688,13 @@ createMenu (op)
             })
             return promise0
      }
+    if (r === 'scanner') {mainMenu (); return};
 
 
     holoAnimation ();
     mainMenu ();
     G.divs.holoContainer.style.opacity = "0";
-    let page = Id('laptopKeyboard')
-
-
-
-
-
+    //let page = Id('laptopKeyboard')
 }
 function ledEvent (e){
     function fadeHolo (op = 1,diro = 1.1,tm = 50) {
@@ -1239,7 +1251,7 @@ function blackScreen (com) {
     //         SetLoadValue(event, G.loadingError)
     //     };
     // }
-    function returnASCI () {
+    function returnScullASCI () {
         return `00000011000001000MMMMM00001MMMMWWMMMMMMWW0001110110MMM0000MM
 MMMK:..... .,kWMWo.......   dMMNd' .cKWK, .kMXc........;xNMM
 MMMWXXXXKO:. .kMMNKKKKKKx.  dMMMWx.  'dl. ;XMWNXXXXKOl. .dWM
@@ -1278,6 +1290,49 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
 00MNNWMMWXKWMMGGMMM0000MMMMMMMMXOKMMM0000100MMMMW[MM00]GGMMM`
 
     }
+    function returnShieldASCI () {
+        return `00000011000001000MMMMM00001MMMMWWMMMMMMWW0001110110MMM0000MM
+MMMK:..... .,kWMWo.......   dMMNd' .cKWK, .kMXc........;xNMM
+MMMWXXXXKO:. .kMMNKKKKKKx.  dMMMWx.  'dl. ;XMWNXXXXKOl. .dWM
+M100MM1006K,  oWWkcckWMXl. 'OMMWx. ..   .cKMMXxclOMMMN:  :NM
+00000EHMMWK;  lWNc  :NX:  ,OWWM0' .xKl. .oXWM0,  oWWWWc  :NM
+X0010MM0MMK,  lWN:  :NO. .xWWMMx. '0MWO,  ,OW0,  oWMMNc  :NM
+0110000MMMN0xxKMN:  :NXOxkXMMWWKkxOWMMMXkxxONNOxkKMMMW0xx0WM
+0010001110100QXXNc  :NMMMM00000100011101000000100001100000MM
+MM00xX0001MMMMMMWX0kdlc:;,'''''''',;:cldk0XWMM00001000010MMM
+M0x0111010MMWXOxl:,'''''''''''''''''''''',:lx0XWMMMMM00MMMMM
+MMMMMMMMMWNOd:,'''''''',;:cllllllc:;,'''''''',:dONWMM110MMMM
+MM00MMMWXkc,'''''';coxOKXNNWWWWWWNNXKOxoc;'''''',cxXWMMMMMMM
+MMMMMWXk:'''''':okKNWXM00MMXMMMMM0000M1MNKko:'''''':xXWMMMMM
+M0MMNOc,'''',ckXWMMMMMMWNXK000000KXNWMMMMMMWXkc,'''',cOWMMMM
+MMWXd;'''',lONMMMMMWXOdlc;,,,''',,;cldOXWMMMMWNOc,'''';xXWMM
+MWXo,'''':xNMMMMWXkl;'''''''''''''''''';lkXWMMMMNx:'''',oXMM
+MXo,''''c0WMMMWXx:'''''''..........''''''':xXMMMMW0c'''',oXM
+Nd,''''lKWMMMWOc'''''....   'll'   ....'''''cOWMMMWKc'''',dN
+k;'''':0WMMMNk;''''...     .dNNd.     ...'''';kNMMMW0c'''';O
+l'''',xWMMMWk;''''..       :XMMX:       ..'''';OWMMMWx,''''l
+;''''cKMMMMKl'''''..'''''.;OMMMMO;''''''...''''cKMMMMKc'''';
+'''''dNMMMWk;''''..;d0XNXXNWMMMMWNXXNX0d;..'''';kWMMMNd'''',
+'''',xWMMMWx,''''.   'lONMK0MM00WWMNOl'   ..''',xWMMMWx,''''
+'''''dWMMMWx,''''.     .cXMMMWMWMMXc.     .'''',xWMMMWd'''''
+,''''lXMMMM0:''''.     .lNMMWWWWMMNo.     .'''':0MMMMXo'''',
+c'''':OWM0MNd,''''.    ;KWXkc,,ckXWK;    .'''',dNMMMWO:''''c
+d,''''oXMMMWKl'''''.. .dOl'      'lOd. ..'''''lKMMMMXo'''',d
+Kc'''',xNMMMWKo,''''..',.          .,'..'''',oKMMMMNx,''''cK
+WO:'''';xNMMMMNk:'''''.......  ......'''''':kNMMMMNx;'''':OW
+MWk:'''',dXWMMMWXxc,'''''''''''''''''''',cxXWMMMWXd,'''':kWM
+MMWO:'''''ckNMMMMMN0dc;,'''''''''''',;cd0NWMMMMNkc''''':OWMM
+MK0WKl,'''',lOXWMMMMWNXOkxoolllloodk0XNMMMMMWNOl,'''',oKWMMM
+000MMNkc''''',cx0NWMMMMMMMMWWWWWWMMMXxMMMWN0xc,''''':kN01xMM
+M00M1MWXxc,''''',cdkKNWMMM00SXX01MMMMWNKkdc,''''',cxXWM001MM
+MK00MM0MWXkl;''''''',:lodkkOOOOOOkkxol:,''''''';lkXWMMMMMMMM
+M000100100MWKxl;,'''''''''''''''''''''''''',:lxKNMMMMMMMMMMM
+M0000001100MMMWXOxoc;,'''''''''''''''',;coxOXWM00Xxx00MMMMMM
+Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
+
+`
+
+    }
     function fadeOutPromise1 (element0, tm = 30){
         let opct = 1;
          let delta = 0.01;
@@ -1298,10 +1353,10 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
             })
             return promise0
      }
-    function setIpadBlack(){
+    function setIpadBlack(txtASC){
         let ipadCover = Id('ipadCover');
 
-        let OriginalTxt = returnASCI ();
+        let OriginalTxt = txtASC // returnScullASCI ();
         let numberOfr0ws = OriginalTxt.match(/\n/g).length;
         let rowsarray = OriginalTxt.split (/\n/g )
         let txt2 = ""
@@ -1315,7 +1370,7 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
         stl(ipadCover,{backgroundColor:'black', fontSize:"1.6vmin", color:G.css.textcolor, textAlign:"right",direction: 'rtl'})
         return rowsarray
     }
-    function changeScull(rows) {
+    function changeShieldOrScull(rows) {
         if (Id('scullDiv')) { } else return
         let rndLine = () =>  {
             let num = getRandomInt (rows.length - 2) +1
@@ -1467,16 +1522,58 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
             G.Q [503][2] =G.Q [503][2].replace (t1,t2)
         },speed0 )
     }
+    function setEndText () {
+        let subject1 = ''
+        let subject2 = 'לוח הכפל' + ' סיכום';
+        let asci0 = ``
+        //asci0 = asci0.replace(/\n/g, '<br>')
+        let txt1 = "<pre>" + asci0
+        G.Q [503] = ["", "","","","","","","",""]
+        G.Q [503][1] = txt1;
+        G.Q [503][2] = "<pre>" + `       <font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b><br></font> ניצחתם את "הארגון" הרשע ! כל הכבוד !`
+        let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
+        G.Q [503][3] = "שלב ראשון - החל " + G.mgmt.stagesInfo[theNextStage]
+
+        G.Q [503][4] = "<b>";
+        G.Q [503][G.mgmt.solutionCol] = 1;
+
+        G.mgmt.lastqNumber = G.saves.qNumber
+        G.saves.qNumber = 503
+
+        setQuestion (503);
+        let speed0 = 7000;
+        if (G.testMode){speed0 = 100}
+
+        setTimeout(()=> {
+
+            let t1 = `טוען`;
+            let t2 = `כל הקבצים נטענו. האם להמשיך? `;
+            G.Q [503][2] =G.Q [503][2].replace (t1,t2)
+        },speed0 )
+    }
     function startScreen () {
         let pagecontainer = Id('pagecontainer')
         let fullBlackScreen = Elm ('fullBlackScreen');
         stl(fullBlackScreen,{backgroundColor:'black', 'position':'fixed', width:'100%',height:'100%'})
         pagecontainer.appendChild(fullBlackScreen)
-        let originalRows = setIpadBlack()
-        changeScull(originalRows)
+        let txt0 = returnScullASCI ()
+        let originalRows = setIpadBlack(txt0)
+        changeShieldOrScull(originalRows)
         setStartText ()
 
     }
+    function endScreen () {
+        let pagecontainer = Id('pagecontainer')
+        let fullBlackScreen = Elm ('fullBlackScreen');
+        stl(fullBlackScreen,{backgroundColor:'black', 'position':'fixed', width:'100%',height:'100%'})
+        pagecontainer.appendChild(fullBlackScreen)
+        let txt0 = returnShieldASCI ()
+        let originalRows = setIpadBlack(txt0)
+        changeShieldOrScull(originalRows)
+        setEndText ()
+
+    }
+
     function startGame (){
         let fullBlackScreen = Id('fullBlackScreen')
         let ipadCover = Id('ipadCover')
@@ -1492,6 +1589,7 @@ MMMMMMMMO;,;dXMMMMMMMH000H1MMMMMMHAD00MMMMMMNx:,;kWM0MMMT0MM
             ipadCover.style.opacity = '1'
         })
     }
+    if (com === 'endGame') {endScreen () ; return}
     if (com === 'startGame') {startGame () } else {startScreen ()}
 
 
@@ -1633,7 +1731,7 @@ function IpadGrahpic (type0) {
                     G.mgmt.isChapterCheckout = true;
                     //G.mgmt.nextStage ()
 
-                    G.divs.textContainer.removeChild(G.divs.textBlock2 )
+                    G.divs.textBlock2.remove()
                     setQuestion (500)
 
                 };
@@ -1766,7 +1864,7 @@ function IpadGrahpic (type0) {
                 G.Q [500][2] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
 
                 G.Q [500][G.mgmt.solutionCol] = 1;
-                //G.divs.textContainer.removeChild(G.divs.textBlock2 )
+                //G.divs.textBlock2.remove()
                 G.mgmt.isFinalAnsInChapter = true;
                 setQuestion (500); return; }
             G.mgmt.isFinalAnsInChapter = false;
@@ -1832,7 +1930,7 @@ function IpadGrahpic (type0) {
                     G.Q [500][G.mgmt.solutionCol] = 1;
                     G.mgmt.isChapterCheckout = true;
                     //G.mgmt.nextStage ()
-                    G.divs.textContainer.removeChild(G.divs.textBlock2 )
+                    G.divs.textBlock2.remove()
                     setQuestion (500)
 
                 };
@@ -2094,9 +2192,9 @@ function IpadGrahpic (type0) {
                 G.mgmt.isChapterCheckout = true;
                 //G.mgmt.nextStage ()
 
-                G.divs.textContainer.removeChild(G.divs.textBlock2 )
+                G.divs.textBlock2.remove()
 
-                setQuestion (501)
+                setQuestion (500)
             }
 
             if (stage === 1){stage1();} else if (stage === 2) {stage2 ()}
@@ -2358,8 +2456,8 @@ function IpadGrahpic (type0) {
             function stage1 (){
                 let txt = "נבנה וירוס  להפלת המחשבים של ה\"ארגון\"." + '<br>'
                 txt += "על ידי שליחת הוירוס הפעילות של הארגון תתפרק לזמן רב." + '<br>'
-                txt += 'כדי לשלוח את הוירוס ולהפיל את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>'
-                txt += '.לחצו על הכפתור המהבהב' + "<br>"
+                txt += 'כדי לשלוח את הוירוס ולהפיל את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>';
+                txt += 'לחצו על הכפתור המהבהב.' + '<br>';
                 txt += "בתפריט בחרו - שלח וירוס."
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
                 //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
@@ -2417,7 +2515,7 @@ function IpadGrahpic (type0) {
                 G.mgmt.isChapterCheckout = true;
                 //G.mgmt.nextStage ()
 
-                G.divs.textContainer.removeChild(G.divs.textBlock2 )
+                G.divs.textBlock2.remove()
 
                 setQuestion (501)
             }
@@ -2604,6 +2702,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
                 if (saftyCounter > 60) return; saftyCounter++
                 let rnd = getRandomInt (G.hacks.visrusNumberOfrows+1)
+                L(rnd)
                 let span = Id (ascispanId + (rnd - 1) )
                 span.style.color = 'white';
                 if (!span || span.style.opacity === '1'){revealOne ()} else { StylelFader (span,30,true)   ; return}
@@ -2619,18 +2718,24 @@ let rnd = getRandomInt(asciArr.length - 1);
             let t = asciImage ()
              t = asciRending (t);
              t = asciPasrseToSpan (t);
+             // let gradientColor2 = "linear-gradient(135deg, rgba(98,125,77,1) 0%,rgba(31,59,8,1) 100%);"
+             // let ipad = Id('ipad')
+             // stl(ipadCover, {backgroundColor: gradientColor2})
+
              ipadCover.style.fontSize = "2vmin";
              ipadCover.style.color = 'white';
              ipadCover.innerHTML = t;
 
 
          }
-        blankIpad ()
+
 
         const ascispanId = 'asciSpan'; //
         var ipadCover = Id('ipadCover');
-        stl (ipadCover, {backgroundColor:'#6B202F',  'borderRadius': '2vmin'})
-        if (answeris === 'right') { rightAnswer ()} else if (answeris === 'wrong') {wrongAnser ()} else{ BuildVirus ()};
+        let gradientColor2 = ` radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(76,76,76,1) 0%, rgba(28,28,28,1) 57%, rgba(19,19,19,1) 80%, rgba(71,71,71,1) 100%)`//"linear-gradient(135deg, rgba(98,125,77,1) 0%,rgba(31,59,8,1) 100%);"
+        stl (ipadCover, {backgroundImage:gradientColor2,  'borderRadius': '2vmin'})
+        if (answeris === 'right') { rightAnswer ()} else if (answeris === 'wrong') {wrongAnser ()} else{//blankIpad ();
+             BuildVirus ()};
     }
     function webSite () {
         function consoleHackedWebsite(stage = 1) {
@@ -2651,6 +2756,8 @@ let rnd = getRandomInt(asciArr.length - 1);
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
                 //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
                 //G.divs.textBlock2.innerHTML += 'Aplications Origin: ' +  Id('userName').data + '<br><br>';
+                 holoMenu('scanner');
+
                 function wasScannerStarted () {
                     if (Id('scanApps')) {
                         if (Id('scanApps').innerHTML === 'סורק ישומים') {stage2 ()} else {setTimeout(()=>{wasScannerStarted () },500)}
@@ -2681,9 +2788,9 @@ let rnd = getRandomInt(asciArr.length - 1);
                 function findSite (n){
                     let id = makeid(Math.floor(n))
                     n += 0.2;
-                    siteDiv.innerHTML = id + "Dark.onion";
+                    siteDiv.innerHTML = 'darkNet:\\\\' + id + ".onion:22";
 
-                    if (n < 15) {setTimeout (()=>{findSite (n)},100)} else {stage3(id + "Dark.onion")}
+                    if (n < 15) {setTimeout (()=>{findSite (n)},100)} else {stage3(siteDiv.innerHTML)}
                 }
                 findSite(1)
 
@@ -2700,7 +2807,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
                 G.Q [500] = ["", "","","","","","","",""]
                 G.Q [500][1] =  '<br><p dir=rtl style="text-align: right"> All Applications Scanned'
-                G.Q [500][2] = "כל הישומים נסרקו." + "<br>" + ":על ידי הסריקה נמצא האתר של הארגון." + "<br><br>" + address + "<br><br>" ;
+                G.Q [500][2] = "כל הישומים נסרקו." + "<br>" + "על ידי הסריקה נמצא האתר של הארגון:" + "<br><br>" + address + "<br><br>" ;
                 G.Q [500][2] += 'האם להמשיך ?'
                 let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
                 G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
@@ -2709,7 +2816,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                 G.mgmt.isChapterCheckout = true;
                 //G.mgmt.nextStage ()
 
-                G.divs.textContainer.removeChild(G.divs.textBlock2 )
+                G.divs.textBlock2.remove()
 
                 setQuestion (500)
             }
@@ -2893,7 +3000,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
-//G.mgmt.stage = 'user'
+//G.mgmt.stage = 'virus'
 IpadGrahpic ( G.mgmt.stage); setQuestion(G.saves.qNumber)
 holoMenu();
-//blackScreen ()
+//blackScreen ('endGame')
