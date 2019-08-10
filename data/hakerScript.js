@@ -1,8 +1,9 @@
 //haker code
-global_object: {
+function fullScriptWrapper(){
  var G = {} //
         "use strict";
         G.Q = A_; // question object
+        L(G.Q)
 
         G.css = {};
         G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
@@ -15,7 +16,7 @@ global_object: {
         G.css.textFontSize = 2;
         G.css.resizeFontScale = 0.6;
         G.css.canvasBackground = 'black'//"#00284d";
-        G.css.breakAfterQuestion = '<br><br><br>'
+        G.css.breakAfterQuestion = '<br><br>'
         G.mgmt = {};
         G.mgmt.totalNumOfQuestions = G.Q.length
         G.mgmt.solutionCol = 8;
@@ -65,8 +66,8 @@ global_object: {
         G.hacks.visrusNumberOfrows = 0;
         G.hacks.ipLocations = [];
         G.testMode = true; // fast wrting
-      }
-util_functions: {
+
+//util_functions:
     function L (...args){
         let txtcolor1 = 'black';
         let txtcolor2 = 'blue';
@@ -318,10 +319,6 @@ util_functions: {
         }
     }
 
-
-
-}
-
 function clickAnswer (elem){
 
     /* for testing */
@@ -424,8 +421,8 @@ function clickAnswer (elem){
         }
 
 }
-function holoMenu (r) { // creats the menue inside the holo;
-
+function holoMenu (r) {
+    // creats the menue inside the holo;
     //G.divs.holoMenuoptions = G.divs.holoMenuoptions || [];
     function scanApps () {
         if (Id('scanApps').innerHTML === 'סורק ישומים') {return}
@@ -457,8 +454,7 @@ function holoMenu (r) { // creats the menue inside the holo;
 
         }
         blinker (1)
-
-    } // sendVirus ()
+} // sendVirus ()
     function submitF(formArray) {
         let Formtext = Id('Formtext');
        if (formArray === 'clear'){
@@ -587,33 +583,7 @@ createMenu (op)
         }
 
 
-        function progressText (){
-            function preCent (small,big) {
-                if (small && big){} else return '0%'
-                let double = Math.floor(100*(small / big))
-                return double + '%'
 
-            }
-            let qTotal = G.mgmt.totalNumOfQuestions || 0;
-            let qAnswered = G.saves.progressArray.length || 0 ;
-            let qNumBytry = [];
-            let qprecent = preCent (qAnswered,qTotal)
-            for (let a= 0; a < 4; a++){
-                var countOfTries = 0
-                G.saves.progressArray.forEach((e)=>{if (e === (a+1)){countOfTries++}})
-                qNumBytry[a] = countOfTries;
-            }
-            let q0=0, q1=0, q23=0, p0='0%', p1='0%', p23='0%';
-            q0 = qNumBytry[0]; q1 = qNumBytry[1]; q23 = qNumBytry[2] + qNumBytry[3]
-            p0 = preCent(q0,qAnswered); p1 =  preCent(q1,qAnswered); p23=  preCent(q23,qAnswered)
-            let txt0 =  'נתוני ההתקדמות במשחק:';
-            let txt1 = `<br><br>עניתם על ` +  qAnswered + ' מתוך ' + qTotal + ' שאלות, שהן ' + qprecent + '&nbsp'+ 'מכלל השאלות.'
-            let table = `<table style="width:100% ; border: solid 0.2vmin;  border-collapse: collapse; ; text-align: center"> <tr style="border:solid 0.2vmin">   <th  style="border:solid 0.2vmin" >סוג המענה</th>   <th  style="border: solid 0.2vmin">במספרים</th>   <th  style="border: solid 0.2vmin">באחוזים</th> </tr> <tr  style="border: solid 0.2vmin">  <td>ללא טעויות</td>   <td>${q0}</td> <td>${p0}</td> </tr> <tr>   <td>בנסיון שני</td>   <td>${q1}</td> <td>${p1}</td> </tr> <tr>   <td> אחרי נסיון שני</td>   <td>${q23}</td> <td>${p23}</td> </tr></table>`
-
-            let txt = txt0 + txt1 + table;
-            return txt
-
-        }
         let progTxt = progressText ();
 
 
@@ -777,7 +747,7 @@ function ledEvent (e){
 
 }
 function buildBoard (){
-    G.mgmt.totalNumOfQuestions = 20 //kill
+    G.mgmt.totalNumOfQuestions = 3 //kill
     arrangeStages (G.mgmt.totalNumOfQuestions)
     function arrangeStages (t) {
         let allQ = t //G.mgmt.totalNumOfQuestions //fsdfsdf
@@ -1107,6 +1077,34 @@ function buildBoard (){
     G.divs.led.addEventListener('click',ledEvent,true);
 
 }
+function progressText (){
+    function preCent (small,big) {
+        if (small && big){} else return '0%'
+        let double = Math.floor(100*(small / big))
+        return double + '%'
+
+    }
+    let qTotal = G.mgmt.totalNumOfQuestions || 0;
+    let qAnswered = G.saves.progressArray.length || 0 ;
+    let qNumBytry = [];
+    let qprecent = preCent (qAnswered,qTotal)
+    let namePlayer = ''; if (G.saves.nameOfplayer) { namePlayer = G.saves.nameOfplayer + ", "}
+    for (let a= 0; a < 4; a++){
+        var countOfTries = 0
+        G.saves.progressArray.forEach((e)=>{if (e === (a+1)){countOfTries++}})
+        qNumBytry[a] = countOfTries;
+    }
+    let q0=0, q1=0, q23=0, p0='0%', p1='0%', p23='0%';
+    q0 = qNumBytry[0]; q1 = qNumBytry[1]; q23 = qNumBytry[2] + qNumBytry[3]
+    p0 = preCent(q0,qAnswered); p1 =  preCent(q1,qAnswered); p23=  preCent(q23,qAnswered)
+    let txt0 =  'נתוני ההתקדמות במשחק:';
+    let txt1 = `<br><br>` + namePlayer + `ענית על ` +  qAnswered + ' מתוך ' + qTotal + ' שאלות, שהן ' + qprecent + '&nbsp'+ 'מכלל השאלות.'
+    let table = `<table style="width:100% ; border: solid 0.2vmin;  border-collapse: collapse; ; text-align: center ;margin-top:3vmin"> <tr style="border:solid 0.2vmin">   <th  style="border:solid 0.2vmin" >סוג המענה</th>   <th  style="border: solid 0.2vmin">במספרים</th>   <th  style="border: solid 0.2vmin">באחוזים</th> </tr> <tr  style="border: solid 0.2vmin">  <td>ללא טעויות</td>   <td>${q0}</td> <td>${p0}</td> </tr> <tr>   <td>בנסיון שני</td>   <td>${q1}</td> <td>${p1}</td> </tr> <tr style="border: solid 0.2vmin">   <td> אחרי נסיון שני</td>   <td>${q23}</td> <td>${p23}</td> </tr></table>`
+
+    let txt = txt0 + txt1 + table;
+    return txt
+
+}
 function storeInLocal (command){
     let myFileName = location.pathname //.split("/").slice(-1)
     let htmlFileName = myFileName ;//[0];
@@ -1183,6 +1181,7 @@ function setQuestion (num) {
     function resizeText (){
         fontSize = G.css.textFontSize;
         let fullText = "";
+        L(num)
         for (let i = 1; i < 8; i++){ fullText += G.Q[num][i]};
 
         let length01 = fullText.length
@@ -1523,24 +1522,28 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         },speed0 )
     }
     function setEndText () {
-        let subject1 = ''
+        let style2 = '<font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:3vmin">'
         let subject2 = 'לוח הכפל' + ' סיכום';
-        let asci0 = ``
+        let summary ='<br>' + `להלן ` +progressText ()
+        let newgameTxt = `משחק חוזר`
+        if (G.saves.nameOfplayer) {newgameTxt += `(כל ההתקדמות של ${G.saves.nameOfplayer} תימחק)`}
         //asci0 = asci0.replace(/\n/g, '<br>')
-        let txt1 = "<pre>" + asci0
-        G.Q [503] = ["", "","","","","","","",""]
-        G.Q [503][1] = txt1;
-        G.Q [503][2] = "<pre>" + `       <font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b><br></font> ניצחתם את "הארגון" הרשע ! כל הכבוד !`
+        let sumexplain = 'סיימתם את המשחק. תוכלו לשחק שוב כדי לנסות ולשפר את התוצאות שלכם.' + '<br>'
+        sumexplain += 'אם שמרתם את המשחק, התחלת משחק חדש תמחק ותאפס את ההתקדמות שלכם.'
+        let txt1 = "<pre>"
+        G.Q [504] = ["", "","","","","","","",""]
+        G.Q [504][1] = txt1;
+        G.Q [504][2] = "<pre>" + `<font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b><br></font>`  + style2  +  `ניצחתם את "הארגון" הרשע ! כל הכבוד !` + summary + sumexplain
         let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
-        G.Q [503][3] = "שלב ראשון - החל " + G.mgmt.stagesInfo[theNextStage]
+        G.Q [504][3] = newgameTxt
 
-        G.Q [503][4] = "<b>";
-        G.Q [503][G.mgmt.solutionCol] = 1;
+        G.Q [504][4] = `<a href="#" onclick="javascript:window.close();opener.window.focus();">יציאה מהמשחק</a>`;
+        G.Q [504][G.mgmt.solutionCol] = 1;
 
         G.mgmt.lastqNumber = G.saves.qNumber
         G.saves.qNumber = 503
 
-        setQuestion (503);
+        setQuestion (504);
         let speed0 = 7000;
         if (G.testMode){speed0 = 100}
 
@@ -1573,7 +1576,6 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         setEndText ()
 
     }
-
     function startGame (){
         let fullBlackScreen = Id('fullBlackScreen')
         let ipadCover = Id('ipadCover')
@@ -2021,7 +2023,14 @@ function IpadGrahpic (type0) {
                     function clickFirewallHack (el){
                         function hackFirewallElement(DomElement ,finishString = 'ok') {
 
-                            if(G.hacks.numOfsuccess >=G.mgmt.max_Tofind.firewall){} else return;
+                            if(G.hacks.numOfsuccess >=G.mgmt.max_Tofind.firewall){} else {
+                                let originalColor = DomElement.style.color
+                                DomElement.style.color  = 'red'
+                                DomElement.style.filter = 'blur(0.3vmin)'
+
+                                setTimeout(()=>{DomElement.style.color = originalColor }, 300)
+                                setTimeout(()=>{DomElement.style.filter = ''  }, 400)
+                                return};
 
                             var dictionary = "0123456789qwertyuiopasdfghjklzxcvbnm!?></\a`~+*=@#$%".split('');
                             var el = DomElement;
@@ -2081,6 +2090,7 @@ function IpadGrahpic (type0) {
                     }
                     el = Id (el)
                     el.addEventListener('click',clickFirewallHack, true)
+                    el.style.cursor = 'pointer'
 
                 }
                 function CheckIfAllDefencesDown()  {
@@ -2368,6 +2378,7 @@ function IpadGrahpic (type0) {
             var codephrase =  addInput ('codephrase', 'password', 'קוד אבטחה', {'width': '85%'});
             var submitButton =  addInput ('submitButton', 'button', 'קוד אבטחה', {'backgroundColor' : 'rgb(238,174,238)', 'border': 'solid black'}); submitButton.value = 'כניסה' ;
             submitButton.addEventListener('click', submittingForm );
+            submitButton.style.cursor = 'pointer'
             G.css.formBackColor = 'rgba(219, 250, 89 ,0.99)'
             var qArray = [firstName ,familyName,userName,codephrase,submitButton] ; let spanArr = [];
             //G.mgmt.max_Tofind.user = 6;
@@ -3000,7 +3011,12 @@ let rnd = getRandomInt(asciArr.length - 1);
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
-//G.mgmt.stage = 'virus'
+//G.mgmt.stage = 'getIp'
 IpadGrahpic ( G.mgmt.stage); setQuestion(G.saves.qNumber)
 holoMenu();
-//blackScreen ('endGame')
+G.saves.nameOfplayer = 'חנניה'
+//blackScreen ('startGame')
+
+}
+
+fullScriptWrapper()
