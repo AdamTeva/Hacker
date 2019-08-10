@@ -1,10 +1,8 @@
 //haker code
-function fullScriptWrapper(){
+function fullScriptWrapper() {
  var G = {} //
         "use strict";
         G.Q = A_; // question object
-        L(G.Q)
-
         G.css = {};
         G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
         G.css.typeSolution = "";
@@ -747,7 +745,7 @@ function ledEvent (e){
 
 }
 function buildBoard (){
-    G.mgmt.totalNumOfQuestions = 3 //kill
+    G.mgmt.totalNumOfQuestions = 20  //kill should be 20
     arrangeStages (G.mgmt.totalNumOfQuestions)
     function arrangeStages (t) {
         let allQ = t //G.mgmt.totalNumOfQuestions //fsdfsdf
@@ -1181,7 +1179,6 @@ function setQuestion (num) {
     function resizeText (){
         fontSize = G.css.textFontSize;
         let fullText = "";
-        L(num)
         for (let i = 1; i < 8; i++){ fullText += G.Q[num][i]};
 
         let length01 = fullText.length
@@ -1333,17 +1330,21 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
     }
     function fadeOutPromise1 (element0, tm = 30){
+
         let opct = 1;
          let delta = 0.01;
             let promise0 = new Promise((resolve, reject) => {
-                function faderEngine (opct) {
-                    element0.style.opacity = opct;
+                function faderEngine (opct,element2) {
+                    //if (element0) {}else return
+                    L(opct,element2)
+                    element2.style.opacity = opct;
+                    let element3 = element2
                     opct -= delta
                     if (opct<0){ resolve ('worked');}
-                    else { setTimeout(()=>faderEngine (opct),tm)}
+                    else { setTimeout(()=>faderEngine (opct,element3),tm)}
 
                 }
-                faderEngine (1)
+                faderEngine (1,element0)
 
                 // let wait = setTimeout(() => {
                 //     clearTimout(wait);
@@ -1581,6 +1582,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         let ipadCover = Id('ipadCover')
 
         fadeOutPromise1(ipadCover , 10).then(()=>{
+
             fadeOutPromise1(fullBlackScreen , 50).then(()=>{fullBlackScreen.remove()
                 G.saves.qNumber = G.mgmt.lastqNumber;
                 setQuestion (G.saves.qNumber)
@@ -2713,7 +2715,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
                 if (saftyCounter > 60) return; saftyCounter++
                 let rnd = getRandomInt (G.hacks.visrusNumberOfrows+1)
-                L(rnd)
+
                 let span = Id (ascispanId + (rnd - 1) )
                 span.style.color = 'white';
                 if (!span || span.style.opacity === '1'){revealOne ()} else { StylelFader (span,30,true)   ; return}
@@ -3012,11 +3014,11 @@ let rnd = getRandomInt(asciArr.length - 1);
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
 //G.mgmt.stage = 'getIp'
-IpadGrahpic ( G.mgmt.stage); setQuestion(G.saves.qNumber)
+// IpadGrahpic ( G.mgmt.stage); setQuestion(G.saves.qNumber)
 holoMenu();
 G.saves.nameOfplayer = 'חנניה'
-//blackScreen ('startGame')
-
+blackScreen ()
 }
+
 
 fullScriptWrapper()
