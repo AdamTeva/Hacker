@@ -26,6 +26,7 @@ function fullScriptWrapper() {
         G.saves = {};
         G.saves.qNumber = 1; // question number
         G.saves.progressArray = [];
+        G.saves.numOfsuccess = 0;
         /* STAGE */
         G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
         G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
@@ -53,10 +54,10 @@ function fullScriptWrapper() {
         G.mgmt.isFinalAnsInChapter = false;
         G.mgmt.soundIsOn = true;
 
-        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.hacks.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;  }
+        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.saves.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;  }
         G.divs = {};
         G.hacks = {};
-        G.hacks.numOfsuccess = 0;
+
         G.hacks.current = G.mgmt.stageNames // getIp // firewall
         G.hacks.firewallCodeId = 'FWhacksId';
         G.hacks.firewallFinishText = 'ההגנה נעקפה.'
@@ -325,7 +326,9 @@ function clickAnswer (elem){
     let div = Id(idName); elem.target = div}
 
     function wrongAnswerAnimation (num) {
+
         if (G.saves.qNumber < 500) {G.mgmt.numberOftriesPerQuestion++}
+        if (G.saves.qNumber === 503) {storeInLocal('confirmReset'); return}
 
 
 
@@ -364,7 +367,7 @@ function clickAnswer (elem){
 
         }
         G.mgmt.isAnswering = true;
-        if(storeInLocal ('check')) {storeInLocal ('save')}
+        //if(storeInLocal ('check')) {storeInLocal ('save')}
 
         let op  = 1;
         let opDelta = 0.05
@@ -459,8 +462,7 @@ function holoMenu (r) {
            if (!storeInLocal ('check')){ Formtext.innerHTML = 'לא נמצא מידע שמור. ניתן להתחיל משחק חדש על ידי רענון החלון.' ;
            return;
        }
-           let tx = 'האם אתם מעוניינים למחוק את כל ההתקדמות ולהתחיל משחק חדש ?'
-           if (confirm(tx)) { storeInLocal ('reset'); location.reload()}
+           storeInLocal('confirmReset');
            return
        }
        let input = Id('input').value
@@ -626,10 +628,10 @@ createMenu (op)
     }
     function mainMenu (){
          let optionArray = [['optionsMenu','אפשרויות'],['progressMenu', 'התקדמות'] ,['saveMenu','שמירה'],['helpMenu','עזרה']]
-         if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.hacks.current === 'webSite')) {
+         if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.hacks.current === 'webSite')) {
              optionArray.push(['scanApps','תוכנת סריקה'])
          }
-         if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.hacks.current === 'virus')) {
+         if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.hacks.current === 'virus')) {
              optionArray.push(['sendVirus','שלח וירוס'])
          }
 
@@ -683,8 +685,8 @@ function ledEvent (e){
 
                 if (delta < 0) { G.divs.holoContainer.style.opacity = 0;fadeHolo (0.2,-1,80) ;
                      G.divs.holoContainer.style.visibility= "visible"; } else { G.divs.holoContainer.style.visibility= "hidden"; G.divs.holoContainer.style.opacity = 1 };
-                     if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.hacks.current === 'webSite')) {holoMenu();}
-                      if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.hacks.current === 'virus')) {holoMenu();}
+                     if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.hacks.current === 'webSite')) {holoMenu();}
+                      if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.hacks.current === 'virus')) {holoMenu();}
 
                  return
              }
@@ -1125,6 +1127,11 @@ function storeInLocal (command){
         case 'reset':
         localStorage.setItem('isSaved' + htmlFileName, 'false')
         break;
+
+        case 'confirmReset':
+        let tx = 'האם אתם מעוניינים למחוק את כל ההתקדמות ולהתחיל משחק חדש ?'
+        if (confirm(tx)) { storeInLocal ('reset'); location.reload()};
+        break;
     }
 }
 function setQuestion (num) {
@@ -1336,7 +1343,6 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
             let promise0 = new Promise((resolve, reject) => {
                 function faderEngine (opct,element2) {
                     //if (element0) {}else return
-                    L(opct,element2)
                     element2.style.opacity = opct;
                     let element3 = element2
                     opct -= delta
@@ -1487,6 +1493,9 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
     function setStartText () {
         let subject1 = ''
         let subject2 = 'לוח הכפל';
+        let nameOfplayer0 = ''; if (G.saves.nameOfplayer) {nameOfplayer0 = G.saves.nameOfplayer + ', '};
+        let iAmNotPlayer = ''; if (G.saves.nameOfplayer) {iAmNotPlayer = 'אני לא ' + G.saves.nameOfplayer}
+        let startOrContinue = "שלב ראשון - החל " ; if  (G.saves.nameOfplayer) {startOrContinue = "המשך בתהליך "}
         let asci0 = `  _   _            _
  | | | | __ _  ___| | _____ _ __         ${subject1}
  | |_| |/ _' |/ __| |/ / _ \\ v__|
@@ -1499,13 +1508,13 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         G.Q [503][1] = txt1;
         G.Q [503][2] = "<pre>" + `       <font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b></font>
 
-     עליכם לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
+     ${nameOfplayer0}עליך לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
      כל תשובה נכונה תקדם שלב בתהליך הפריצה.
      טוען`
-        let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
-        G.Q [503][3] = "שלב ראשון - החל " + G.mgmt.stagesInfo[theNextStage]
+        let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber]
+        G.Q [503][3] = startOrContinue + G.mgmt.stagesInfo[theNextStage]
 
-        G.Q [503][4] = "<b>";
+        G.Q [503][4] = "<b></b>" + iAmNotPlayer;
         G.Q [503][G.mgmt.solutionCol] = 1;
 
         G.mgmt.lastqNumber = G.saves.qNumber
@@ -1740,7 +1749,6 @@ function IpadGrahpic (type0) {
 
                 };
             }
-
             runIps (1)
 
 
@@ -1755,7 +1763,7 @@ function IpadGrahpic (type0) {
             let saveN = 1;
             var tmAdder = 200
 
-            for (n = 1; n <= G.hacks.numOfsuccess; n++ ){
+            for (n = 1; n <= G.saves.numOfsuccess; n++ ){
                 if (n === 1) { continue};
                 let sn = n;
                 setTimeout ((n)=> { MoveC  (G.hacks.ipLocations[sn-1][0], G.hacks.ipLocations[sn-1][1],
@@ -1769,10 +1777,10 @@ function IpadGrahpic (type0) {
         }
         function addRevieledLovation (){
 
-                G.hacks.numOfsuccess++;
-                G.hacks.ipLocations[G.hacks.numOfsuccess] = G.hacks.ipLocations[G.hacks.numOfsuccess] || [];
-                G.hacks.ipLocations[G.hacks.numOfsuccess][1] = G.hacks.ipY
-                G.hacks.ipLocations[G.hacks.numOfsuccess][0] = G.hacks.ipX
+                G.saves.numOfsuccess++;
+                G.hacks.ipLocations[G.saves.numOfsuccess] = G.hacks.ipLocations[G.saves.numOfsuccess] || [];
+                G.hacks.ipLocations[G.saves.numOfsuccess][1] = G.hacks.ipY
+                G.hacks.ipLocations[G.saves.numOfsuccess][0] = G.hacks.ipX
 
 
 
@@ -1816,8 +1824,8 @@ function IpadGrahpic (type0) {
                   ctx.restore ();
               }, 200 * i);
               }
-              for (n = 1; n <= G.hacks.numOfsuccess; n++ ){
-                  if (G.hacks.numOfsuccess == 0) { break};
+              for (n = 1; n <= G.saves.numOfsuccess; n++ ){
+                  if (G.saves.numOfsuccess == 0) { break};
                   ctx.save ();
 
                   ctx.shadowOffsetY = 4;
@@ -1856,7 +1864,7 @@ function IpadGrahpic (type0) {
         canvas.style.color = 'white';
         var ctx = canvas.getContext("2d");
         if (answeris === 'right') {addRevieledLovation ()}
-        if (G.hacks.numOfsuccess >= G.mgmt.max_Tofind.getIp) {FullIpWasfoundAnimation (); consoleFoundIp()} else {drawIpIpad ()}
+        if (G.saves.numOfsuccess >= G.mgmt.max_Tofind.getIp) {FullIpWasfoundAnimation (); consoleFoundIp()} else {drawIpIpad ()}
 
     }
     function fireWall (){
@@ -1994,7 +2002,7 @@ function IpadGrahpic (type0) {
 
             }
         }
-        function addFirewallClue (){G.hacks.numOfsuccess++;}
+        function addFirewallClue (){G.saves.numOfsuccess++;}
         function drawFireWallIpad () {
             blankIpad ()
             let col = 'yellow'
@@ -2005,7 +2013,7 @@ function IpadGrahpic (type0) {
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
             ipadCover.innerHTML = `<br><br><font style="${textStl}">&nbsp` + 'זיהוי חומת אש'
-            if (G.hacks.numOfsuccess == 0){ipadCover.innerHTML += `<br><br><font style="${textStl}">` + "מחפש רכיבים" + "</font>"; setBG (ipadFireWallBGColor) ;
+            if (G.saves.numOfsuccess == 0){ipadCover.innerHTML += `<br><br><font style="${textStl}">` + "מחפש רכיבים" + "</font>"; setBG (ipadFireWallBGColor) ;
             } else {
                 ipadCover.style.opacity = '1';
                 ipadCover.innerHTML += `<br><br><font style="${textStl}">` + 'מזהה רכיבים:' + '<br> '
@@ -2025,7 +2033,7 @@ function IpadGrahpic (type0) {
                     function clickFirewallHack (el){
                         function hackFirewallElement(DomElement ,finishString = 'ok') {
 
-                            if(G.hacks.numOfsuccess >=G.mgmt.max_Tofind.firewall){} else {
+                            if(G.saves.numOfsuccess >=G.mgmt.max_Tofind.firewall){} else {
                                 let originalColor = DomElement.style.color
                                 DomElement.style.color  = 'red'
                                 DomElement.style.filter = 'blur(0.3vmin)'
@@ -2136,12 +2144,12 @@ function IpadGrahpic (type0) {
                     spanId = G.hacks.firewallCodeId  + num1;
                     ipadCover.innerHTML += '<div id = "' + spanId + '"style = "font-size:3vmin; background-color:rgba(10,0,0,0.7); width:80% ; height:5% ;margin: 0 auto; margin-top:1%;">' +  G.hacks.NamesOfPiecesOfFirewall[num1] + '</div>';
                     let sp = Id (spanId);
-                    if (num1  < G.hacks.numOfsuccess ) {
+                    if (num1  < G.saves.numOfsuccess ) {
 
                         setTimeout(()=>{showChips (num1+1)},ms)}
                     else {
                             fadIntext();
-                            if (G.hacks.numOfsuccess >=G.mgmt.max_Tofind.firewall ){
+                            if (G.saves.numOfsuccess >=G.mgmt.max_Tofind.firewall ){
                                 consoleHackedFirewall(true)
                                 let txt = 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.'
                             ipadCover.innerHTML += '<br><br><div id = "defMessage"'  + ' style = "font-size:4.3vmin; background-color:rgb(0,191,255); font-weight: bold; color:black;width:90% ;margin: 0 auto; margin-top:3%; padding:2% ;border: 0.3vmin solid black;border-radius: 1vmin ; overflow: hidden">' +  txt + '</div>';}
@@ -2156,7 +2164,7 @@ function IpadGrahpic (type0) {
 
                         };
                 }
-                if (G.hacks.numOfsuccess > 0 && G.hacks.numOfsuccess <= G.mgmt.max_Tofind.firewall  ) {showChips (num)};
+                if (G.saves.numOfsuccess > 0 && G.saves.numOfsuccess <= G.mgmt.max_Tofind.firewall  ) {showChips (num)};
 
 
             }
@@ -2168,7 +2176,7 @@ function IpadGrahpic (type0) {
             addFirewallClue ()}
             else if (answeris === 'wrong') {blureChanger ();setBG(ipadFireWallBGColor)}
         if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
-        if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.firewall){G.mgmt.isFinalAnsInChapter = true }
+        if(G.saves.numOfsuccess + 1 >G.mgmt.max_Tofind.firewall){G.mgmt.isFinalAnsInChapter = true }
         if (G.mgmt.isChapterCheckout) {G.mgmt.isFinalAnsInChapter = false; return}
         blankIpad ()
 
@@ -2194,7 +2202,7 @@ function IpadGrahpic (type0) {
             }
             function stage2 (){
                 G.Q [500] = ["", "","","","","","","",""]
-                G.Q [500][1] =  '<br><p dir=rtl style="text-align: right">Welcome !'
+                G.Q [500][1] =  '<br><p dir=rtl style="text-align: right">--- כניסה אושרה ----'
                 G.Q [500][2] = "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש ." + "<br>"
                 G.Q [500][2] += 'האם להמשיך ?'
                 let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
@@ -2275,7 +2283,7 @@ function IpadGrahpic (type0) {
             let sin = Math.sin(t/8); ipadCover.style.opacity = sin + 1.2;
             if (t > 2) {setTimeout (()=>{whiteNoise (t1-1,img_)}, t / 6)} else return;
         }
-        function addUserClue (){G.hacks.numOfsuccess++;}
+        function addUserClue (){G.saves.numOfsuccess++;}
         function setFormData (){
             function makeid(length, isPass = false) {
                     var result           = '';
@@ -2336,7 +2344,7 @@ function IpadGrahpic (type0) {
                     deny.innerHTML += '<br>' + 'הכניסה אסורה. '
                     setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
                 }
-                if (G.hacks.numOfsuccess === G.mgmt.max_Tofind.user) {
+                if (G.saves.numOfsuccess === G.mgmt.max_Tofind.user) {
                     StylelFader(codephrase,40,false,true);
                     StylelFader(submitButton,40,false,true);
                     StylelFader(userName,40,false,true);
@@ -2438,15 +2446,15 @@ function IpadGrahpic (type0) {
             let rnd = getRandomInt (100) + 30
             whiteNoise (rnd,img); ipadCover.style.opacity = '0.5'}
         else {drawBaseForm ();}
-        for (i1 = 1; i1  <= G.hacks.numOfsuccess; i1++) {
+        for (i1 = 1; i1  <= G.saves.numOfsuccess; i1++) {
             if (i   > G.hacks.formQarray.length) break;
             let q = G.hacks.formQarray[i1-1]
             if (q === undefined) {} else {
                 q.value =  q.data
-                if (q.id === 'firstName' && G.hacks.numOfsuccess === i1) {Id ('passportIMG').src = Id ('passportIMG').data;  'data/passports/passport (19).jpg';
+                if (q.id === 'firstName' && G.saves.numOfsuccess === i1) {Id ('passportIMG').src = Id ('passportIMG').data;  'data/passports/passport (19).jpg';
                 let b = 'blur(' + 0.5 +'rem)'; Id ('passportIMG').style.filter = b;}
-                if (q.id === 'familyName' && G.hacks.numOfsuccess === i1 ) {blureChanger (Id ('passportIMG'))}
-                if (q.id === 'codephrase' &&  G.hacks.formQarray[i1-1].id === 'codephrase'  && G.hacks.numOfsuccess === i1) {
+                if (q.id === 'familyName' && G.saves.numOfsuccess === i1 ) {blureChanger (Id ('passportIMG'))}
+                if (q.id === 'codephrase' &&  G.hacks.formQarray[i1-1].id === 'codephrase'  && G.saves.numOfsuccess === i1) {
                     retryPass(Id('codephrase')) }
                 if (q.id ===  'submitButton' ) { q.style.backgroundColor = 'rgb(144, 238, 144)'; colorBorderSubmit (q,60, 1);
 
@@ -2454,7 +2462,7 @@ function IpadGrahpic (type0) {
 
             }
         }
-        if(G.hacks.numOfsuccess + 1 >G.mgmt.max_Tofind.user && answeris !== 'wrong') {  G.mgmt.isFinalAnsInChapter = true; consoleHackedUser () }
+        if(G.saves.numOfsuccess + 1 >G.mgmt.max_Tofind.user && answeris !== 'wrong') {  G.mgmt.isFinalAnsInChapter = true; consoleHackedUser () }
     }
     function virus () {
         function consoleHackedVirus(stage = 1) {
@@ -2673,7 +2681,7 @@ let rnd = getRandomInt(asciArr.length - 1);
             return htmltxt
         }
         function rightAnswer (){
-            G.hacks.numOfsuccess++;
+            G.saves.numOfsuccess++;
             let numberToreveal0 = Math.floor(G.hacks.visrusNumberOfrows/ G.mgmt.max_Tofind.virus)
             revealvirus(numberToreveal0);
         }
@@ -2693,7 +2701,7 @@ let rnd = getRandomInt(asciArr.length - 1);
             }
             let children = ipadCover.childNodes;
             let asciSpanId = 'asciSpan';
-            let destenationOfRedRows = (G.hacks.numOfsuccess / G.mgmt.max_Tofind.virus ) * 3;
+            let destenationOfRedRows = (G.saves.numOfsuccess / G.mgmt.max_Tofind.virus ) * 3;
             let redRows = 0
             for (q = 0; q < G.hacks.visrusNumberOfrows; q++){
                 let rnd = getRandomInt (3)
@@ -2709,7 +2717,7 @@ let rnd = getRandomInt(asciArr.length - 1);
         function revealvirus (numberToreveal){
 
             let isVirusFinished = false;
-            if (G.hacks.numOfsuccess >= G.mgmt.max_Tofind.virus) {isVirusFinished = true }
+            if (G.saves.numOfsuccess >= G.mgmt.max_Tofind.virus) {isVirusFinished = true }
             var saftyCounter = 0;
             function revealOne (){
 
@@ -2761,10 +2769,10 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
             function stage1 (){
-                let txt = "נמצאו " + G.hacks.numOfsuccess + " "
+                let txt = "נמצאו " + G.saves.numOfsuccess + " "
                 txt += "אפליקציות חשודות." + '<br>'
                 txt += 'כדי לסרוק אותן ולגלות את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>'
-                txt += '.לחצו על הכפתור המהבהב' + "<br>" + "<br>"
+                txt += 'לחצו על הכפתור המהבהב.' + "<br>" + "<br>"
                 txt +=  'בתפריט בחרו תוכנת סריקה.' // txt += "בתפריט בחרו - שלח וירוס."
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
                 //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
@@ -2939,7 +2947,7 @@ let rnd = getRandomInt(asciArr.length - 1);
         let ipad = Id('ipad')
         ipad.style.backgroundImage = 'url( data/ipad_wallpaper.svg)' /////
         ipad.style.backgroundSize ='cover'
-        let foundText =  `נמצאו ${G.hacks.numOfsuccess } אפליקציות חשודות`
+        let foundText =  `נמצאו ${G.saves.numOfsuccess } אפליקציות חשודות`
         appHeader.innerHTML =   "מחפש אפליקציות חשודות "  + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
         stl (appHeader, {position: 'relative', color:'white', fontFamily: 'consolas', fontSize: '4.5vmin', textAlign: 'center', zIndex: '19', backgroundColor: 'rgba(20,10,70,0.8)', hieght: '130%', overflow:'hidden', borderRadius:"30vmin"})
         stl (appContainer, { paddingLeft :'3vmin'})
@@ -2958,8 +2966,8 @@ let rnd = getRandomInt(asciArr.length - 1);
         appContainer.style.position = 'relative';
         let q1 = getRandomInt(9) + 1; let viralWare = Id('app' + q1);
         if (answeris === 'right'){
-            G.hacks.numOfsuccess++
-            if (G.hacks.numOfsuccess  >=G.mgmt.max_Tofind.webSite) {
+            G.saves.numOfsuccess++
+            if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.webSite) {
                 findWebsite()
             }
 
@@ -2968,7 +2976,7 @@ let rnd = getRandomInt(asciArr.length - 1);
              if (answeris === 'right') {
 
                  blinkApp();
-                 let foundText =  `נמצאו ${G.hacks.numOfsuccess } אפליקציות חשודות`
+                 let foundText =  `נמצאו ${G.saves.numOfsuccess } אפליקציות חשודות`
                  appHeader.innerHTML =   "מחפש אפליקציות חשודות "  + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
 
               }
@@ -2983,7 +2991,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
     }
-    var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.hacks.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.hacks.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
+    var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.saves.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.saves.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
         type0 = G.hacks.current; }
     switch( type0) {
         case 'getIp':
@@ -3013,10 +3021,10 @@ let rnd = getRandomInt(asciArr.length - 1);
 // main:
 if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
-//G.mgmt.stage = 'getIp'
-// IpadGrahpic ( G.mgmt.stage); setQuestion(G.saves.qNumber)
+//G.mgmt.stage = 'firewall'
+//IpadGrahpic ( G.mgmt.stage); setQuestion(G.saves.qNumber)
 holoMenu();
-G.saves.nameOfplayer = 'חנניה'
+//G.saves.nameOfplayer = 'חנניה'
 blackScreen ()
 }
 
