@@ -1,7 +1,11 @@
 //haker code
+//"use strict";
+ var G = {}
 function fullScriptWrapper() {
- var G = {} //
-        "use strict";
+ //
+
+
+
         G.Q = A_; // question object
         G.css = {};
         G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
@@ -27,10 +31,12 @@ function fullScriptWrapper() {
         G.saves.qNumber = 1; // question number
         G.saves.progressArray = [];
         G.saves.numOfsuccess = 0;
+        G.saves.stageNumber = 1; //the stage number to begin /* safd */
+        G.saves.current = G.saves.stageNames
         /* STAGE */
-        G.mgmt.stageNumber = 1; //the stage number to begin /* safd */
-        G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
-        G.mgmt.stagesInfo = {
+
+        G.saves.stageNames = ["",'webSite','getIp','firewall','user','virus'];
+        G.saves.stagesInfo = {
             'getIp' : 'למציאת כתובת הרשת ',
             'firewall': ' לזיהוי חולשות בחומת האש',
             'user' : ' לחדירה למערכת באמצעות שם משתמש',
@@ -54,16 +60,16 @@ function fullScriptWrapper() {
         G.mgmt.isFinalAnsInChapter = false;
         G.mgmt.soundIsOn = true;
 
-        G.mgmt.nextStage = function () {G.mgmt.stageNumber++ ; G.mgmt.stage = G.mgmt.stageNames [G.mgmt.stageNumber]; G.hacks.current = G.mgmt.stage ; G.saves.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;  }
+        G.mgmt.nextStage = function () {G.saves.stageNumber++ ; G.saves.stage = G.saves.stageNames [G.saves.stageNumber]; G.saves.current = G.saves.stage ; G.saves.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;  }
         G.divs = {};
-        G.hacks = {};
+        //G.saves = {};
 
-        G.hacks.current = G.mgmt.stageNames // getIp // firewall
-        G.hacks.firewallCodeId = 'FWhacksId';
-        G.hacks.firewallFinishText = 'ההגנה נעקפה.'
-        G.hacks.firewallScrambleColor = 'yellow'
-        G.hacks.visrusNumberOfrows = 0;
-        G.hacks.ipLocations = [];
+         // getIp // firewall
+        G.saves.firewallCodeId = 'FWhacksId';
+        G.saves.firewallFinishText = 'ההגנה נעקפה.'
+        G.saves.firewallScrambleColor = 'yellow'
+        G.saves.visrusNumberOfrows = 0;
+        G.saves.ipLocations = [];
         G.testMode = true; // fast wrting
 
 //util_functions:
@@ -79,7 +85,7 @@ function fullScriptWrapper() {
         var style2 = styles + '; color:' + txtcolor2;
         var styleText = styles + '; color:' + colorForText;
         let t = [] ;  let  specialStyle = [] ; let objects_array = [];
-        for (i = 0; i < 40; i ++){t[i]=''; specialStyle[i]= ''}
+        for (let i = 0; i < 40; i ++){t[i]=''; specialStyle[i]= ''}
         let n = 0;
         args.forEach((a)=>{
             if (a === undefined){a = 'undefined'}
@@ -97,7 +103,7 @@ function fullScriptWrapper() {
         });
         let fulltxt = t.join('')
         let cssN = n;
-        for (i = 0; i < (cssN); i +=2){
+        for (let i = 0; i < (cssN); i +=2){
             if (specialStyle[i] === ''){t[i] = style1;} else { t[i] = specialStyle[i]}
             t[i + 1] = style2
         }
@@ -364,10 +370,11 @@ function clickAnswer (elem){
             G.mgmt.numberOftriesPerQuestion++;
             G.saves.progressArray.push(G.mgmt.numberOftriesPerQuestion);
             G.mgmt.numberOftriesPerQuestion = 0;
+            if(storeInLocal ('check')) {storeInLocal ('save')}
 
         }
         G.mgmt.isAnswering = true;
-        //if(storeInLocal ('check')) {storeInLocal ('save')}
+
 
         let op  = 1;
         let opDelta = 0.05
@@ -389,7 +396,7 @@ function clickAnswer (elem){
                 if (G.mgmt.isChapterCheckout) {G.mgmt.nextStage() }
 
 
-                if (G.saves.qNumber === 500){G.saves.qNumber = G.mgmt.lastqNumber; IpadGrahpic (G.mgmt.stage)} ;
+                if (G.saves.qNumber === 500){G.saves.qNumber = G.saves.lastqNumber; IpadGrahpic (G.saves.stage)} ;
                 if (G.saves.qNumber === 503) {
                     blackScreen('startGame');
                     return}
@@ -427,7 +434,7 @@ function holoMenu (r) {
     //G.divs.holoMenuoptions = G.divs.holoMenuoptions || [];
     function scanApps () {
         if (Id('scanApps').innerHTML === 'סורק ישומים') {return}
-        if (G.mgmt.stage !== 'webSite') {Id('scanApps').innerHTML = ''}
+        if (G.saves.stage !== 'webSite') {Id('scanApps').innerHTML = ''}
         let scanAppDiv = Id('scanApps');
         scanAppDiv.innerHTML ='סורק ישומים';
         scanAppDiv.style.color = 'blue'
@@ -436,7 +443,7 @@ function holoMenu (r) {
             let o = Math.sin (b) + 1;
             scanAppDiv.style.opacity = o + " "
             b++;
-            if (Id('scanApps') && G.mgmt.stage === 'webSite' ){setTimeout(()=>blinker(b), 100)} else {if (Id('scanApps')){Id('scanApps').innerHTML = ''}}
+            if (Id('scanApps') && G.saves.stage === 'webSite' ){setTimeout(()=>blinker(b), 100)} else {if (Id('scanApps')){Id('scanApps').innerHTML = ''}}
 
         }
         blinker (1)
@@ -628,10 +635,10 @@ createMenu (op)
     }
     function mainMenu (){
          let optionArray = [['optionsMenu','אפשרויות'],['progressMenu', 'התקדמות'] ,['saveMenu','שמירה'],['helpMenu','עזרה']]
-         if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.hacks.current === 'webSite')) {
+         if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.saves.current === 'webSite')) {
              optionArray.push(['scanApps','תוכנת סריקה'])
          }
-         if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.hacks.current === 'virus')) {
+         if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.saves.current === 'virus')) {
              optionArray.push(['sendVirus','שלח וירוס'])
          }
 
@@ -685,8 +692,8 @@ function ledEvent (e){
 
                 if (delta < 0) { G.divs.holoContainer.style.opacity = 0;fadeHolo (0.2,-1,80) ;
                      G.divs.holoContainer.style.visibility= "visible"; } else { G.divs.holoContainer.style.visibility= "hidden"; G.divs.holoContainer.style.opacity = 1 };
-                     if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.hacks.current === 'webSite')) {holoMenu();}
-                      if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.hacks.current === 'virus')) {holoMenu();}
+                     if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.saves.current === 'webSite')) {holoMenu();}
+                      if (G.saves.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.saves.current === 'virus')) {holoMenu();}
 
                  return
              }
@@ -751,31 +758,31 @@ function buildBoard (){
     arrangeStages (G.mgmt.totalNumOfQuestions)
     function arrangeStages (t) {
         let allQ = t //G.mgmt.totalNumOfQuestions //fsdfsdf
-        let originalNames = G.mgmt.stageNames;
+        let originalNames = G.saves.stageNames;
         let destenationStages = [];
         const minimumQ = 4;
         let numberOfStages = Math.floor (allQ/minimumQ);
         if (numberOfStages < 1){numberOfStages = 1} else if (numberOfStages > 5){numberOfStages=5}
         //console.log("Q : " + t + " , Stages: " + numberOfStages);
-        if (numberOfStages > 1) {destenationStages.push (G.mgmt.stageNames[1]) }
-        for (s = 2; s < numberOfStages; s++) {
-            destenationStages.push (G.mgmt.stageNames[s])
+        if (numberOfStages > 1) {destenationStages.push (G.saves.stageNames[1]) }
+        for (let s = 2; s < numberOfStages; s++) {
+            destenationStages.push (G.saves.stageNames[s])
         }
-        destenationStages.push (G.mgmt.stageNames[5])
+        destenationStages.push (G.saves.stageNames[5])
         let avrageQperStage = Math.floor (allQ/numberOfStages);
         let modeloQuestions = allQ % numberOfStages
 
         destenationStages.forEach((s)=>{
             G.mgmt.max_Tofind[s] = avrageQperStage;
         })
-        G.mgmt.max_Tofind[G.mgmt.stageNames[5]]  +=modeloQuestions
-        G.mgmt.stageNames = [""]
-        for (a = 0; a < destenationStages.length ; a++) {
-            G.mgmt.stageNames.push(destenationStages[a])
+        G.mgmt.max_Tofind[G.saves.stageNames[5]]  +=modeloQuestions
+        G.saves.stageNames = [""]
+        for (let a = 0; a < destenationStages.length ; a++) {
+            G.saves.stageNames.push(destenationStages[a])
 
         }
 
-        G.mgmt.stage = G.mgmt.stageNames [1];
+        G.saves.stage = G.saves.stageNames [1];
 
 
         //G.mgmt.max_Tofind['user']
@@ -1205,7 +1212,7 @@ function setQuestion (num) {
     G.css.typeSolution = "";
     let tb = Id('textBlock')
     let children =  tb.childNodes;
-    for (i in children){
+    for (let i in children){
         children[i].innerHTML = "";
     }
     tb.style.color = G.css.textcolor;
@@ -1214,7 +1221,7 @@ function setQuestion (num) {
     let elements = [];
     let t = 1;
     let position = 1;
-    if (G.saves.qNumber < 499) {G.mgmt.lastqNumber = G.saves.qNumber;}
+    if (G.saves.qNumber < 499) {G.saves.lastqNumber = G.saves.qNumber;}
     G.saves.qNumber = num;
 
     elements[1] = G.divs.infoText
@@ -1366,7 +1373,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         let numberOfr0ws = OriginalTxt.match(/\n/g).length;
         let rowsarray = OriginalTxt.split (/\n/g )
         let txt2 = ""
-        for (q = 0; q <= numberOfr0ws; q++){
+        for (let q = 0; q <= numberOfr0ws; q++){
             let scullId = "scullId" + q;
             txt2 +=  `<span id=${scullId}>` + rowsarray[q] + `</span>\n`
 
@@ -1447,7 +1454,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
             if (Id('scullDiv')) { } else return
             let i;
             let fadeLine = getRandomInt(36)
-            for (i = 1; i < 15; i++){
+            for (let i = 1; i < 15; i++){
                 let l = i; setTimeout(()=> {
                     let nextLine = fadeLine+l
                     if (fadeLine > 25) {nextLine= fadeLine-l}
@@ -1511,13 +1518,13 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
      ${nameOfplayer0}עליך לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
      כל תשובה נכונה תקדם שלב בתהליך הפריצה.
      טוען`
-        let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber]
-        G.Q [503][3] = startOrContinue + G.mgmt.stagesInfo[theNextStage]
+        let theNextStage = G.saves.stageNames[G.saves.stageNumber]
+        G.Q [503][3] = startOrContinue + G.saves.stagesInfo[theNextStage]
 
         G.Q [503][4] = "<b></b>" + iAmNotPlayer;
         G.Q [503][G.mgmt.solutionCol] = 1;
 
-        G.mgmt.lastqNumber = G.saves.qNumber
+        G.saves.lastqNumber = G.saves.qNumber
         G.saves.qNumber = 503
 
         setQuestion (503);
@@ -1544,13 +1551,13 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         G.Q [504] = ["", "","","","","","","",""]
         G.Q [504][1] = txt1;
         G.Q [504][2] = "<pre>" + `<font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b><br></font>`  + style2  +  `ניצחתם את "הארגון" הרשע ! כל הכבוד !` + summary + sumexplain
-        let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
+        let theNextStage = G.saves.stageNames[G.saves.stageNumber + 1 ]
         G.Q [504][3] = newgameTxt
 
         G.Q [504][4] = `<a href="#" onclick="javascript:window.close();opener.window.focus();">יציאה מהמשחק</a>`;
         G.Q [504][G.mgmt.solutionCol] = 1;
 
-        G.mgmt.lastqNumber = G.saves.qNumber
+        G.saves.lastqNumber = G.saves.qNumber
         G.saves.qNumber = 503
 
         setQuestion (504);
@@ -1593,9 +1600,18 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         fadeOutPromise1(ipadCover , 10).then(()=>{
 
             fadeOutPromise1(fullBlackScreen , 50).then(()=>{fullBlackScreen.remove()
-                G.saves.qNumber = G.mgmt.lastqNumber;
+                G.saves.qNumber = G.saves.lastqNumber;
+                let temporarySaveSuccess = G.saves.numOfsuccess
                 setQuestion (G.saves.qNumber)
-                IpadGrahpic (G.mgmt.stage)
+                G.saves.numOfsuccess = 0;
+                IpadGrahpic (G.saves.stage)
+                if (temporarySaveSuccess > G.saves.numOfsuccess) {
+                    G.saves.numOfsuccess = temporarySaveSuccess - 1;
+                    IpadGrahpic('right')
+
+                }
+
+                L(G.saves.numOfsuccess)
 
             })
             ipadCover.innerHTML ='';
@@ -1649,7 +1665,7 @@ function IpadGrahpic (type0) {
         }
         function MoveC (x00,y00, x1,y1, tm = 1 , cObj) {
             cObj = cObj || { 'r' : 0.5, 'color' : 'yellow' }
-            for (i = 1; i < 90; i++){
+            for (let i = 1; i < 90; i++){
                 var deltaX = x1 - x00;
                 var  deltaY = y1 - y00;
                 var  adder  = 0.01
@@ -1680,19 +1696,19 @@ function IpadGrahpic (type0) {
             //tb.style.color =  G.css.textcolor
             var ipArray = [];
             var ipTxtArray = [];
-            for (i = 0; i < 300; i++){
+            for (let i = 0; i < 300; i++){
                 ipArray [i] = [];
                 let ipStart = getRandomInt (30)
                 ipArray [i][0] = getRandomInt (30) + 255;
 
-                for (l = 1; l <4; l++){
+                for (let l = 1; l <4; l++){
                     let iprnd = getRandomInt (254)
                     ipArray [i][l] = iprnd;
                 }
 
             }
 
-            for (i in ipArray){
+            for (let i in ipArray){
                 let ipTxt = '';
                 for (l in ipArray[i]) {
                     if (l == 0) { } else {ipTxt += '.'}
@@ -1706,7 +1722,7 @@ function IpadGrahpic (type0) {
             function runIps (x){
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + "מחפש כתובת רשת :" + "</p>"
                 G.divs.textBlock2.innerHTML += 'Tracing route to 267.1.0.1 over Ip hops:' + (x + 212) + ' <br><br>';
-                for (i = 0 ; i < 19; i++){
+                for (let i = 0 ; i < 19; i++){
                     if (i + x > 99) { continue}
                     G.divs.textBlock2.innerHTML += ipTxtArray[i + x]
                     let sum = i+x;
@@ -1736,8 +1752,8 @@ function IpadGrahpic (type0) {
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = G.divs.textBlock2.innerHTML;
                     G.Q [500][2] = "כתובת רשת נמצאה. להמשיך ?";
-                    let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
-                    G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
+                    let theNextStage = G.saves.stageNames[G.saves.stageNumber + 1 ]
+                    G.Q [500][3] = "המשך " + G.saves.stagesInfo[theNextStage]
 
                     G.Q [500][4] = "בדיקה נוספת";
                     G.Q [500][G.mgmt.solutionCol] = 1;
@@ -1763,14 +1779,14 @@ function IpadGrahpic (type0) {
             let saveN = 1;
             var tmAdder = 200
 
-            for (n = 1; n <= G.saves.numOfsuccess; n++ ){
+            for (let n = 1; n <= G.saves.numOfsuccess; n++ ){
                 if (n === 1) { continue};
                 let sn = n;
-                setTimeout ((n)=> { MoveC  (G.hacks.ipLocations[sn-1][0], G.hacks.ipLocations[sn-1][1],
-                    G.hacks.ipLocations[sn][0],G.hacks.ipLocations[sn][1],2,lineObj)},sn* tmAdder);
+                setTimeout ((n)=> { MoveC  (G.saves.ipLocations[sn-1][0], G.saves.ipLocations[sn-1][1],
+                    G.saves.ipLocations[sn][0],G.saves.ipLocations[sn][1],2,lineObj)},sn* tmAdder);
                     saveN = n;
             }
-            setTimeout (()=> {MoveC  (G.hacks.ipLocations[saveN][0], G.hacks.ipLocations[saveN][1], G.hacks.ipLocations[1][0],G.hacks.ipLocations[1][1],2,lineObj);},(saveN +1)*tmAdder);
+            setTimeout (()=> {MoveC  (G.saves.ipLocations[saveN][0], G.saves.ipLocations[saveN][1], G.saves.ipLocations[1][0],G.saves.ipLocations[1][1],2,lineObj);},(saveN +1)*tmAdder);
 
 
 
@@ -1778,9 +1794,9 @@ function IpadGrahpic (type0) {
         function addRevieledLovation (){
 
                 G.saves.numOfsuccess++;
-                G.hacks.ipLocations[G.saves.numOfsuccess] = G.hacks.ipLocations[G.saves.numOfsuccess] || [];
-                G.hacks.ipLocations[G.saves.numOfsuccess][1] = G.hacks.ipY
-                G.hacks.ipLocations[G.saves.numOfsuccess][0] = G.hacks.ipX
+                G.saves.ipLocations[G.saves.numOfsuccess] = G.saves.ipLocations[G.saves.numOfsuccess] || [];
+                G.saves.ipLocations[G.saves.numOfsuccess][1] = G.saves.ipY
+                G.saves.ipLocations[G.saves.numOfsuccess][0] = G.saves.ipX
 
 
 
@@ -1789,13 +1805,13 @@ function IpadGrahpic (type0) {
           let randomMapX = getRandomInt (1300) * -1
           let randomMapY = getRandomInt (350) * -1
 
-          G.hacks.ipMapLocation = G.hacks.ipMapLocation || [randomMapX,randomMapY]
-          // maximum values for green map G.hacks.ipMapLocation  = [-1300,-350]
+          G.saves.ipMapLocation = G.saves.ipMapLocation || [randomMapX,randomMapY]
+          // maximum values for green map G.saves.ipMapLocation  = [-1300,-350]
           G.divs.ipadContent = Elm ('ipadContent','img');
           var img = G.divs.ipadContent;
           img.src = "data/map.svg"
           img.onload = function() {
-              ctx.drawImage(img, G.hacks.ipMapLocation [0],  G.hacks.ipMapLocation [1]);
+              ctx.drawImage(img, G.saves.ipMapLocation [0],  G.saves.ipMapLocation [1]);
               ctx.font = "7vmin Miriam";
               ctx.fillStyle = "white";
               let text =   " זיהוי כתובת רשת "
@@ -1807,12 +1823,12 @@ function IpadGrahpic (type0) {
               ctx.fillText(text,w / 5, h -(h /30));
               ctx.restore();
               let ips = 5;
-              G.hacks.rightIp = getRandomInt(ips)
+              G.saves.rightIp = getRandomInt(ips)
               for (let i = 1; i <= ips; i++) {
               let xPoint = getRandomInt (80) + 5;
               let yPoint = getRandomInt (70) + 5;
 
-              if (i == G.hacks.rightIp){ G.hacks.ipY = yPoint;G.hacks.ipX = xPoint }
+              if (i == G.saves.rightIp){ G.saves.ipY = yPoint;G.saves.ipX = xPoint }
               setTimeout(()=>{
                   ctx.save ();
 
@@ -1824,7 +1840,7 @@ function IpadGrahpic (type0) {
                   ctx.restore ();
               }, 200 * i);
               }
-              for (n = 1; n <= G.saves.numOfsuccess; n++ ){
+              for (let n = 1; n <= G.saves.numOfsuccess; n++ ){
                   if (G.saves.numOfsuccess == 0) { break};
                   ctx.save ();
 
@@ -1832,9 +1848,9 @@ function IpadGrahpic (type0) {
                   ctx.shadowOffsetX = 4;
                   ctx.shadowColor = "rgba(0,0,0,0.9)";
                   ctx.shadowBlur = 3;
-                  drawCircle (G.hacks.ipLocations[n][0], G.hacks.ipLocations[n][1],2,"yellow")
+                  drawCircle (G.saves.ipLocations[n][0], G.saves.ipLocations[n][1],2,"yellow")
                   ctx.restore ();
-                drawCircle (G.hacks.ipLocations[n][0], G.hacks.ipLocations[n][1],1,"red")
+                drawCircle (G.saves.ipLocations[n][0], G.saves.ipLocations[n][1],1,"red")
 
               }
               }
@@ -1888,12 +1904,12 @@ function IpadGrahpic (type0) {
             //tb.style.color =  G.css.textcolor
             var ipArray = [];
             var ipTxtArray = [];
-            for (i =0 ; i < 100 ; i++){
+            for (let i =0 ; i < 100 ; i++){
                 let ipTxt = '';
 
 
-                    let t = '<br>0x20004fff '; if(G.hacks.NamesOfPiecesOfFirewall[i] !== undefined) { t =G.hacks.NamesOfPiecesOfFirewall[i]}
-                    t = t.slice(0,9) + " " + G.hacks.NamesOfPiecesOfFirewall[i-5] ;
+                    let t = '<br>0x20004fff '; if(G.saves.NamesOfPiecesOfFirewall[i] !== undefined) { t =G.saves.NamesOfPiecesOfFirewall[i]}
+                    t = t.slice(0,9) + " " + G.saves.NamesOfPiecesOfFirewall[i-5] ;
                     ipTxt +=  t //ipArray[i][l];
 
                 let txt =  '&nbsp&nbsp&nbsp' + ipTxt + '&nbsp&nbsp&nbsp<br>'
@@ -1905,7 +1921,7 @@ function IpadGrahpic (type0) {
                 let tx1 = '<p dir = "rtl" align="right">' + "חומת האש נסרקת, מחפש חולשות ופרצות אבטחה:" + "</p>";
                 let tx2 = 'Stack buffer Address: x000fff' + (x + 212) + ' <br><br>';
                  G.divs.textBlock2.innerHTML = tx1 + tx2
-                for (i = 0 ; i < 19; i++){
+                for (let i = 0 ; i < 19; i++){
                     if (i + x > 99) { continue}
                     G.divs.textBlock2.innerHTML += ipTxtArray[i + x]
                     let sum = i+x;
@@ -1936,8 +1952,8 @@ function IpadGrahpic (type0) {
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = tx3 + tx2 + ipTxtArray[6] + '<br><p dir=rtl style="text-align: right">'
                     G.Q [500][2] = "כל ההגנות נעקפו ונמצאה חולשה מרכזית. להמשיך ?"
-                    let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
-                    G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
+                    let theNextStage = G.saves.stageNames[G.saves.stageNumber + 1 ]
+                    G.Q [500][3] = "המשך " + G.saves.stagesInfo[theNextStage]
                     G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                     G.Q [500][G.mgmt.solutionCol] = 1;
                     G.mgmt.isChapterCheckout = true;
@@ -1966,7 +1982,7 @@ function IpadGrahpic (type0) {
             var delta = 0.01 ; top_blure = 0.2; bottom_blur = 0.06
             function bllr (n){
 
-                if (!ipadCover.isbluring || G.hacks.current !== 'firewall') {return}
+                if (!ipadCover.isbluring || G.saves.current !== 'firewall') {return}
                 let b = 'blur(' + n +'rem)';
                 ipadCover.style.filter = b;
                 if (n > top_blure) { delta *= -1}
@@ -1979,26 +1995,26 @@ function IpadGrahpic (type0) {
 
         }
         function setFirewallPieces (numOfFWPieces) {
-            G.hacks.piecesOfFirewall = [];
-            G.hacks.NamesOfPiecesOfFirewall = [];
+            G.saves.piecesOfFirewall = [];
+            G.saves.NamesOfPiecesOfFirewall = [];
             var defences = ['access control ','Admin-security: ','Antivirus sftw(): ','Sec- coding: ', 'Sec-by default: ','Sec-by design: ','S-op-systems _','Auth-user - ','AuthToken ; ','Encryp: ', 'main-Panel: ', 'crypto: ', 'node-Secure: ', 'memory-Leak: ']
             var defences_save = defences.slice(0);
             var defence_functions = [' #0000FF', '#F1C40F','f()Firewall','0x3e603fff','0x20004fff','0x4c0101ff','0x1bf200ff','0xffd61f980','0x7ffffaff', '0x003fee00','0x6ffffff4','0x2fffffb8','0xffffff98','0xfff506ff','0x20bfe5ff', '0x3f62ffe9','0x2eff984f','0xf983ffb1'
             ,'OfFirewall', '#0002080', '#FF00FF', 'rgb(13,14,9)s','void_ssmain-i', '#FA2DC9', 'S-N/1692462',]
 
-            for (i = 1; i < numOfFWPieces; i++) {
+            for (let i = 1; i < numOfFWPieces; i++) {
                 let randomX = getRandomInt (1300) * -1
                 let randomY = getRandomInt (350) * -1
                 let randomDfence = getRandomInt(defences.length - 1)
                 let randomDfencef = getRandomInt(defence_functions.length - 1)
-                G.hacks.NamesOfPiecesOfFirewall[i] = defences[randomDfence] + " "+ defence_functions[randomDfencef];
+                G.saves.NamesOfPiecesOfFirewall[i] = defences[randomDfence] + " "+ defence_functions[randomDfencef];
                 defences.splice(randomDfence,1);
                 if ( defences.length < 2) {defences = defences.concat(defences_save)
 
                 }
-                G.hacks.piecesOfFirewall[i] = {};
-                G.hacks.piecesOfFirewall[i].randX = randomX ;
-                G.hacks.piecesOfFirewall[i].randY = randomY ;
+                G.saves.piecesOfFirewall[i] = {};
+                G.saves.piecesOfFirewall[i].randX = randomX ;
+                G.saves.piecesOfFirewall[i].randY = randomY ;
 
             }
         }
@@ -2066,7 +2082,7 @@ function IpadGrahpic (type0) {
                               Whtml ();
 
                               var gen = setInterval(function() {
-                                  let hackColor = G.hacks.firewallScrambleColor
+                                  let hackColor = G.saves.firewallScrambleColor
 
                                 before = '<span style="opacity: 0.5; color: '  + hackColor + '"> ' + ranString(count) + '</span>'
                                 after = '<span style="opacity: 0.5; color: '  + hackColor + '"> ' + ranString(count) + '</span>'
@@ -2095,7 +2111,7 @@ function IpadGrahpic (type0) {
                             init (finishString)
 
                         }
-                        hackFirewallElement (this,G.hacks.firewallFinishText);
+                        hackFirewallElement (this,G.saves.firewallFinishText);
 
                     }
                     el = Id (el)
@@ -2108,8 +2124,8 @@ function IpadGrahpic (type0) {
                     let hacksArray = [];
                     ipadCover.childNodes.forEach(a=>{
                         if (!a.id) {return}
-                        if (a.id.includes(G.hacks.firewallCodeId)) {
-                            let isFinished = a.innerHTML.includes(G.hacks.firewallFinishText)
+                        if (a.id.includes(G.saves.firewallCodeId)) {
+                            let isFinished = a.innerHTML.includes(G.saves.firewallFinishText)
                             hacksArray.push(isFinished);
                         }
                     })
@@ -2140,9 +2156,9 @@ function IpadGrahpic (type0) {
                     canvas.height =  preH * window.innerHeight * highRes;
                     canvas.width =  preW * window.innerWidth * highRes;
                     var ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, G.hacks.piecesOfFirewall[num1].randX,  G.hacks.piecesOfFirewall[num1].randY);
-                    spanId = G.hacks.firewallCodeId  + num1;
-                    ipadCover.innerHTML += '<div id = "' + spanId + '"style = "font-size:3vmin; background-color:rgba(10,0,0,0.7); width:80% ; height:5% ;margin: 0 auto; margin-top:1%;">' +  G.hacks.NamesOfPiecesOfFirewall[num1] + '</div>';
+                    ctx.drawImage(img, G.saves.piecesOfFirewall[num1].randX,  G.saves.piecesOfFirewall[num1].randY);
+                    spanId = G.saves.firewallCodeId  + num1;
+                    ipadCover.innerHTML += '<div id = "' + spanId + '"style = "font-size:3vmin; background-color:rgba(10,0,0,0.7); width:80% ; height:5% ;margin: 0 auto; margin-top:1%;">' +  G.saves.NamesOfPiecesOfFirewall[num1] + '</div>';
                     let sp = Id (spanId);
                     if (num1  < G.saves.numOfsuccess ) {
 
@@ -2158,7 +2174,7 @@ function IpadGrahpic (type0) {
 
                                 if (!a.id || breakForeach) {return}
                                 if (a.id === 'defMessage'){breakForeach = true}
-                                if (a.id.includes(G.hacks.firewallCodeId)) {addHackOption (a.id)}
+                                if (a.id.includes(G.saves.firewallCodeId)) {addHackOption (a.id)}
                             });
                             return;
 
@@ -2175,7 +2191,7 @@ function IpadGrahpic (type0) {
             ipadCover.isbluring = false;
             addFirewallClue ()}
             else if (answeris === 'wrong') {blureChanger ();setBG(ipadFireWallBGColor)}
-        if (G.hacks.piecesOfFirewall) {} else {setFirewallPieces (100)}
+        if (G.saves.piecesOfFirewall) {} else {setFirewallPieces (100)}
         if(G.saves.numOfsuccess + 1 >G.mgmt.max_Tofind.firewall){G.mgmt.isFinalAnsInChapter = true }
         if (G.mgmt.isChapterCheckout) {G.mgmt.isFinalAnsInChapter = false; return}
         blankIpad ()
@@ -2205,8 +2221,8 @@ function IpadGrahpic (type0) {
                 G.Q [500][1] =  '<br><p dir=rtl style="text-align: right">--- כניסה אושרה ----'
                 G.Q [500][2] = "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש ." + "<br>"
                 G.Q [500][2] += 'האם להמשיך ?'
-                let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
-                G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
+                let theNextStage = G.saves.stageNames[G.saves.stageNumber + 1 ]
+                G.Q [500][3] = "המשך " + G.saves.stagesInfo[theNextStage]
                 G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 G.mgmt.isChapterCheckout = true;
@@ -2277,8 +2293,8 @@ function IpadGrahpic (type0) {
             var ctx = canvas.getContext("2d");
             let randomImgX = getRandomInt (100) * -1;
             let randomImgY = getRandomInt (100) * -1;
-            G.hacks.userBlureBackround =  [randomImgX,randomImgY];
-            ctx.drawImage(img_, G.hacks.userBlureBackround [0],  G.hacks.userBlureBackround [1]);
+            G.saves.userBlureBackround =  [randomImgX,randomImgY];
+            ctx.drawImage(img_, G.saves.userBlureBackround [0],  G.saves.userBlureBackround [1]);
             let t1 = t;
             let sin = Math.sin(t/8); ipadCover.style.opacity = sin + 1.2;
             if (t > 2) {setTimeout (()=>{whiteNoise (t1-1,img_)}, t / 6)} else return;
@@ -2296,13 +2312,13 @@ function IpadGrahpic (type0) {
                     }
                 return result;
             }
-            if (G.hacks.FormfirstNames) return
+            if (G.saves.FormfirstNames) return
 
-            G.hacks.FormfirstNames = ['Addison', 'Adrian', 'Aiden', 'Ainsley', 'Alex', 'Amari', 'Andy', 'Ari', 'Ash', 'Aspen', 'Aubrey', 'August', 'Avery', 'Bailey', 'Bay', 'Blaine', 'Blake', 'Bobbie', 'Brett', 'Brook', 'Brooklyn', 'Caelan', 'Cameron', 'Campbell', 'Carroll', 'Carson', 'Casey', 'Charlie', 'Chris', 'Clay', 'Corey', 'Dana', 'Dakota', 'Dale', 'Dallas', 'Daryl', 'Delta', 'Devin', 'Dorian', 'Drew', 'Dylan', 'Easton', 'Eddie', 'Eli', 'Elliott', 'Emerson', 'Emery', 'Finley', 'Frances', 'Frankie', 'Gabriel', 'Glenn', 'Gray', 'Harley', 'Harper', 'Hayden', 'Hudson', 'Hunter', 'James', 'Jamie', 'Jayden', 'Jean', 'Jesse', 'Jordan', 'Jules', 'Julian', 'Kaden', 'Kai', 'Karter', 'Kelly', 'Kelsey', 'Kendall', 'Kennedy', 'Kyle', 'Lake', 'Landry', 'Lincoln', 'Logan', 'London', 'Lou', 'Mackenzie', 'Mason', 'Max', 'Maxwell', 'Monroe', 'Morgan', 'Parker', 'Pat', 'Peyton', 'Phoenix', 'Quinn', 'Ray', 'Reagan', 'Reed', 'Reese', 'Remy', 'Riley', 'River', 'Roan', 'Rory', 'Rowan', 'Rudy', 'Ryan', 'Sage', 'Sam', 'Sawyer', 'Shawn', 'Sean', 'Skylar', 'Spencer', 'Stevie', 'Sydney', 'Tanner', 'Tatum', 'Taylor', 'Toby', 'Tyler', 'Val', 'West', 'Winter'];
-            G.hacks.FormlastNames = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart', 'Sanchez', 'Morris', 'Rogers', 'Reed', 'Cook', 'Morgan', 'Bell', 'Murphy', 'Bailey', 'Rivera', 'Cooper', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray', 'Ramirez', 'James', 'Watson', 'Brooks', 'Kelly', 'Sanders', 'Price', 'Bennett', 'Wood', 'Barnes', 'Ross', 'Henderson', 'Coleman', 'Jenkins', 'Perry', 'Powell', 'Long', 'Patterson', 'Hughes', 'Flores', 'Washington', 'Butler', 'Simmons', 'Foster', 'Gonzales', 'Bryant', 'Alexander', 'Russell', 'Griffin', 'Diaz', 'Hayes', 'Myers', 'Ford', 'Hamilton', 'Graham', 'Sullivan', 'Wallace', 'Woods', 'Cole', 'West', 'Jordan', 'Owens', 'Reynolds', 'Fisher', 'Ellis', 'Harrison', 'Gibson', 'Mcdonald', 'Cruz', 'Marshall', 'Ortiz', 'Gomez', 'Murray', 'Freeman', 'Wells', 'Webb', 'Simpson', 'Stevens', 'Tucker', 'Porter', 'Hunter', 'Hicks', 'Crawford', 'Henry', 'Boyd', 'Mason', 'Morales', 'Kennedy', 'Warren', 'Dixon', 'Ramos', 'Reyes', 'Burns', 'Gordon', 'Shaw', 'Holmes', 'Rice', 'Robertson', 'Hunt', 'Black', 'Daniels', 'Palmer', 'Mills', 'Nichols', 'Grant', 'Knight', 'Ferguson', 'Rose', 'Stone', 'Hawkins', 'Dunn', 'Perkins', 'Hudson', 'Spencer', 'Gardner', 'Stephens', 'Payne', 'Pierce', 'Berry', 'Matthews', 'Arnold', 'Wagner', 'Willis', 'Ray', 'Watkins', 'Olson', 'Carroll', 'Duncan', 'Snyder', 'Hart', 'Cunningham', 'Bradley', 'Lane', 'Andrews', 'Ruiz', 'Harper', 'Fox', 'Riley', 'Armstrong', 'Carpenter', 'Weaver', 'Greene', 'Lawrence', 'Elliott', 'Chavez', 'Sims', 'Austin', 'Peters', 'Kelley', 'Franklin', 'Lawson', 'Fields', 'Gutierrez', 'Ryan', 'Schmidt', 'Carr', 'Vasquez', 'Castillo', 'Wheeler', 'Chapman'];
+            G.saves.FormfirstNames = ['Addison', 'Adrian', 'Aiden', 'Ainsley', 'Alex', 'Amari', 'Andy', 'Ari', 'Ash', 'Aspen', 'Aubrey', 'August', 'Avery', 'Bailey', 'Bay', 'Blaine', 'Blake', 'Bobbie', 'Brett', 'Brook', 'Brooklyn', 'Caelan', 'Cameron', 'Campbell', 'Carroll', 'Carson', 'Casey', 'Charlie', 'Chris', 'Clay', 'Corey', 'Dana', 'Dakota', 'Dale', 'Dallas', 'Daryl', 'Delta', 'Devin', 'Dorian', 'Drew', 'Dylan', 'Easton', 'Eddie', 'Eli', 'Elliott', 'Emerson', 'Emery', 'Finley', 'Frances', 'Frankie', 'Gabriel', 'Glenn', 'Gray', 'Harley', 'Harper', 'Hayden', 'Hudson', 'Hunter', 'James', 'Jamie', 'Jayden', 'Jean', 'Jesse', 'Jordan', 'Jules', 'Julian', 'Kaden', 'Kai', 'Karter', 'Kelly', 'Kelsey', 'Kendall', 'Kennedy', 'Kyle', 'Lake', 'Landry', 'Lincoln', 'Logan', 'London', 'Lou', 'Mackenzie', 'Mason', 'Max', 'Maxwell', 'Monroe', 'Morgan', 'Parker', 'Pat', 'Peyton', 'Phoenix', 'Quinn', 'Ray', 'Reagan', 'Reed', 'Reese', 'Remy', 'Riley', 'River', 'Roan', 'Rory', 'Rowan', 'Rudy', 'Ryan', 'Sage', 'Sam', 'Sawyer', 'Shawn', 'Sean', 'Skylar', 'Spencer', 'Stevie', 'Sydney', 'Tanner', 'Tatum', 'Taylor', 'Toby', 'Tyler', 'Val', 'West', 'Winter'];
+            G.saves.FormlastNames = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall', 'Allen', 'Young', 'Hernandez', 'King', 'Wright', 'Lopez', 'Hill', 'Scott', 'Green', 'Adams', 'Baker', 'Gonzalez', 'Nelson', 'Carter', 'Mitchell', 'Perez', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart', 'Sanchez', 'Morris', 'Rogers', 'Reed', 'Cook', 'Morgan', 'Bell', 'Murphy', 'Bailey', 'Rivera', 'Cooper', 'Richardson', 'Cox', 'Howard', 'Ward', 'Torres', 'Peterson', 'Gray', 'Ramirez', 'James', 'Watson', 'Brooks', 'Kelly', 'Sanders', 'Price', 'Bennett', 'Wood', 'Barnes', 'Ross', 'Henderson', 'Coleman', 'Jenkins', 'Perry', 'Powell', 'Long', 'Patterson', 'Hughes', 'Flores', 'Washington', 'Butler', 'Simmons', 'Foster', 'Gonzales', 'Bryant', 'Alexander', 'Russell', 'Griffin', 'Diaz', 'Hayes', 'Myers', 'Ford', 'Hamilton', 'Graham', 'Sullivan', 'Wallace', 'Woods', 'Cole', 'West', 'Jordan', 'Owens', 'Reynolds', 'Fisher', 'Ellis', 'Harrison', 'Gibson', 'Mcdonald', 'Cruz', 'Marshall', 'Ortiz', 'Gomez', 'Murray', 'Freeman', 'Wells', 'Webb', 'Simpson', 'Stevens', 'Tucker', 'Porter', 'Hunter', 'Hicks', 'Crawford', 'Henry', 'Boyd', 'Mason', 'Morales', 'Kennedy', 'Warren', 'Dixon', 'Ramos', 'Reyes', 'Burns', 'Gordon', 'Shaw', 'Holmes', 'Rice', 'Robertson', 'Hunt', 'Black', 'Daniels', 'Palmer', 'Mills', 'Nichols', 'Grant', 'Knight', 'Ferguson', 'Rose', 'Stone', 'Hawkins', 'Dunn', 'Perkins', 'Hudson', 'Spencer', 'Gardner', 'Stephens', 'Payne', 'Pierce', 'Berry', 'Matthews', 'Arnold', 'Wagner', 'Willis', 'Ray', 'Watkins', 'Olson', 'Carroll', 'Duncan', 'Snyder', 'Hart', 'Cunningham', 'Bradley', 'Lane', 'Andrews', 'Ruiz', 'Harper', 'Fox', 'Riley', 'Armstrong', 'Carpenter', 'Weaver', 'Greene', 'Lawrence', 'Elliott', 'Chavez', 'Sims', 'Austin', 'Peters', 'Kelley', 'Franklin', 'Lawson', 'Fields', 'Gutierrez', 'Ryan', 'Schmidt', 'Carr', 'Vasquez', 'Castillo', 'Wheeler', 'Chapman'];
 
-            Id('firstName').data =  G.hacks.FormfirstNames[getRandomInt (G.hacks.FormfirstNames.length)];
-            Id('familyName').data =  G.hacks.FormlastNames[getRandomInt (G.hacks.FormlastNames.length)];
+            Id('firstName').data =  G.saves.FormfirstNames[getRandomInt (G.saves.FormfirstNames.length)];
+            Id('familyName').data =  G.saves.FormlastNames[getRandomInt (G.saves.FormlastNames.length)];
             Id('userName').data = Id('firstName').data + "_" + makeid(7)
             Id('codephrase').data  = makeid(20, true);
             Id('codephrase').data1  = makeid(130, true);
@@ -2393,14 +2409,14 @@ function IpadGrahpic (type0) {
             var qArray = [firstName ,familyName,userName,codephrase,submitButton] ; let spanArr = [];
             //G.mgmt.max_Tofind.user = 6;
 
-            G.hacks.formQarray = [ firstName ,familyName,userName]
-            while (G.hacks.formQarray.length <  G.mgmt.max_Tofind.user - 1) {
-                G.hacks.formQarray.push(codephrase);
-            } ; G.hacks.formQarray.push(submitButton)
+            G.saves.formQarray = [ firstName ,familyName,userName]
+            while (G.saves.formQarray.length <  G.mgmt.max_Tofind.user - 1) {
+                G.saves.formQarray.push(codephrase);
+            } ; G.saves.formQarray.push(submitButton)
 
 
 
-            for (i = 0; i < qArray.length; i ++){
+            for (let i = 0; i < qArray.length; i ++){
                 if (qArray[i] === familyName) continue
                 spanArr[i] = document.createElement('span');
                 spanArr[i].innerHTML = '<br>';
@@ -2434,7 +2450,7 @@ function IpadGrahpic (type0) {
             //retryPass(codephrase)
 
         }
-        G.hacks.formQarray = G.hacks.formQarray || [];
+        G.saves.formQarray = G.saves.formQarray || [];
         let ipadCover = Id ('ipadCover')
         if (answeris === 'right') {let ipadCover = Id ('ipadCover');
             ipadCover.style.filter = '';
@@ -2446,15 +2462,15 @@ function IpadGrahpic (type0) {
             let rnd = getRandomInt (100) + 30
             whiteNoise (rnd,img); ipadCover.style.opacity = '0.5'}
         else {drawBaseForm ();}
-        for (i1 = 1; i1  <= G.saves.numOfsuccess; i1++) {
-            if (i   > G.hacks.formQarray.length) break;
-            let q = G.hacks.formQarray[i1-1]
+        for (let i1 = 1; i1  <= G.saves.numOfsuccess; i1++) {
+            if (i1   > G.saves.formQarray.length) break;
+            let q = G.saves.formQarray[i1-1]
             if (q === undefined) {} else {
                 q.value =  q.data
                 if (q.id === 'firstName' && G.saves.numOfsuccess === i1) {Id ('passportIMG').src = Id ('passportIMG').data;  'data/passports/passport (19).jpg';
                 let b = 'blur(' + 0.5 +'rem)'; Id ('passportIMG').style.filter = b;}
                 if (q.id === 'familyName' && G.saves.numOfsuccess === i1 ) {blureChanger (Id ('passportIMG'))}
-                if (q.id === 'codephrase' &&  G.hacks.formQarray[i1-1].id === 'codephrase'  && G.saves.numOfsuccess === i1) {
+                if (q.id === 'codephrase' &&  G.saves.formQarray[i1-1].id === 'codephrase'  && G.saves.numOfsuccess === i1) {
                     retryPass(Id('codephrase')) }
                 if (q.id ===  'submitButton' ) { q.style.backgroundColor = 'rgb(144, 238, 144)'; colorBorderSubmit (q,60, 1);
 
@@ -2549,7 +2565,7 @@ function IpadGrahpic (type0) {
 
         }
         function virusComplete () {
-            for (let t = 0; t < G.hacks.visrusNumberOfrows; t++){
+            for (let t = 0; t < G.saves.visrusNumberOfrows; t++){
                 let sp = Id('asciSpan' + t);
                 sp.style.color = "";
                 sp.style.opacity = 1;
@@ -2672,8 +2688,8 @@ let rnd = getRandomInt(asciArr.length - 1);
         }
         function asciPasrseToSpan (txt0){
             let array = txt0.split(/\r?\n/); let htmltxt = '';
-            for (i = 0; i < array.length; i++){
-                G.hacks.visrusNumberOfrows = i;
+            for (let i = 0; i < array.length; i++){
+                G.saves.visrusNumberOfrows = i;
 
              let line = '<span id="' + ascispanId + i + '" style="font-size:inherit; opacity : 0;">' + array[i] + '</span><br>';
              htmltxt  += line
@@ -2682,7 +2698,7 @@ let rnd = getRandomInt(asciArr.length - 1);
         }
         function rightAnswer (){
             G.saves.numOfsuccess++;
-            let numberToreveal0 = Math.floor(G.hacks.visrusNumberOfrows/ G.mgmt.max_Tofind.virus)
+            let numberToreveal0 = Math.floor(G.saves.visrusNumberOfrows/ G.mgmt.max_Tofind.virus)
             revealvirus(numberToreveal0);
         }
         function wrongAnser (){
@@ -2703,7 +2719,7 @@ let rnd = getRandomInt(asciArr.length - 1);
             let asciSpanId = 'asciSpan';
             let destenationOfRedRows = (G.saves.numOfsuccess / G.mgmt.max_Tofind.virus ) * 3;
             let redRows = 0
-            for (q = 0; q < G.hacks.visrusNumberOfrows; q++){
+            for (let q = 0; q < G.saves.visrusNumberOfrows; q++){
                 let rnd = getRandomInt (3)
                 let spn = Id(asciSpanId + q);
 
@@ -2722,7 +2738,7 @@ let rnd = getRandomInt(asciArr.length - 1);
             function revealOne (){
 
                 if (saftyCounter > 60) return; saftyCounter++
-                let rnd = getRandomInt (G.hacks.visrusNumberOfrows+1)
+                let rnd = getRandomInt (G.saves.visrusNumberOfrows+1)
 
                 let span = Id (ascispanId + (rnd - 1) )
                 span.style.color = 'white';
@@ -2830,8 +2846,8 @@ let rnd = getRandomInt(asciArr.length - 1);
                 G.Q [500][1] =  '<br><p dir=rtl style="text-align: right"> All Applications Scanned'
                 G.Q [500][2] = "כל הישומים נסרקו." + "<br>" + "על ידי הסריקה נמצא האתר של הארגון:" + "<br><br>" + address + "<br><br>" ;
                 G.Q [500][2] += 'האם להמשיך ?'
-                let theNextStage = G.mgmt.stageNames[G.mgmt.stageNumber + 1 ]
-                G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
+                let theNextStage = G.saves.stageNames[G.saves.stageNumber + 1 ]
+                G.Q [500][3] = "המשך " + G.saves.stagesInfo[theNextStage]
                 G.Q [500][4] = "דיווח לרשויות על האתר"
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 G.mgmt.isChapterCheckout = true;
@@ -2883,7 +2899,7 @@ let rnd = getRandomInt(asciArr.length - 1);
         function focusApp() {
             let opct = 1;
             function fadeOut (opct = 1) {
-            for (q2 = 0; q2 < 17; q2++) {
+            for (let q2 = 0; q2 < 17; q2++) {
                 let goodApp = Id('app' + q2);
                 if (goodApp && q2 !== q1){goodApp.style.opacity = " "+ opct + " "};
             }
@@ -2953,7 +2969,7 @@ let rnd = getRandomInt(asciArr.length - 1);
         stl (appContainer, { paddingLeft :'3vmin'})
         ipadCover.appendChild(appHeader) ;         ipadCover.appendChild(appContainer)
         let SVGs = getSVGs ()
-        for (q = 1 ; q < 55; q++){
+        for (let q = 1 ; q < 55; q++){
             let div1 = Elm('app' + q)
             let rndImg = getRandomInt( SVGs.length) - 1;
             let rndR =  getRandomInt( 150) + 100 ; let rndG =  getRandomInt( 150) + 100 ; let rndB =  getRandomInt( 150) + 100
@@ -2991,26 +3007,26 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
     }
-    var answeris = ''; type0 = type0  || G.hacks.current; if ( type0 === G.hacks.current){G.saves.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.hacks.current} else if (type0 == "getIp" ) {G.saves.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.hacks.current === 'getIp'){
-        type0 = G.hacks.current; }
+    var answeris = ''; type0 = type0  || G.saves.current; if ( type0 === G.saves.current){G.saves.numOfsuccess = 0} ; if (type0 === 'right' || type0 === 'wrong') {answeris = type0; type0 = G.saves.current} else if (type0 == "getIp" ) {G.saves.numOfsuccess = 0}; if (type0 == 'finishChaper' && G.saves.current === 'getIp'){
+        type0 = G.saves.current; }
     switch( type0) {
         case 'getIp':
-        G.hacks.current = 'getIp';
+        G.saves.current = 'getIp';
          getIp ()
         break;
         case 'firewall':
-        G.hacks.current = 'firewall';
+        G.saves.current = 'firewall';
          fireWall ()
          break;
         case 'user':
-         G.hacks.current = 'user';
+         G.saves.current = 'user';
           user ()
           break;
         case 'virus':
-         G.hacks.current = 'virus'
+         G.saves.current = 'virus'
         virus () ; break;
         case 'webSite':
-        G.hacks.current = 'webSite'
+        G.saves.current = 'webSite'
         webSite(); break;
 
 
@@ -3019,12 +3035,11 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-if(storeInLocal ('check')){storeInLocal ('load') }
+//if(storeInLocal ('check')){storeInLocal ('load') }
 buildBoard ();
-//G.mgmt.stage = 'firewall'
-//IpadGrahpic ( G.mgmt.stage); setQuestion(G.saves.qNumber)
+if(storeInLocal ('check')){storeInLocal ('load') }
+//IpadGrahpic ( G.saves.stage); setQuestion(G.saves.qNumber)
 holoMenu();
-//G.saves.nameOfplayer = 'חנניה'
 blackScreen ()
 }
 
