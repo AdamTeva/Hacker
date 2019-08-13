@@ -3,7 +3,7 @@
  var G = {}
 function fullScriptWrapper() {
  //
-        G.Q = A_; // question object
+        G.Q = _Q_object.QuestionsArray; // question object
         G.css = {};
         G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
         G.css.typeSolution = "";
@@ -17,6 +17,7 @@ function fullScriptWrapper() {
         G.css.canvasBackground = 'black'//"#00284d";
         G.css.breakAfterQuestion = '<br><br>'
         G.mgmt = {};
+        G.mgmt.nameOfGame = _Q_object.nameOfGame
         G.mgmt.totalNumOfQuestions = G.Q.length
         G.mgmt.solutionCol = 8;
         G.mgmt.isAnswering = false;
@@ -1514,7 +1515,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
     }
     function setStartText () {
         let subject1 = ''
-        let subject2 = 'לוח הכפל';
+        let subject2 = G.mgmt.nameOfGame;
             let nameOfplayer0 = ''; if (G.saves.nameOfplayer) {nameOfplayer0 = G.saves.nameOfplayer + ', '};
         let iAmNotPlayer = ''; if (G.saves.nameOfplayer) {iAmNotPlayer = 'אני לא ' + G.saves.nameOfplayer}
         let startOrContinue = "שלב ראשון - החל " ; if  (G.saves.nameOfplayer) {startOrContinue = "המשך בתהליך "}
@@ -1555,7 +1556,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
     }
     function setEndText () {
         let style2 = '<font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:3vmin">'
-        let subject2 = 'לוח הכפל' + ' סיכום';
+        let subject2 = G.mgmt.nameOfGame + ' סיכום';
         let summary ='<br>' + `להלן ` +progressText ()
         let newgameTxt = `משחק חוזר`
         if (G.saves.nameOfplayer) {newgameTxt += `(כל ההתקדמות של ${G.saves.nameOfplayer} תימחק)`}
