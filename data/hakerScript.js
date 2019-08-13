@@ -3,9 +3,6 @@
  var G = {}
 function fullScriptWrapper() {
  //
-
-
-
         G.Q = A_; // question object
         G.css = {};
         G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
@@ -333,6 +330,7 @@ function fullScriptWrapper() {
     }
 
 function clickAnswer (elem){
+    if (G.mgmt.qNumber === 504) {storeInLocal('confirmReset'); return}
 
     /* for testing */
     if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]
@@ -359,6 +357,7 @@ function clickAnswer (elem){
     }
     function answerAnimation (text, isWin){
         G.mgmt.isAnswering = true;
+
         let e = 0
         //G.divs.question.innerHTML += "&nbsp&nbsp"
 
@@ -376,7 +375,7 @@ function clickAnswer (elem){
         if (G.mgmt.qNumber < 500) {
             IpadGrahpic ('right');
             G.mgmt.numberOftriesPerQuestion++;
-            G.saves.progressArray.push(G.mgmt.numberOftriesPerQuestion);
+            G.saves.progressArray[G.mgmt.qNumber] = G.mgmt.numberOftriesPerQuestion;
             G.mgmt.numberOftriesPerQuestion = 0;
 
 
