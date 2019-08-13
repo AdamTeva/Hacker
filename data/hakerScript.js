@@ -28,10 +28,10 @@ function fullScriptWrapper() {
         G.mgmt.savedSession = {};
         /* savings  */
         G.saves = {};
-        G.saves.qNumber = 1; // question number
+        G.mgmt.qNumber = 1; // question number
         G.saves.progressArray = [];
         G.saves.stageNumber = 1; //the stage number to begin /* safd */
-        G.saves.qNumber = 1;
+        G.saves.lastSavedQuestion = 1;
 
 
         /* STAGE */
@@ -47,6 +47,8 @@ function fullScriptWrapper() {
         }
         G.mgmt.numOfsuccess = 0;
         G.mgmt.current = G.mgmt.stageNames[1]
+        G.mgmt.qNumber = 1;
+
 
         G.mgmt.clickedAnswer = 0;
         G.mgmt.isQuestion = false;
@@ -63,7 +65,9 @@ function fullScriptWrapper() {
         G.mgmt.isFinalAnsInChapter = false;
         G.mgmt.soundIsOn = true;
 
-        G.mgmt.nextStage = function () {G.saves.stageNumber++ ; G.saves.stage = G.mgmt.stageNames [G.saves.stageNumber]; G.mgmt.current = G.saves.stage ; G.mgmt.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false; if(storeInLocal ('check')) {storeInLocal ('save'); L(G.saves.stageNumber)}
+        G.mgmt.nextStage = function () {G.saves.stageNumber++ ; G.saves.stage = G.mgmt.stageNames [G.saves.stageNumber]; G.mgmt.current = G.saves.stage ; G.mgmt.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;
+        G.saves.lastSavedQuestion = G.mgmt.qNumber;
+        if(storeInLocal ('check')) {storeInLocal ('save'); }
          }
         G.divs = {};
         G.hacks = {};
@@ -203,10 +207,10 @@ function fullScriptWrapper() {
                 //    let ansDiv = Id(ansId);
                 //    let numOfans =  Number(ansId.replace("ans", ''))
                 //    let html = ansDiv.innerHTML;
-                //ansDiv.innerHTML = G.Q[G.saves.qNumber][numOfans + 2] // newHtml;
+                //ansDiv.innerHTML = G.Q[G.mgmt.qNumber][numOfans + 2] // newHtml;
                 for (let i = 1; i < 5; i++) {
                     //if (i == numOfans) {continue}
-                    if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
+                    if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
                 }
 
 
@@ -227,13 +231,13 @@ function fullScriptWrapper() {
         if (numOfans === 0){return}
 
         G.css.lastHoverEvent = numOfans;
-        let html = G.Q[G.saves.qNumber][numOfans + 2];
+        let html = G.Q[G.mgmt.qNumber][numOfans + 2];
         let newHtml = "<span style='background-color:" +  G.css.textcolor + "; color : " + G.css.backGroundtextcolor + "'>" + html + "</span>";
         ansDiv.innerHTML = newHtml;
 
         for (let i = 1; i < 5; i++) {
             if (i == numOfans) {continue}
-            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
+            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
         }
         G.css.mouseOnTimer = 2000;
         if (G.css.isMouseOutTimer) {return}
@@ -331,19 +335,19 @@ function fullScriptWrapper() {
 function clickAnswer (elem){
 
     /* for testing */
-    if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.saves.qNumber][G.mgmt.solutionCol]
+    if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]
     let idName = 'ans'+ rightAnswer;
     let div = Id(idName); elem.target = div}
 
     function wrongAnswerAnimation (num) {
 
-        if (G.saves.qNumber < 500) {G.mgmt.numberOftriesPerQuestion++}
-        if (G.saves.qNumber === 503) {storeInLocal('confirmReset'); return}
+        if (G.mgmt.qNumber < 500) {G.mgmt.numberOftriesPerQuestion++}
+        if (G.mgmt.qNumber === 503) {storeInLocal('confirmReset'); return}
 
 
 
         G.mgmt.isAnswering = true;
-        let text = G.Q[G.saves.qNumber][2 + num]
+        let text = G.Q[G.mgmt.qNumber][2 + num]
 
         let e = 0;
         function deletAnswer () {
@@ -369,7 +373,7 @@ function clickAnswer (elem){
 
     }
     function nextQuesion () {
-        if (G.saves.qNumber < 500) {
+        if (G.mgmt.qNumber < 500) {
             IpadGrahpic ('right');
             G.mgmt.numberOftriesPerQuestion++;
             G.saves.progressArray.push(G.mgmt.numberOftriesPerQuestion);
@@ -388,7 +392,7 @@ function clickAnswer (elem){
         let rgbPartialTxt = "rgba(" + rgnObj.r + "," + rgnObj.g + "," + rgnObj.b + ",";
         for (let i = 1; i < 5; i++) {
 
-            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
+            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
         }
         function fadeOut () {
 
@@ -397,16 +401,19 @@ function clickAnswer (elem){
             tb.style.color = finRgb;
             op =  op - opDelta;
             if (op > 0){setTimeout(()=>{fadeOut ()}, time)} else if (!G.mgmt.isFinalAnsInChapter){
-                if (G.mgmt.isChapterCheckout) {G.mgmt.nextStage() }
 
 
-                if (G.saves.qNumber === 500){G.saves.qNumber = G.hacks.lastqNumber; IpadGrahpic (G.saves.stage)} ;
-                if (G.saves.qNumber === 503) {
+
+                if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.hacks.lastqNumber;
+                    if (G.mgmt.isChapterCheckout) {G.mgmt.nextStage() ; IpadGrahpic (G.saves.stage)}
+
+                } ;
+                if (G.mgmt.qNumber === 503) {
                     blackScreen('startGame');
                     return}
-                if (G.saves.qNumber === 501) {blackScreen('endGame'); return}
+                if (G.mgmt.qNumber === 501) {blackScreen('endGame'); return}
 
-            setQuestion(G.saves.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
+            setQuestion(G.mgmt.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
 
                 G.mgmt.isFinalAnsInChapter = false; IpadGrahpic ('finishChaper')
             }
@@ -424,10 +431,10 @@ function clickAnswer (elem){
     let numOfans =  Number(ansId.replace("ans", ''))
 
      G.mgmt.clickedAnswer = numOfans;
-    let solutionNumber = G.Q[G.saves.qNumber][G.mgmt.solutionCol]
-    let solutionText = G.Q[G.saves.qNumber][2 + Number(solutionNumber)]
+    let solutionNumber = G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]
+    let solutionText = G.Q[G.mgmt.qNumber][2 + Number(solutionNumber)]
 
-    if (numOfans == G.Q[G.saves.qNumber][G.mgmt.solutionCol]) {answerAnimation(solutionText)} else {
+    if (numOfans == G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]) {answerAnimation(solutionText)} else {
 
         wrongAnswerAnimation (numOfans)
         }
@@ -478,7 +485,7 @@ function holoMenu (r) {
        }
        let input = Id('input').value
        if (input.length < 2){Formtext.innerHTML = 'שם צריך להכיל לפחות 2 אותיות' + '<br>'; return}
-       G.hacks.nameOfplayer = input;
+       G.saves.nameOfplayer = input;
        //visuaGamelLoader (true);
        Formtext.innerHTML = '&nbsp';
        let inputName = input;
@@ -495,7 +502,7 @@ function holoMenu (r) {
         //let
         let formStyle = `font-family: david; font-size: 4vmin; color:rgba(3,100,100); opacity:0.7; text-shadow :6px 2px 8px yellow ; border-radius:1vmin;font-weight:bold;`
 
-       if (storeInLocal ('check')){userMessage = G.hacks.nameOfplayer + ', ';
+       if (storeInLocal ('check')){userMessage = G.saves.nameOfplayer + ', ';
        userMessage  += ' ההתקדמות שלך במשחק נשמרת בסיום כל שלב'
        }
        userMessage += ' <br>'
@@ -817,7 +824,7 @@ function buildBoard (){
 
                 for (let i = 1; i < 5; i++) {
                     //if (i == numOfans) {continue}
-                    if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
+                    if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
                 }
 
 
@@ -838,13 +845,13 @@ function buildBoard (){
         if (numOfans === 0){return}
 
         G.css.lastHoverEvent = numOfans;
-        let html = G.Q[G.saves.qNumber][numOfans + 2];
+        let html = G.Q[G.mgmt.qNumber][numOfans + 2];
         let newHtml = "<span style='background-color:" +  G.css.textcolor + "; color : " + G.css.backGroundtextcolor + "'>" + html + "</span>";
         ansDiv.innerHTML = newHtml;
 
         for (let i = 1; i < 5; i++) {
             if (i == numOfans) {continue}
-            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.saves.qNumber][i + 2]}
+            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
         }
         G.css.mouseOnTimer = 2000;
         if (G.css.isMouseOutTimer) {return}
@@ -1099,7 +1106,7 @@ function progressText (){
     let qAnswered = G.saves.progressArray.length || 0 ;
     let qNumBytry = [];
     let qprecent = preCent (qAnswered,qTotal)
-    let namePlayer = ''; if (G.hacks.nameOfplayer) { namePlayer = G.hacks.nameOfplayer + ", "}
+    let namePlayer = ''; if (G.saves.nameOfplayer) { namePlayer = G.saves.nameOfplayer + ", "}
     for (let a= 0; a < 4; a++){
         var countOfTries = 0
         G.saves.progressArray.forEach((e)=>{if (e === (a+1)){countOfTries++}})
@@ -1126,13 +1133,17 @@ function storeInLocal (command){
         break;
 
         case 'save':
-        localStorage.setItem('global' + htmlFileName, JSON.stringify(G.hacks));
+        L('saving')
+
+        localStorage.setItem('global' + htmlFileName, JSON.stringify(G.saves));
         localStorage.setItem('isSaved' + htmlFileName, 'true');
         break;
 
         case 'load':
+        L('loading')
         var retrievedObject = localStorage.getItem('global' + htmlFileName);
-        G.hacks = JSON.parse(retrievedObject);
+        G.saves = JSON.parse(retrievedObject);
+        G.mgmt.qNumber = G.saves.lastSavedQuestion;
         break;
 
         case 'reset':
@@ -1225,8 +1236,8 @@ function setQuestion (num) {
     let elements = [];
     let t = 1;
     let position = 1;
-    if (G.saves.qNumber < 499) {G.hacks.lastqNumber = G.saves.qNumber;}
-    G.saves.qNumber = num;
+    if (G.mgmt.qNumber < 499) {G.hacks.lastqNumber = G.mgmt.qNumber;}
+    G.mgmt.qNumber = num;
 
     elements[1] = G.divs.infoText
     fulltextArray[1] = G.Q[num][1]
@@ -1505,9 +1516,9 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
     function setStartText () {
         let subject1 = ''
         let subject2 = 'לוח הכפל';
-        let nameOfplayer0 = ''; if (G.hacks.nameOfplayer) {nameOfplayer0 = G.hacks.nameOfplayer + ', '};
-        let iAmNotPlayer = ''; if (G.hacks.nameOfplayer) {iAmNotPlayer = 'אני לא ' + G.hacks.nameOfplayer}
-        let startOrContinue = "שלב ראשון - החל " ; if  (G.hacks.nameOfplayer) {startOrContinue = "המשך בתהליך "}
+            let nameOfplayer0 = ''; if (G.saves.nameOfplayer) {nameOfplayer0 = G.saves.nameOfplayer + ', '};
+        let iAmNotPlayer = ''; if (G.saves.nameOfplayer) {iAmNotPlayer = 'אני לא ' + G.saves.nameOfplayer}
+        let startOrContinue = "שלב ראשון - החל " ; if  (G.saves.nameOfplayer) {startOrContinue = "המשך בתהליך "}
         let asci0 = `  _   _            _
  | | | | __ _  ___| | _____ _ __         ${subject1}
  | |_| |/ _' |/ __| |/ / _ \\ v__|
@@ -1529,8 +1540,8 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         G.Q [503][4] = "<b></b>" + iAmNotPlayer;
         G.Q [503][G.mgmt.solutionCol] = 1;
 
-        G.hacks.lastqNumber = G.saves.qNumber
-        G.saves.qNumber = 503
+        G.hacks.lastqNumber = G.mgmt.qNumber
+        G.mgmt.qNumber = 503
 
         setQuestion (503);
         let speed0 = 7000;
@@ -1548,7 +1559,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         let subject2 = 'לוח הכפל' + ' סיכום';
         let summary ='<br>' + `להלן ` +progressText ()
         let newgameTxt = `משחק חוזר`
-        if (G.hacks.nameOfplayer) {newgameTxt += `(כל ההתקדמות של ${G.hacks.nameOfplayer} תימחק)`}
+        if (G.saves.nameOfplayer) {newgameTxt += `(כל ההתקדמות של ${G.saves.nameOfplayer} תימחק)`}
         //asci0 = asci0.replace(/\n/g, '<br>')
         let sumexplain = 'סיימתם את המשחק. תוכלו לשחק שוב כדי לנסות ולשפר את התוצאות שלכם.' + '<br>'
         sumexplain += 'אם שמרתם את המשחק, התחלת משחק חדש תמחק ותאפס את ההתקדמות שלכם.'
@@ -1559,11 +1570,11 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         let theNextStage = G.mgmt.stageNames[G.saves.stageNumber + 1 ]
         G.Q [504][3] = newgameTxt
 
-        G.Q [504][4] = `<a href="#" onclick="javascript:window.close();opener.window.focus();">יציאה מהמשחק</a>`;
+        G.Q [504][4] = `<b>`;
         G.Q [504][G.mgmt.solutionCol] = 1;
 
-        G.hacks.lastqNumber = G.saves.qNumber
-        G.saves.qNumber = 503
+        G.hacks.lastqNumber = G.mgmt.qNumber
+        G.mgmt.qNumber = 503
 
         setQuestion (504);
         let speed0 = 7000;
@@ -1605,12 +1616,10 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         fadeOutPromise1(ipadCover , 10).then(()=>{
 
             fadeOutPromise1(fullBlackScreen , 50).then(()=>{fullBlackScreen.remove()
-                G.saves.qNumber = G.hacks.lastqNumber;
+                G.mgmt.qNumber = G.hacks.lastqNumber;
 
 
-                setQuestion (G.saves.qNumber)
-                //G.mgmt.numOfsuccess = 0;
-                L(G.saves.stage, 'in blackscreen')
+                setQuestion (G.mgmt.qNumber)
                  IpadGrahpic (G.saves.stage)
 
             })
@@ -2818,6 +2827,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                         }
                     return result;
                 }
+                let tm = 100; if (G.testMode) {tm = 5 }
                 let txt = "סורק ישומים בחיפוש אחר האתר של הארגון." + "<br>" + "אתרים ברשת האפילה:" + "<br>"
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + "</p>"
                 G.divs.textBlock2.innerHTML += '<div id="irgunSite"></div>'
@@ -2827,7 +2837,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                     n += 0.2;
                     siteDiv.innerHTML = 'darkNet:\\\\' + id + ".onion:22";
 
-                    if (n < 15) {setTimeout (()=>{findSite (n)},100)} else {stage3(siteDiv.innerHTML)}
+                    if (n < 15) {setTimeout (()=>{findSite (n)},tm)} else {stage3(siteDiv.innerHTML)}
                 }
                 findSite(1)
 
@@ -3038,7 +3048,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 buildBoard ();
 if(storeInLocal ('check')){storeInLocal ('load') }
-//IpadGrahpic ( G.saves.stage); setQuestion(G.saves.qNumber)
+//IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
 holoMenu();
 blackScreen ()
 }
