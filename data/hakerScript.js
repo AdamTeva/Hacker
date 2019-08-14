@@ -2,81 +2,86 @@
 //"use strict";
  var G = {}
 function fullScriptWrapper() {
+
  //
-        G.Q = _Q_object.QuestionsArray; // question object
-        G.css = {};
-        G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
-        G.css.typeSolution = "";
-        G.css.textcolor = "#21DF25"; // shoul be in hex
-        G.css.mouseOnTimer = 2000;
-        G.css.isMouseOutTimer = false;
-        G.css.lastHoverEvent = 0;
-        G.css.backGroundtextcolor = 'black'
-        G.css.textFontSize = 2;
-        G.css.resizeFontScale = 0.6;
-        G.css.canvasBackground = 'black'//"#00284d";
-        G.css.breakAfterQuestion = '<br><br>'
-        G.mgmt = {};
-        G.mgmt.nameOfGame = _Q_object.nameOfGame
-        G.mgmt.totalNumOfQuestions = G.Q.length
-        G.mgmt.solutionCol = 8;
-        G.mgmt.isAnswering = false;
-        G.mgmt.mouseIsOver = 0;
-        G.mgmt.numberOftriesPerQuestion = 0;
-        G.mgmt.savedSession = {};
-        /* savings  */
-        G.saves = {};
-        G.mgmt.qNumber = 1; // question number
-        G.saves.progressArray = [];
-        G.saves.stageNumber = 1; //the stage number to begin /* safd */
-        G.saves.lastSavedQuestion = 1;
+ globalObject:{
+     G.Q = _Q_object.QuestionsArray; // question object
+     G.css = {};
+     G.css.font_0 = "consolas"// "Miriam Fixed"//"Lucida Sans Typewriter"; "Miriam Fixed"   // Lucida Con sole
+     G.css.typeSolution = "";
+     G.css.textcolor = "#21DF25"; // shoul be in hex
+     G.css.mouseOnTimer = 2000;
+     G.css.isMouseOutTimer = false;
+     G.css.lastHoverEvent = 0;
+     G.css.backGroundtextcolor = 'black'
+     G.css.textFontSize = 2;
+     G.css.resizeFontScale = 0.6;
+     G.css.canvasBackground = 'black'//"#00284d";
+     G.css.breakAfterQuestion = '<br><br>'
+     G.mgmt = {};
+     G.mgmt.nameOfGame = _Q_object.nameOfGame
+     G.mgmt.totalNumOfQuestions = G.Q.length
+     G.mgmt.solutionCol = 8;
+     G.mgmt.isAnswering = false;
+     G.mgmt.mouseIsOver = 0;
+     G.mgmt.numberOftriesPerQuestion = 0;
+     G.mgmt.savedSession = {};
+     /* savings  */
+     G.saves = {};
+     G.mgmt.qNumber = 1; // question number
+     G.saves.progressArray = [];
+     G.saves.stageNumber = 1; //the stage number to begin /* safd */
+     G.saves.lastSavedQuestion = 1;
 
 
-        /* STAGE */
+     /* STAGE */
 
-        G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
-        G.mgmt.stagesInfo = {
-            'getIp' : 'למציאת כתובת הרשת ',
-            'firewall': ' לזיהוי חולשות בחומת האש',
-            'user' : ' לחדירה למערכת באמצעות שם משתמש',
-            'webSite': 'מציאת האתר דרך סריקת אפליקציות',
-            'virus': 'לבניית וירוס תקיפה נגד האתר',
+     G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
+     G.mgmt.stagesInfo = {
+         'getIp' : 'למציאת כתובת הרשת ',
+         'firewall': ' לזיהוי חולשות בחומת האש',
+         'user' : ' לחדירה למערכת באמצעות שם משתמש',
+         'webSite': 'מציאת האתר דרך סריקת אפליקציות',
+         'virus': 'לבניית וירוס תקיפה נגד האתר',
 
-        }
-        G.mgmt.numOfsuccess = 0;
-        G.mgmt.current = G.mgmt.stageNames[1]
-        G.mgmt.qNumber = 1;
+     }
+     G.mgmt.numOfsuccess = 0;
+     G.mgmt.current = G.mgmt.stageNames[1]
+     G.mgmt.qNumber = 1;
 
 
-        G.mgmt.clickedAnswer = 0;
-        G.mgmt.isQuestion = false;
-        G.mgmt.isHolo = false// is the holo up
-        G.mgmt.max_Tofind = {}
+     G.mgmt.clickedAnswer = 0;
+     G.mgmt.isQuestion = false;
+     G.mgmt.isHolo = false// is the holo up
+     G.mgmt.max_Tofind = {}
 
-        G.mgmt.max_Tofind.firewall = 0
-        G.mgmt.max_Tofind.virus = 0
-        G.mgmt.max_Tofind.getIp = 0;
-        G.mgmt.max_Tofind.firewall = 0;
-        G.mgmt.max_Tofind.user = 0;
-        G.mgmt.max_Tofind.webSite = 0;
+     G.mgmt.max_Tofind.firewall = 0
+     G.mgmt.max_Tofind.virus = 0
+     G.mgmt.max_Tofind.getIp = 0;
+     G.mgmt.max_Tofind.firewall = 0;
+     G.mgmt.max_Tofind.user = 0;
+     G.mgmt.max_Tofind.webSite = 0;
 
-        G.mgmt.isFinalAnsInChapter = false;
-        G.mgmt.soundIsOn = true;
+     G.mgmt.isFinalAnsInChapter = false;
+     G.mgmt.soundIsOn = true;
 
-        G.mgmt.nextStage = function () {G.saves.stageNumber++ ; G.saves.stage = G.mgmt.stageNames [G.saves.stageNumber]; G.mgmt.current = G.saves.stage ; G.mgmt.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;
-        G.saves.lastSavedQuestion = G.mgmt.qNumber;
-        if(storeInLocal ('check')) {storeInLocal ('save'); }
-         }
-        G.divs = {};
-        G.hacks = {};
+     G.mgmt.nextStage = function () {G.saves.stageNumber++ ; G.saves.stage = G.mgmt.stageNames [G.saves.stageNumber]; G.mgmt.current = G.saves.stage ; G.mgmt.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;
+     G.saves.lastSavedQuestion = G.mgmt.qNumber;
+     if(storeInLocal ('check')) {storeInLocal ('save'); }
+      }
+     G.divs = {};
+     G.hacks = {};
 
-         // getIp // firewall
-        G.hacks.firewallCodeId = 'FWhacksId';
-        G.hacks.firewallFinishText = 'ההגנה נעקפה.'
-        G.hacks.firewallScrambleColor = 'yellow'
-        G.hacks.visrusNumberOfrows = 0;
-        G.hacks.ipLocations = [];
-        G.testMode = true; // fast wrting
+      // getIp // firewall
+     G.hacks.firewallCodeId = 'FWhacksId';
+     G.hacks.firewallFinishText = 'ההגנה נעקפה.'
+     G.hacks.firewallScrambleColor = 'yellow'
+     G.hacks.visrusNumberOfrows = 0;
+     G.hacks.ipLocations = [];
+     G.testMode = true; // fast wrting
+
+
+ }
 
 //util_functions:
     function L (...args){
@@ -378,8 +383,6 @@ function clickAnswer (elem){
             G.mgmt.numberOftriesPerQuestion++;
             G.saves.progressArray[G.mgmt.qNumber] = G.mgmt.numberOftriesPerQuestion;
             G.mgmt.numberOftriesPerQuestion = 0;
-
-
         }
         G.mgmt.isAnswering = true;
 
@@ -397,6 +400,7 @@ function clickAnswer (elem){
         function fadeOut () {
 
             let finRgb = rgbPartialTxt + op + ")"
+            let plus = 1;
             //
             tb.style.color = finRgb;
             op =  op - opDelta;
@@ -405,15 +409,16 @@ function clickAnswer (elem){
 
 
                 if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.hacks.lastqNumber;
-                    if (G.mgmt.isChapterCheckout) {G.mgmt.nextStage() ; IpadGrahpic (G.saves.stage)}
+                    plus = 0;
 
+                    if (G.mgmt.isChapterCheckout) {G.mgmt.nextStage() ; IpadGrahpic (G.saves.stage)}
                 } ;
                 if (G.mgmt.qNumber === 503) {
                     blackScreen('startGame');
                     return}
                 if (G.mgmt.qNumber === 501) {blackScreen('endGame'); return}
 
-            setQuestion(G.mgmt.qNumber+1)} else if (G.mgmt.isFinalAnsInChapter) {
+            setQuestion(G.mgmt.qNumber+ plus)} else if (G.mgmt.isFinalAnsInChapter) {
 
                 G.mgmt.isFinalAnsInChapter = false; IpadGrahpic ('finishChaper')
             }
@@ -765,7 +770,8 @@ function ledEvent (e){
 
 }
 function buildBoard (){
-    G.mgmt.totalNumOfQuestions = 20  //kill should be 20
+
+
     arrangeStages (G.mgmt.totalNumOfQuestions)
     function arrangeStages (t) {
         let allQ = t //G.mgmt.totalNumOfQuestions //fsdfsdf
@@ -1133,14 +1139,13 @@ function storeInLocal (command){
         break;
 
         case 'save':
-        L('saving')
 
         localStorage.setItem('global' + htmlFileName, JSON.stringify(G.saves));
         localStorage.setItem('isSaved' + htmlFileName, 'true');
         break;
 
         case 'load':
-        L('loading')
+
         var retrievedObject = localStorage.getItem('global' + htmlFileName);
         G.saves = JSON.parse(retrievedObject);
         G.mgmt.qNumber = G.saves.lastSavedQuestion;
@@ -1184,7 +1189,7 @@ function setQuestion (num) {
 
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
         if (t > 6 || loopControl > 900) {return}
-        if (fulltextArray[t]) {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
+        if (typeof fulltextArray[t] === 'string') {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
         let speed0 = 20
         if (G.testMode) {speed0 = 2 }
 
@@ -1195,8 +1200,9 @@ function setQuestion (num) {
     function setDirectionBylanguage (element, text) {
         if (text && element) {} else return
         function isHebrew(qtext) {
+            if (typeof qtext !== 'string'){return true}
             var hebLetters = /\s?[1234567890אבגדהוזחטיכלמנסעפצקרשתםןץףך]{1,30}\s?/g
-            //var isNumbers =
+
             let matchArry = qtext.match(hebLetters)
             if (matchArry !== null){ return true} else {return false}
 
@@ -1219,6 +1225,11 @@ function setQuestion (num) {
 
 
     }
+    function noMorequestions () {
+        blackScreen('endGame')
+    }
+    if (G.Q[num]){} else {noMorequestions ()}
+
     let fontSize;
     let loopControl = 0;
     resizeText ()
@@ -1255,8 +1266,10 @@ function setQuestion (num) {
             fulltextArray[i + 2] = G.Q[num][i + 2];
         }
         setDirectionBylanguage(elements[i],fulltextArray[i])
-
     }
+    let checkForQuestions = ''
+    for (let i = 3; i < 8; i++) {if (fulltextArray[i]) {checkForQuestions +=  fulltextArray[i]}}
+    if (checkForQuestions === ''){ setQuestion (num + 1); return}
 
     typeWriterEfct ()
     G.mgmt.timer1 = setInterval(()=>{blinkCursor()},200)
@@ -3046,7 +3059,9 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-
+G.mgmt.totalNumOfQuestions = 6  //kill should be 20
+G.Q[2] = [[],[],[],[],[],[],[],[],[]]
+G.Q[3] = [[],[],[],[],[],[],[],[],[]]
 buildBoard ();
 if(storeInLocal ('check')){storeInLocal ('load') }
 //IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
