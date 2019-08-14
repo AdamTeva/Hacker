@@ -293,6 +293,7 @@ function fullScriptWrapper() {
     function StylelFader (element,ms = 30,fadeIn = false, deleteElm = false)  {
 
 
+
         if (fadeIn) {element.fadeProccess = 'fadeIn'} else if (!fadeIn) {element.fadeProccess = 'fadeOut' }
 
 
@@ -398,11 +399,14 @@ function clickAnswer (elem){
             if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
         }
         function fadeOut () {
+            let textInfo = Id ('infoText')
+
 
             let finRgb = rgbPartialTxt + op + ")"
             let plus = 1;
             //
             tb.style.color = finRgb;
+            if (G.Q[G.mgmt.qNumber + 1] !== undefined && G.Q[G.mgmt.qNumber][1] === G.Q[G.mgmt.qNumber + 1][1]) {textInfo.style.color = G.css.textcolor}
             op =  op - opDelta;
             if (op > 0){setTimeout(()=>{fadeOut ()}, time)} else if (!G.mgmt.isFinalAnsInChapter){
 
@@ -1189,9 +1193,10 @@ function setQuestion (num) {
 
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
         if (t > 6 || loopControl > 900) {return}
+        if (G.Q[num -1] !== undefined && G.Q[num][1] === G.Q[num -1][1] && t === 1) {position = fulltextArray[t].length}
         if (typeof fulltextArray[t] === 'string') {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
         let speed0 = 20
-        if (G.testMode) {speed0 = 2 }
+        if (G.testMode) {speed0 = 10 }
 
         position++; position++;
         setTimeout(()=>{typeWriterEfct (isCorect)},speed0 ); // 2 for testing  20 normal
@@ -3059,9 +3064,8 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-G.mgmt.totalNumOfQuestions = 6  //kill should be 20
-G.Q[2] = [[],[],[],[],[],[],[],[],[]]
-G.Q[3] = [[],[],[],[],[],[],[],[],[]]
+//G.mgmt.totalNumOfQuestions = 6  //kill should be 20
+
 buildBoard ();
 if(storeInLocal ('check')){storeInLocal ('load') }
 //IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
