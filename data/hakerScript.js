@@ -1195,7 +1195,8 @@ function setQuestion (num) {
     function setDirectionBylanguage (element, text) {
         if (text && element) {} else return
         function isHebrew(qtext) {
-            var hebLetters = /\s?[אבגדהוזחטיכלמנסעפצקרשתםןץףך]{2,30}\s?/g
+            var hebLetters = /\s?[1234567890אבגדהוזחטיכלמנסעפצקרשתםןץףך]{1,30}\s?/g
+            //var isNumbers =
             let matchArry = qtext.match(hebLetters)
             if (matchArry !== null){ return true} else {return false}
 
