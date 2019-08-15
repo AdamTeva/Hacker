@@ -420,7 +420,7 @@ function clickAnswer (elem){
                 if (G.mgmt.qNumber === 503) {
                     blackScreen('startGame');
                     return}
-                if (G.mgmt.qNumber === 501) {blackScreen('endGame'); return}
+                if (G.mgmt.qNumber === 505) {alert ('505'); blackScreen('endGame'); return}
 
             setQuestion(G.mgmt.qNumber+ plus)} else if (G.mgmt.isFinalAnsInChapter) {
 
@@ -1167,6 +1167,8 @@ function storeInLocal (command){
 }
 function setQuestion (num) {
 
+
+
     function blinkCursor(){
 
         if (t < 5){return}
@@ -1190,6 +1192,8 @@ function setQuestion (num) {
 
     }
     function typeWriterEfct (isCorect){
+        if (num !== G.mgmt.qNumber){return}
+        //L(fulltextArray)
 
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
         if (t > 6 || loopControl > 900) {return}
@@ -1207,9 +1211,12 @@ function setQuestion (num) {
         function isHebrew(qtext) {
             if (typeof qtext !== 'string'){return true}
             var hebLetters = /\s?[1234567890אבגדהוזחטיכלמנסעפצקרשתםןץףך]{1,30}\s?/g
+            var englishLetters =  /[A-Za-z]{3,30}/g
+            let matchArryEnglsh = qtext.match(englishLetters)
+            if (matchArryEnglsh === null){matchArryEnglsh = [] }
+            let matchArryHebrew = qtext.match(hebLetters)
 
-            let matchArry = qtext.match(hebLetters)
-            if (matchArry !== null){ return true} else {return false}
+            if (matchArryHebrew !== null && matchArryHebrew.length >  matchArryEnglsh.length ){ return true} else {return false}
 
         }
         if (isHebrew(text)) {element.style.direction = "rtl"; element.style.textAlign = "right"} else {
@@ -1233,7 +1240,7 @@ function setQuestion (num) {
     function noMorequestions () {
         blackScreen('endGame')
     }
-    if (G.Q[num]){} else {noMorequestions ()}
+    if (G.Q[num]){} else if (num < 500) {noMorequestions ()}
 
     let fontSize;
     let loopControl = 0;
@@ -1261,7 +1268,7 @@ function setQuestion (num) {
 
     elements[2] = G.divs.question
     fulltextArray[2]  =   G.Q[num][2] + G.css.breakAfterQuestion
-    G.test = fulltextArray[2]
+    G.test = fulltextArray
 
     for (let i = 1; i < 7; i++){
         //fulltextArray[i + 2] = "";
@@ -1275,6 +1282,8 @@ function setQuestion (num) {
     let checkForQuestions = ''
     for (let i = 3; i < 8; i++) {if (fulltextArray[i]) {checkForQuestions +=  fulltextArray[i]}}
     if (checkForQuestions === ''){ setQuestion (num + 1); return}
+
+
 
     typeWriterEfct ()
     G.mgmt.timer1 = setInterval(()=>{blinkCursor()},200)
@@ -1918,6 +1927,8 @@ function IpadGrahpic (type0) {
                 G.Q [500] = ["", "","","","","","","",""]
                 G.Q [500][1] = tx3 + '<br><p dir=rtl style="text-align: right">'
                 G.Q [500][2] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
+                G.Q [500][3] = "<br>"
+
 
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 //G.divs.textBlock2.remove()
@@ -2569,20 +2580,20 @@ function IpadGrahpic (type0) {
 
                  ledEvent (madeUpEvent) }
 
-                G.Q [501] = ["", "","","","","","","",""]
-                G.Q [501][1] =  '<p dir=rtl style="text-align: right"> Virus Upload 100%.'
-                G.Q [501][2] =  "הצלחת להעלות את הוירוס למחשבים של הארגון ולהפיל את הארגון לתקופה הקרובה." + "<br>" + "כל הכבוד ! לחץ לסיום בשביל לראות את התוצאה שלך." + "<br>" + "<br>";
-                G.Q [501][2] += 'האם לסיים ?'
+                G.Q [505] = ["", "","","","","","","",""]
+                G.Q [505][1] =  '<p dir=rtl style="text-align: right"> Virus Upload 100%.'
+                G.Q [505][2] =  "הצלחת להעלות את הוירוס למחשבים של הארגון ולהפיל את הארגון לתקופה הקרובה." + "<br>" + "כל הכבוד ! לחץ לסיום בשביל לראות את התוצאה שלך." + "<br>" + "<br>";
+                G.Q [505][2] += 'האם לסיים ?'
 
-                G.Q [501][3] = "סיום " + " וצפייה בתוצאות"
-                G.Q [501][4] = ""
-                G.Q [501][G.mgmt.solutionCol] = 1;
+                G.Q [505][3] = "סיום " + " וצפייה בתוצאות"
+                G.Q [505][4] = ""
+                G.Q [505][G.mgmt.solutionCol] = 1;
                 G.mgmt.isChapterCheckout = true;
 
 
                 G.divs.textBlock2.remove()
 
-                setQuestion (501)
+                setQuestion (505)
             }
 
             if (stage === 1){stage1();} else if (stage === 2) {stage2 ()}
@@ -3064,7 +3075,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-//G.mgmt.totalNumOfQuestions = 6  //kill should be 20
+G.mgmt.totalNumOfQuestions = 20  //kill should be 20
 
 buildBoard ();
 if(storeInLocal ('check')){storeInLocal ('load') }
