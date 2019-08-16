@@ -134,7 +134,6 @@ function fullScriptWrapper() {
         console.groupEnd('');
 
 
-        //console.log('%c this is texxt %o',styleText, {a:'1', 'sss': 2})
 
 
 
@@ -206,13 +205,8 @@ function fullScriptWrapper() {
             function mOut (elem){
                 if (G.mgmt.isAnswering){return}
 
-                //    let ansId = elem.target.id;
-                //    let ansDiv = Id(ansId);
-                //    let numOfans =  Number(ansId.replace("ans", ''))
-                //    let html = ansDiv.innerHTML;
-                //ansDiv.innerHTML = G.Q[G.mgmt.qNumber][numOfans + 2] // newHtml;
                 for (let i = 1; i < 5; i++) {
-                    //if (i == numOfans) {continue}
+
                     if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
                 }
 
@@ -420,7 +414,7 @@ function clickAnswer (elem){
                 if (G.mgmt.qNumber === 503) {
                     blackScreen('startGame');
                     return}
-                if (G.mgmt.qNumber === 505) {alert ('505'); blackScreen('endGame'); return}
+                if (G.mgmt.qNumber === 505) { blackScreen('endGame'); return}
 
             setQuestion(G.mgmt.qNumber+ plus)} else if (G.mgmt.isFinalAnsInChapter) {
 
@@ -1192,11 +1186,12 @@ function setQuestion (num) {
 
     }
     function typeWriterEfct (isCorect){
+
         if (num !== G.mgmt.qNumber){return}
         //L(fulltextArray)
 
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
-        if (t > 6 || loopControl > 900) {return}
+        if (t > 6 || loopControl > 950) {return}
         if (G.Q[num -1] !== undefined && G.Q[num][1] === G.Q[num -1][1] && t === 1) {position = fulltextArray[t].length}
         if (typeof fulltextArray[t] === 'string') {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
         let speed0 = 20
@@ -1290,20 +1285,39 @@ function setQuestion (num) {
 
 }
 function blackScreen (com) {
-    // function imagesLoader (){
-    //     let imagesToLoad ['mother-board (1).png','pagebackround.png','map.svg','holoUI2.png','keyboard.png'];
-    //     let I = {}
-    //     G.word[x].sign = new Image();
-    //     G.word[x].sign.id = "sign" + x;
-    //     let signUrl = "signs/sign (" + x + ").png";
-    //     G.loadImg[x].sign = G.WasNotloadedYet;
-    //     G.word[x].sign.onload = function(event) {
-    //         SetLoadValue(event, G.Wasloaded);
-    //     };
-    //     G.word[x].sign.onerror = function(event) {
-    //         SetLoadValue(event, G.loadingError)
-    //     };
-    // }
+    function imagesLoader (pathsarray,html, baseTextObject){
+        let totaleNumOfElements = pathsarray.length
+        let baseText = G.Q[503][2]
+        var updadedPaths = 0;
+
+        function updateLoader () {
+            updadedPaths++
+            let precent =   Math.floor((updadedPaths / totaleNumOfElements)*100)
+            if (precent > 100) {precent = 100 };
+            precent+="%"
+
+            if (Id(html)){
+                //Id(html).innerHTML = precent
+                G.Q[503][2] = baseText + precent
+
+            }
+
+        }
+        function checkImage (path) {
+            return new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => {
+                    let rnd = getRandomInt (9000)
+                    setTimeout(()=> {resolve(path); updateLoader ()},rnd)}
+                img.onerror = () => {resolve("pathNotFound")};
+                img.src = path;
+            });
+        }
+        const loadImg = (paths) => Promise.all(paths.map(checkImage)).then((res)=> console.log ('loaded'));
+        updateLoader ()
+        loadImg(pathsarray)
+
+    }
     function returnScullASCI () {
         return `00000011000001000MMMMM00001MMMMWWMMMMMMWW0001110110MMM0000MM
 MMMK:..... .,kWMWo.......   dMMNd' .cKWK, .kMXc........;xNMM
@@ -1542,6 +1556,9 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
     }
     function setStartText () {
+        let isLoadingText = 'טוען '
+        let preLoadingText = '<span id="loadingPrecent"></span>'
+
         let subject1 = ''
         let subject2 = G.mgmt.nameOfGame;
             let nameOfplayer0 = ''; if (G.saves.nameOfplayer) {nameOfplayer0 = G.saves.nameOfplayer + ', '};
@@ -1556,12 +1573,12 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         //asci0 = asci0.replace(/\s/g, '&nbsp')
         let txt1 = "<pre>" + asci0
         G.Q [503] = ["", "","","","","","","",""]
-        G.Q [503][1] = txt1;
+        G.Q [503][1] = txt1 //+ preLoadingText;
         G.Q [503][2] = "<pre>" + `       <font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b></font>
 
      ${nameOfplayer0}עליך לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
      כל תשובה נכונה תקדם שלב בתהליך הפריצה.
-     טוען`
+     ${isLoadingText}${preLoadingText}`
         let theNextStage = G.mgmt.stageNames[G.saves.stageNumber]
         G.Q [503][3] = startOrContinue + G.mgmt.stagesInfo[theNextStage]
 
@@ -1572,14 +1589,18 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         G.mgmt.qNumber = 503
 
         setQuestion (503);
-        let speed0 = 7000;
-        if (G.testMode){speed0 = 100}
+        let speed0 = 10000;
+        if (G.testMode){speed0 = 10000}
+        let pathsOfimages = ['data/mother-board (1).png','data/pagebackround.png','data/keyboard.png','data/hol1.svg','data/holoUI2.png', 'data/ipad_wallpaper.svg', 'data/ipad_wallpaper2.svg', 'data/led.png','data/map.svg', 'data/pointer.png','data/White-Noise (1).jpg']
+
+        imagesLoader(pathsOfimages, 'loadingPrecent',G.Q [503][2])
 
         setTimeout(()=> {
 
-            let t1 = `טוען`;
+            let t1 = isLoadingText //
             let t2 = `כל הקבצים נטענו. האם להמשיך? `;
-            G.Q [503][2] =G.Q [503][2].replace (t1,t2)
+            G.Q [503][2] =G.Q [503][2].replace (t1,t2);
+            G.Q [503][2] =G.Q [503][2].replace ("100%","")
         },speed0 )
     }
     function setEndText () {
@@ -1608,12 +1629,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         let speed0 = 7000;
         if (G.testMode){speed0 = 100}
 
-        setTimeout(()=> {
 
-            let t1 = `טוען`;
-            let t2 = `כל הקבצים נטענו. האם להמשיך? `;
-            G.Q [503][2] =G.Q [503][2].replace (t1,t2)
-        },speed0 )
     }
     function startScreen () {
         let pagecontainer = Id('pagecontainer')
@@ -1632,6 +1648,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         stl(fullBlackScreen,{backgroundColor:'black', 'position':'fixed', width:'100%',height:'100%'})
         pagecontainer.appendChild(fullBlackScreen)
         let txt0 = returnShieldASCI ()
+        Id('ipadCover').style.fontSize = "1.6vmin"; Id('ipadCover').style.lineHeight= "1.8vmin"
         let originalRows = setIpadBlack(txt0)
         changeShieldOrScull(originalRows)
         setEndText ()
@@ -1654,9 +1671,13 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
             ipadCover.innerHTML ='';
             ipadCover.style.opacity = '1'
         })
+
     }
     if (com === 'endGame') {endScreen () ; return}
-    if (com === 'startGame') {startGame () } else {startScreen ()}
+    if (com === 'startGame') {startGame () } else {startScreen ();
+
+    }
+
 
 
 }
@@ -2557,14 +2578,18 @@ function IpadGrahpic (type0) {
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + ""
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl"  align="right" id="precentVirus"></p> </p>'
                 let siteDiv = Id('precentVirus');
+                let tm = 1000
+                let tm2 = 1000
+                if (G.testMode){tm = 3; tm2 = 100}
                 function findSite (n){
                     let precent= Math.floor(n)
+
                     n += 0.8;
                     siteDiv.innerHTML = precent + "%";
 
-                    if (n < 100) {setTimeout (()=>{findSite (n)},100)} else {
+                    if (n < 100) {setTimeout (()=>{findSite (n)},tm)} else {
                         siteDiv.innerHTML = "100%"
-                        setTimeout(()=>{stage3("UpLoad Complete")},1000);
+                        setTimeout(()=>{stage3("UpLoad Complete")},tm2);
                     }
                 }
                 findSite(1)
@@ -2794,11 +2819,10 @@ let rnd = getRandomInt(asciArr.length - 1);
             let t = asciImage ()
              t = asciRending (t);
              t = asciPasrseToSpan (t);
-             // let gradientColor2 = "linear-gradient(135deg, rgba(98,125,77,1) 0%,rgba(31,59,8,1) 100%);"
-             // let ipad = Id('ipad')
-             // stl(ipadCover, {backgroundColor: gradientColor2})
+
 
              ipadCover.style.fontSize = "2vmin";
+             ipadCover.style.lineHeight = "2.3vmin"
              ipadCover.style.color = 'white';
              ipadCover.innerHTML = t;
 
@@ -3075,7 +3099,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-G.mgmt.totalNumOfQuestions = 20  //kill should be 20
+G.mgmt.totalNumOfQuestions = 5  //kill should be 20
 
 buildBoard ();
 if(storeInLocal ('check')){storeInLocal ('load') }
