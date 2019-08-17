@@ -197,52 +197,6 @@ function fullScriptWrapper() {
         // this function convert precent text to number
         return Number(precent.replace("%", ''))
     }
-    function mOverAnswer (elem){
-        function mouseOutTimer () {
-
-            if (G.css.isMouseOutTimer){true}
-            G.css.isMouseOutTimer = true
-            G.mgmt.mouseIsOver = 0;
-            function mOut (elem){
-                if (G.mgmt.isAnswering){return}
-
-                for (let i = 1; i < 5; i++) {
-
-                    if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
-                }
-
-
-            }
-
-            G.css.mouseOnTimer = G.css.mouseOnTimer - 100
-            if (G.css.mouseOnTimer < 0){mOut () ;G.css.isMouseOutTimer = false; return }
-
-            setTimeout(()=>{mouseOutTimer ()},100)
-
-        }
-        if (G.mgmt.isAnswering){return};
-        let ansId = elem.target.id;
-        let ansDiv = Id(ansId);
-        let numOfans =  Number(ansId.replace("ans", ''))
-        G.mgmt.mouseIsOver = numOfans;
-        if (G.mgmt.isAnswering && G.mgmt.clickedAnswer == numOfans){return}
-        if (numOfans === 0){return}
-
-        G.css.lastHoverEvent = numOfans;
-        let html = G.Q[G.mgmt.qNumber][numOfans + 2];
-        let newHtml = "<span style='background-color:" +  G.css.textcolor + "; color : " + G.css.backGroundtextcolor + "'>" + html + "</span>";
-        ansDiv.innerHTML = newHtml;
-
-        for (let i = 1; i < 5; i++) {
-            if (i == numOfans) {continue}
-            if (G.divs.ans[i].innerHTML) {G.divs.ans[i].innerHTML = G.Q[G.mgmt.qNumber][i + 2]}
-        }
-        G.css.mouseOnTimer = 2000;
-        if (G.css.isMouseOutTimer) {return}
-
-        mouseOutTimer ();
-
-    }
     function getRandomInt(max) {
         return (Math.floor(Math.random() * Math.floor(max))) + 1
     }
@@ -356,7 +310,8 @@ function clickAnswer (elem){
 
 
             let str = text.substring(text.length - e, 0);
-            if (text.length + 1 < e  ){G.mgmt.isAnswering = false ;IpadGrahpic('wrong') ;playSound ('Consoletyping', 'pause');return } else {G.divs.ans[num].innerHTML = str;e++ ;setTimeout(()=>{deletAnswer () },100)}
+            if (text.length + 1 < e  ){G.mgmt.isAnswering = false ;IpadGrahpic('wrong') ;playSound ('Consoletyping', 'pause');
+            if (G.mgmt.qNumber < 500) { playSound ('wrongAnswer') } ; return } else {G.divs.ans[num].innerHTML = str;e++ ;setTimeout(()=>{deletAnswer () },100)}
         }
         deletAnswer ()
     }
@@ -371,7 +326,9 @@ function clickAnswer (elem){
             if (G.testMode) ms = 3
 
             let str = text.substring(e, 0);
-            if (text.length + 1 <= e ){ nextQuesion () ;playSound ('Consoletyping', 'pause');return } else {G.css.typeSolution = " " + str;e++ ;setTimeout(()=>{typeSolution () },ms)}
+            if (text.length + 1 <= e ){ nextQuesion () ;playSound ('Consoletyping', 'pause');
+            if (G.mgmt.qNumber < 500) { playSound ('rightAnswer') }
+            ;return } else {G.css.typeSolution = " " + str;e++ ;setTimeout(()=>{typeSolution () },ms)}
         }
         typeSolution ()
 
@@ -448,19 +405,30 @@ function clickAnswer (elem){
 
 }
 function playSound (typ, command = 'play') {
-    L(command )
+
+    function BuildSounds () {
+        G.sound.Consoletyping = new Audio('data/terminalType.mp3');
+        G.sound.clickSound = new Audio('data/clickSouond.mp3'); G.sound.clickSound.volume = 0.07
+        G.sound.wrongAnswer = new Audio('data/wrongAnswer.mp3'); G.sound.wrongAnswer.volume = 0.2
+        G.sound.rightAnswer =  new Audio('data/rightAnswer.mp3'); G.sound.rightAnswer.volume = 0.1
+        G.sound.openHolo  =  new Audio('data/openHolo.mp3'); G.sound.openHolo.volume = 0.1 //
+        G.sound.ipadMoves = new Audio('data/ipadMoves.mp3'); G.sound.ipadMoves.volume = 0.2 //
+
+    }
     function playerFunc (sound) {
         function pause (sound) {
             var promise = sound.pause();
+            if ( command === 'stop') {sound.currentTime = 0;}
             if (promise !== undefined) {
               promise.then(_ => {}).catch(error => {});
             }
 
         }
-        if (command === 'pause') {pause (sound); return }
-
+        if (command === 'pause' || command === 'stop') {pause (sound); return }
+        sound.currentTime = 0
         var promise = sound.play();
-        sound.autoplay = true
+        //G.sound.clickSound.volume = 0.07
+        //sound.autoplay = true
         if (command === 'loop'){sound.loop = true}
         if (promise !== undefined) {
           promise.then(_ => {}).catch(error => {});
@@ -468,14 +436,9 @@ function playSound (typ, command = 'play') {
 
     }
 
-    function BuildSounds () {
-        G.sound.Consoletyping = new Audio('data/terminalType.mp3');
-    }
     switch (typ) {
         case 'BuildSounds' : BuildSounds (); break
-        case "Consoletyping": playerFunc (G.sound.Consoletyping) ;break;
-
-
+        case "Consoletyping":case "clickSound": default: playerFunc (G.sound[typ]) ;break;
     }
 
 
@@ -733,7 +696,9 @@ function ledEvent (e){
     }
     function toggleHolo () {
         if (G.mgmt.ipadMoves) {return}
+        playSound ('ipadMoves')
         G.mgmt.ipadMoves = true;
+
         function slideIpadUp (y,delta = -2,end = -50, tm = 10) {
             let top =  Pre2Num( G.divs.ipadContainer.style.top)
             y = y || top;
@@ -756,6 +721,7 @@ function ledEvent (e){
             fadeHolo (1,1);
             slideIpadUp (-50, 2, 3, 14) ; G.mgmt.isHolo = false } // 10
             else if (!G.mgmt.isHolo) {
+            //playSound ('openHolo');
             slideIpadUp ()
             G.mgmt.isHolo = true;
             }
@@ -852,6 +818,8 @@ function buildBoard (){
         }
     }
     function mOverAnswer (elem){
+        playSound ('clickSound', 'stop'); playSound ('clickSound', 'play')
+
         function mouseOutTimer () {
 
             if (G.css.isMouseOutTimer){true}
@@ -889,6 +857,7 @@ function buildBoard (){
         let html = G.Q[G.mgmt.qNumber][numOfans + 2];
         let newHtml = "<span style='background-color:" +  G.css.textcolor + "; color : " + G.css.backGroundtextcolor + "'>" + html + "</span>";
         ansDiv.innerHTML = newHtml;
+
 
         for (let i = 1; i < 5; i++) {
             if (i == numOfans) {continue}
@@ -1129,6 +1098,7 @@ function buildBoard (){
         G.divs.textBlock.appendChild (G.divs.ans[i]);
         G.divs.ans[i].addEventListener('mouseover',mOverAnswer,true);
         G.divs.ans[i].addEventListener('click',clickAnswer,false);
+        G.divs.ans[i].style.cursor = 'pointer'
 
         G.divs.ans[i].style.zIndex = "200";
 
@@ -1229,7 +1199,7 @@ function setQuestion (num) {
 
 
         if (num !== G.mgmt.qNumber){return}
-        //L(fulltextArray)
+
 
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
 
@@ -3153,10 +3123,9 @@ let rnd = getRandomInt(asciArr.length - 1);
 buildBoard ();
 playSound ('BuildSounds')
 if(storeInLocal ('check')){storeInLocal ('load') }
-IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
+//IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
 holoMenu();
-
-//blackScreen ()
+blackScreen ()
 }
 
 
