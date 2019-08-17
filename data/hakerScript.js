@@ -18,6 +18,7 @@ function fullScriptWrapper() {
      G.css.resizeFontScale = 0.6;
      G.css.canvasBackground = 'black'//"#00284d";
      G.css.breakAfterQuestion = '<br><br>'
+     G.sound = {};
      G.mgmt = {};
      G.mgmt.nameOfGame = _Q_object.nameOfGame
      G.mgmt.totalNumOfQuestions = G.Q.length
@@ -332,6 +333,8 @@ function fullScriptWrapper() {
 
 function clickAnswer (elem){
     if (G.mgmt.qNumber === 504) {storeInLocal('confirmReset'); return}
+    playSound ('Consoletyping', 'loop')
+
 
     /* for testing */
     if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]
@@ -351,8 +354,9 @@ function clickAnswer (elem){
         let e = 0;
         function deletAnswer () {
 
+
             let str = text.substring(text.length - e, 0);
-            if (text.length + 1 < e  ){G.mgmt.isAnswering = false ;IpadGrahpic('wrong') ;return } else {G.divs.ans[num].innerHTML = str;e++ ;setTimeout(()=>{deletAnswer () },100)}
+            if (text.length + 1 < e  ){G.mgmt.isAnswering = false ;IpadGrahpic('wrong') ;playSound ('Consoletyping', 'pause');return } else {G.divs.ans[num].innerHTML = str;e++ ;setTimeout(()=>{deletAnswer () },100)}
         }
         deletAnswer ()
     }
@@ -367,7 +371,7 @@ function clickAnswer (elem){
             if (G.testMode) ms = 3
 
             let str = text.substring(e, 0);
-            if (text.length + 1 <= e ){ nextQuesion () ;return } else {G.css.typeSolution = " " + str;e++ ;setTimeout(()=>{typeSolution () },ms)}
+            if (text.length + 1 <= e ){ nextQuesion () ;playSound ('Consoletyping', 'pause');return } else {G.css.typeSolution = " " + str;e++ ;setTimeout(()=>{typeSolution () },ms)}
         }
         typeSolution ()
 
@@ -441,6 +445,39 @@ function clickAnswer (elem){
 
         wrongAnswerAnimation (numOfans)
         }
+
+}
+function playSound (typ, command = 'play') {
+    L(command )
+    function playerFunc (sound) {
+        function pause (sound) {
+            var promise = sound.pause();
+            if (promise !== undefined) {
+              promise.then(_ => {}).catch(error => {});
+            }
+
+        }
+        if (command === 'pause') {pause (sound); return }
+
+        var promise = sound.play();
+        sound.autoplay = true
+        if (command === 'loop'){sound.loop = true}
+        if (promise !== undefined) {
+          promise.then(_ => {}).catch(error => {});
+        }
+
+    }
+
+    function BuildSounds () {
+        G.sound.Consoletyping = new Audio('data/terminalType.mp3');
+    }
+    switch (typ) {
+        case 'BuildSounds' : BuildSounds (); break
+        case "Consoletyping": playerFunc (G.sound.Consoletyping) ;break;
+
+
+    }
+
 
 }
 function holoMenu (r) {
@@ -778,7 +815,7 @@ function buildBoard (){
         const minimumQ = 4;
         let numberOfStages = Math.floor (allQ/minimumQ);
         if (numberOfStages < 1){numberOfStages = 1} else if (numberOfStages > 5){numberOfStages=5}
-        //console.log("Q : " + t + " , Stages: " + numberOfStages);
+
         if (numberOfStages > 1) {destenationStages.push (G.mgmt.stageNames[1]) }
         for (let s = 2; s < numberOfStages; s++) {
             destenationStages.push (G.mgmt.stageNames[s])
@@ -960,6 +997,7 @@ function buildBoard (){
         'width':'55%',
         'border': '0.5vmin solid black',
         "borderRadius": "4vmin",
+        //backgroundImage: "url('data/pcBorder.jpg')",
         "resize": "both",})
     stl (G.divs.ipadContainer, {
             'backgroundImage': gradientColor2,'padding': '5%','position':'absolute',
@@ -970,6 +1008,7 @@ function buildBoard (){
             'border': '0.5vmin solid black',
             "borderRadius": "4vmin",
             overflow: 'hidden',
+            'backgroundImage': 'url("data/ipadplastic.jpg")',
 
             "resize": "both",})
     stl (G.divs.ipad , myStyle('text'), {
@@ -1160,6 +1199,7 @@ function storeInLocal (command){
     }
 }
 function setQuestion (num) {
+    playSound ('Consoletyping', 'loop')
 
 
 
@@ -1187,11 +1227,14 @@ function setQuestion (num) {
     }
     function typeWriterEfct (isCorect){
 
+
         if (num !== G.mgmt.qNumber){return}
         //L(fulltextArray)
 
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
-        if (t > 6 || loopControl > 950) {return}
+
+        if (t > 6 || loopControl > 950) {playSound ('Consoletyping', 'pause'); return}
+
         if (G.Q[num -1] !== undefined && G.Q[num][1] === G.Q[num -1][1] && t === 1) {position = fulltextArray[t].length}
         if (typeof fulltextArray[t] === 'string') {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
         let speed0 = 20
@@ -1313,9 +1356,9 @@ function blackScreen (com) {
                 img.src = path;
             });
         }
-        const loadImg = (paths) => Promise.all(paths.map(checkImage)).then((res)=> console.log ('loaded'));
+        const loadImg = (paths) => Promise.all(paths.map(checkImage));
         updateLoader ()
-        loadImg(pathsarray)
+        return loadImg(pathsarray)
 
     }
     function returnScullASCI () {
@@ -1556,6 +1599,13 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
     }
     function setStartText () {
+        function finishLoading () {
+
+            let t1 = isLoadingText //
+            let t2 = `כל הקבצים נטענו. האם להמשיך? `;
+            G.Q [503][2] =G.Q [503][2].replace (t1,t2);
+            G.Q [503][2] =G.Q [503][2].replace ("100%","")
+        }
         let isLoadingText = 'טוען '
         let preLoadingText = '<span id="loadingPrecent"></span>'
 
@@ -1593,15 +1643,9 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         if (G.testMode){speed0 = 10000}
         let pathsOfimages = ['data/mother-board (1).png','data/pagebackround.png','data/keyboard.png','data/hol1.svg','data/holoUI2.png', 'data/ipad_wallpaper.svg', 'data/ipad_wallpaper2.svg', 'data/led.png','data/map.svg', 'data/pointer.png','data/White-Noise (1).jpg']
 
-        imagesLoader(pathsOfimages, 'loadingPrecent',G.Q [503][2])
+        imagesLoader(pathsOfimages, 'loadingPrecent',G.Q [503][2]).then(()=>{finishLoading ()})
 
-        setTimeout(()=> {
 
-            let t1 = isLoadingText //
-            let t2 = `כל הקבצים נטענו. האם להמשיך? `;
-            G.Q [503][2] =G.Q [503][2].replace (t1,t2);
-            G.Q [503][2] =G.Q [503][2].replace ("100%","")
-        },speed0 )
     }
     function setEndText () {
         let style2 = '<font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:3vmin">'
@@ -1682,6 +1726,8 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
 }
 function IpadGrahpic (type0) {
+
+
     function blankIpad () {
         let ipadCover = Id('ipadCover')
         let ipad = Id('ipad');
@@ -2848,6 +2894,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
             function stage1 (){
+
                 let txt = "נמצאו " + G.mgmt.numOfsuccess + " "
                 txt += "אפליקציות חשודות." + '<br>'
                 txt += 'כדי לסרוק אותן ולגלות את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>'
@@ -2856,6 +2903,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
                 //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
                 //G.divs.textBlock2.innerHTML += 'Aplications Origin: ' +  Id('userName').data + '<br><br>';
+                setTimeout(()=>{playSound ('Consoletyping', 'pause')},1500);
                  holoMenu('scanner');
 
                 function wasScannerStarted () {
@@ -2955,9 +3003,10 @@ let rnd = getRandomInt(asciArr.length - 1);
                 return  svgHTML}
         function blinkApp (counter = 0) {
             let spread = (Math.sin(counter)+1);
+            let ms = 50;// if (G.testMode){ms = 5}
             stl(viralWare, {boxShadow: `0vmin 0vmin 1.5vmin ${spread}vmin red`});
             counter++;
-            if (counter < 100) {setTimeout(()=>{blinkApp (counter)},5);} else {focusApp()} // blink ms = 50
+            if (counter < 30) {setTimeout(()=>{blinkApp (counter)},ms);} else {focusApp()} // blink ms = 50
 
         }
         function focusApp() {
@@ -3099,13 +3148,15 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-G.mgmt.totalNumOfQuestions = 5  //kill should be 20
+//G.mgmt.totalNumOfQuestions = 5  //kill should be 20
 
 buildBoard ();
+playSound ('BuildSounds')
 if(storeInLocal ('check')){storeInLocal ('load') }
-//IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
+IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
 holoMenu();
-blackScreen ()
+
+//blackScreen ()
 }
 
 
