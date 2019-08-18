@@ -79,7 +79,7 @@ function fullScriptWrapper() {
      G.hacks.firewallScrambleColor = 'yellow'
      G.hacks.visrusNumberOfrows = 0;
      G.hacks.ipLocations = [];
-     G.testMode = true; // fast wrting
+     G.testMode = false; // fast wrting
 
 
  }
@@ -288,13 +288,9 @@ function fullScriptWrapper() {
 function clickAnswer (elem){
     if (G.mgmt.qNumber === 504) {storeInLocal('confirmReset'); return}
     playSound ('Consoletyping', 'loop')
-
-
-    /* for testing */
     if (elem === 'rightAnswerClick') {elem = {}; let rightAnswer = G.Q[G.mgmt.qNumber][G.mgmt.solutionCol]
     let idName = 'ans'+ rightAnswer;
     let div = Id(idName); elem.target = div}
-
     function wrongAnswerAnimation (num) {
 
         if (G.mgmt.qNumber < 500) {G.mgmt.numberOftriesPerQuestion++}
@@ -384,11 +380,8 @@ function clickAnswer (elem){
         }
         fadeOut ()
     }
-
-
     if (G.mgmt.isAnswering) return;
     let ansId = elem.target.id;
-
     if (elem.target.nodeName == "DIV") {} else {ansId = elem.target.parentElement.id }
     let ansDiv = Id(ansId);
 
@@ -417,7 +410,9 @@ function playSound (typ, command = 'play') {
         G.sound.scannerEffect = new Audio('data/scannerEffect.mp3'); G.sound.scannerEffect.volume = 0.8
         G.sound.scannerWin = new Audio('data/scannerWin.mp3'); G.sound.scannerWin.volume = 0.4
         G.sound.crackDefence = new Audio('data/crackDefence.mp3'); G.sound.crackDefence.volume = 0.4
-        G.sound.welcomeEffect = new Audio('data/welcomeEffect.mp3'); G.sound.welcomeEffect.volume = 0.4
+        G.sound.welcomeEffect = new Audio('data/welcomeEffect.mp3'); G.sound.welcomeEffect.volume = 0.4 // virusEffect
+        G.sound.virusEffect = new Audio('data/virusEffect.mp3'); G.sound.virusEffect.volume = 0.4 // virusEffect
+        G.sound.virusUpload = new Audio('data/virusUpload.mp3'); G.sound.virusUpload.volume = 0.4
 
 
 
@@ -822,7 +817,8 @@ function buildBoard (){
     function keyPressFunc (e) {
 
 
-        if (e.charCode == 32 && G.testMode && !G.mgmt.isFinalAnsInChapter) {
+
+        if (e.charCode == 32  && !G.mgmt.isFinalAnsInChapter) { // && G.testMode
             clickAnswer ('rightAnswerClick');
 
         }
@@ -1672,7 +1668,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
     }
     function endScreen () {
-        playSound('HackerTheme');
+        playSound('HackerTheme'); playSound('virusUpload', 'stop')
         let pagecontainer = Id('pagecontainer')
         let fullBlackScreen = Elm ('fullBlackScreen');
         stl(fullBlackScreen,{backgroundColor:'black', 'position':'fixed', width:'100%',height:'100%'})
@@ -2611,14 +2607,15 @@ function IpadGrahpic (type0) {
 
             }
             function stage2 (){
+                playSound('virusUpload', 'loop');
 
 
                 let txt = "מעלה וירוס לשרתים של הארגון." + "<br>" + "התקדמות שליחת הוירוס:"
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + ""
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl"  align="right" id="precentVirus"></p> </p>'
                 let siteDiv = Id('precentVirus');
-                let tm = 1000
-                let tm2 = 1000
+                let tm = 100
+                let tm2 = 100
                 if (G.testMode){tm = 3; tm2 = 100}
                 function findSite (n){
                     let precent= Math.floor(n)
@@ -2628,6 +2625,7 @@ function IpadGrahpic (type0) {
 
                     if (n < 100) {setTimeout (()=>{findSite (n)},tm)} else {
                         siteDiv.innerHTML = "100%"
+
                         setTimeout(()=>{stage3("UpLoad Complete")},tm2);
                     }
                 }
@@ -2668,6 +2666,7 @@ function IpadGrahpic (type0) {
 
         }
         function virusComplete () {
+            playSound('virusEffect', 'loop');
             for (let t = 0; t < G.hacks.visrusNumberOfrows; t++){
                 let sp = Id('asciSpan' + t);
                 sp.style.color = "";
@@ -2678,7 +2677,8 @@ function IpadGrahpic (type0) {
             let c2 =  "black";
             let times = 0;
             function reversColors(){
-                if (times>31) return ; times++
+                if (times>23) {playSound('virusEffect', 'pause'); return} ;
+                times++
 
 
                 ipadCover.style.background = c1  ;
@@ -3143,7 +3143,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-//G.mgmt.totalNumOfQuestions = 5  //kill should be 20
+G.mgmt.totalNumOfQuestions = 3  //kill should be 20
 
 buildBoard ();
 playSound ('BuildSounds')
