@@ -21,7 +21,7 @@ function fullScriptWrapper() {
      G.sound = {};
      G.mgmt = {};
      G.mgmt.nameOfGame = _Q_object.nameOfGame
-     G.mgmt.totalNumOfQuestions = G.Q.length
+     G.mgmt.totalNumOfQuestions = G.Q.length - 1
      G.mgmt.solutionCol = 8;
      G.mgmt.isAnswering = false;
      G.mgmt.mouseIsOver = 0;
@@ -407,12 +407,21 @@ function clickAnswer (elem){
 function playSound (typ, command = 'play') {
 
     function BuildSounds () {
-        G.sound.Consoletyping = new Audio('data/terminalType.mp3');
+        G.sound.Consoletyping = new Audio('data/terminalType.mp3'); G.sound.Consoletyping.volume = 1
+        G.sound.HackerTheme = new Audio('data/HackerTheme.mp3'); G.sound.HackerTheme.volume = 0.2
         G.sound.clickSound = new Audio('data/clickSouond.mp3'); G.sound.clickSound.volume = 0.07
         G.sound.wrongAnswer = new Audio('data/wrongAnswer.mp3'); G.sound.wrongAnswer.volume = 0.2
         G.sound.rightAnswer =  new Audio('data/rightAnswer.mp3'); G.sound.rightAnswer.volume = 0.1
         G.sound.openHolo  =  new Audio('data/openHolo.mp3'); G.sound.openHolo.volume = 0.1 //
         G.sound.ipadMoves = new Audio('data/ipadMoves.mp3'); G.sound.ipadMoves.volume = 0.2 //
+        G.sound.scannerEffect = new Audio('data/scannerEffect.mp3'); G.sound.scannerEffect.volume = 0.8
+        G.sound.scannerWin = new Audio('data/scannerWin.mp3'); G.sound.scannerWin.volume = 0.4
+        G.sound.crackDefence = new Audio('data/crackDefence.mp3'); G.sound.crackDefence.volume = 0.4
+        G.sound.welcomeEffect = new Audio('data/welcomeEffect.mp3'); G.sound.welcomeEffect.volume = 0.4
+
+
+
+        //
 
     }
     function playerFunc (sound) {
@@ -697,6 +706,7 @@ function ledEvent (e){
     function toggleHolo () {
         if (G.mgmt.ipadMoves) {return}
         playSound ('ipadMoves')
+
         G.mgmt.ipadMoves = true;
 
         function slideIpadUp (y,delta = -2,end = -50, tm = 10) {
@@ -818,7 +828,9 @@ function buildBoard (){
         }
     }
     function mOverAnswer (elem){
-        playSound ('clickSound', 'stop'); playSound ('clickSound', 'play')
+
+        //playSound ('clickSound', 'stop');
+
 
         function mouseOutTimer () {
 
@@ -853,10 +865,12 @@ function buildBoard (){
         if (G.mgmt.isAnswering && G.mgmt.clickedAnswer == numOfans){return}
         if (numOfans === 0){return}
 
+
         G.css.lastHoverEvent = numOfans;
         let html = G.Q[G.mgmt.qNumber][numOfans + 2];
         let newHtml = "<span style='background-color:" +  G.css.textcolor + "; color : " + G.css.backGroundtextcolor + "'>" + html + "</span>";
         ansDiv.innerHTML = newHtml;
+        playSound ('clickSound', 'play')
 
 
         for (let i = 1; i < 5; i++) {
@@ -1202,8 +1216,9 @@ function setQuestion (num) {
 
 
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
+        //L(t,fulltextArray[t] )
 
-        if (t > 6 || loopControl > 950) {playSound ('Consoletyping', 'pause'); return}
+        if (t > 6 || loopControl > 950 || !fulltextArray[t]  ) {playSound ('Consoletyping', 'pause'); return}
 
         if (G.Q[num -1] !== undefined && G.Q[num][1] === G.Q[num -1][1] && t === 1) {position = fulltextArray[t].length}
         if (typeof fulltextArray[t] === 'string') {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
@@ -1657,6 +1672,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
     }
     function endScreen () {
+        playSound('HackerTheme');
         let pagecontainer = Id('pagecontainer')
         let fullBlackScreen = Elm ('fullBlackScreen');
         stl(fullBlackScreen,{backgroundColor:'black', 'position':'fixed', width:'100%',height:'100%'})
@@ -1696,6 +1712,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
 }
 function IpadGrahpic (type0) {
+     //scannerEffect scannerWin
 
 
     function blankIpad () {
@@ -1823,6 +1840,9 @@ function IpadGrahpic (type0) {
                 }
                 x++
                 if (x < 100) { setTimeout(()=>{runIps (x)},30)} else {
+                    playSound('scannerWin'); playSound('scannerEffect', 'stop');
+
+
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = G.divs.textBlock2.innerHTML;
                     G.Q [500][2] = "כתובת רשת נמצאה. להמשיך ?";
@@ -1839,6 +1859,7 @@ function IpadGrahpic (type0) {
 
                 };
             }
+            playSound('scannerEffect');
             runIps (1)
 
 
@@ -2123,6 +2144,7 @@ function IpadGrahpic (type0) {
 
                 function addHackOption (el){
                     function clickFirewallHack (el){
+                        if(G.mgmt.numOfsuccess >=G.mgmt.max_Tofind.firewall) {playSound('crackDefence')}
                         function hackFirewallElement(DomElement ,finishString = 'ok') {
 
                             if(G.mgmt.numOfsuccess >=G.mgmt.max_Tofind.firewall){} else {
@@ -2441,6 +2463,7 @@ function IpadGrahpic (type0) {
                     StylelFader(submitButton,40,false,true);
                     StylelFader(userName,40,false,true);
                     setTimeout (()=>{
+                        playSound('welcomeEffect')
                         let spn = Id("formP-2");
                         spn.style = 'font-size: 4vmin; color: black; font-weight: bolder'
                         spn.style.opacity = 0 ;
@@ -2888,6 +2911,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
             }
             function stage2 (){
+                playSound('scannerEffect');
                 function makeid(length, isPass = false) {
                         var result           = '';
                         var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -2923,6 +2947,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                 madeUpEvent.type = 'click'
 
                  ledEvent (madeUpEvent) }
+                 playSound('scannerWin'); playSound('scannerEffect', 'stop');
 
                 G.Q [500] = ["", "","","","","","","",""]
                 G.Q [500][1] =  '<br><p dir=rtl style="text-align: right"> All Applications Scanned'
@@ -3123,6 +3148,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 buildBoard ();
 playSound ('BuildSounds')
 if(storeInLocal ('check')){storeInLocal ('load') }
+//G.saves.stage = 'user'
 //IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
 holoMenu();
 blackScreen ()
