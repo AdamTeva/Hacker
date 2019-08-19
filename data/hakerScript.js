@@ -79,7 +79,7 @@ function fullScriptWrapper() {
      G.hacks.firewallScrambleColor = 'yellow'
      G.hacks.visrusNumberOfrows = 0;
      G.hacks.ipLocations = [];
-     G.testMode = false; // fast wrting
+     G.testMode = true; // fast wrting // also cancel space option
 
 
  }
@@ -398,6 +398,18 @@ function clickAnswer (elem){
 
 }
 function playSound (typ, command = 'play') {
+    function preLoader () {
+        const keys = Object.keys(G.sound)
+        keys.forEach((k)=>{
+
+            let k1 = k;
+            let savedVolume = G.sound[k].volume
+            G.sound[k].volume = 0.001
+            playSound(k1)
+            setTimeout(()=>{playSound(k1,'pause');G.sound[k1].volume = savedVolume ; L(G.sound[k1])},1200)
+        })
+
+    }
 
     function BuildSounds () {
         G.sound.Consoletyping = new Audio('data/terminalType.mp3'); G.sound.Consoletyping.volume = 1
@@ -442,6 +454,7 @@ function playSound (typ, command = 'play') {
 
     switch (typ) {
         case 'BuildSounds' : BuildSounds (); break
+        case 'preLoader': preLoader(); break;
         case "Consoletyping":case "clickSound": default: playerFunc (G.sound[typ]) ;break;
     }
 
@@ -598,7 +611,7 @@ createMenu (op)
     function progressMenu () {
         function checkForUpdate (tim = 4000) {
             let txt0 = 'אחרי נסיון שני'
-            let qAnswered = G.saves.progressArray.length || 0 ;
+            let qAnswered = G.saves.progressArray.length || 0 ; qAnswered--
             if(G.divs.holoScreen.innerHTML.includes(txt0)){
                 // if (qAnswered === G.saves.progressArray.length){setTimeout(()=>{checkForUpdate (5000)},4000 )} else {progressMenu ()}
                 G.divs.holoScreen.querySelector("#text").innerHTML = progressText ();
@@ -607,10 +620,7 @@ createMenu (op)
             }
         }
 
-
-
         let progTxt = progressText ();
-
 
         let op = [ ['text' , progTxt],['mainMenu', 'חזרה']]
         createMenu (op)
@@ -1126,7 +1136,7 @@ function progressText (){
 
     }
     let qTotal = G.mgmt.totalNumOfQuestions || 0;
-    let qAnswered = G.saves.progressArray.length || 0 ;
+    let qAnswered = G.saves.progressArray.length || 0 ; qAnswered--;
     let qNumBytry = [];
     let qprecent = preCent (qAnswered,qTotal)
     let namePlayer = ''; if (G.saves.nameOfplayer) { namePlayer = G.saves.nameOfplayer + ", "}
@@ -1681,6 +1691,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
     }
     function startGame (){
+        playSound('preLoader')
         let fullBlackScreen = Id('fullBlackScreen')
         let ipadCover = Id('ipadCover')
 
@@ -3143,7 +3154,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-G.mgmt.totalNumOfQuestions = 3  //kill should be 20
+//G.mgmt.totalNumOfQuestions = 3  //kill should be 20
 
 buildBoard ();
 playSound ('BuildSounds')
