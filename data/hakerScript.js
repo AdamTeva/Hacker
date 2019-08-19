@@ -78,6 +78,7 @@ function fullScriptWrapper() {
      G.hacks.firewallFinishText = 'ההגנה נעקפה.'
      G.hacks.firewallScrambleColor = 'yellow'
      G.hacks.visrusNumberOfrows = 0;
+     G.hacks.lastqNumber = 1;
      G.hacks.ipLocations = [];
      G.testMode = true; // fast wrting // also cancel space option
 
@@ -360,12 +361,7 @@ function clickAnswer (elem){
             if (G.Q[G.mgmt.qNumber + 1] !== undefined && G.Q[G.mgmt.qNumber][1] === G.Q[G.mgmt.qNumber + 1][1]) {textInfo.style.color = G.css.textcolor}
             op =  op - opDelta;
             if (op > 0){setTimeout(()=>{fadeOut ()}, time)} else if (!G.mgmt.isFinalAnsInChapter){
-
-
-
-                if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.hacks.lastqNumber;
-                    plus = 0;
-
+                if (G.mgmt.qNumber === 500){G.mgmt.qNumber = G.hacks.lastqNumber;plus = 0;
                     if (G.mgmt.isChapterCheckout) {G.mgmt.nextStage() ; IpadGrahpic (G.saves.stage)}
                 } ;
                 if (G.mgmt.qNumber === 503) {
@@ -406,7 +402,7 @@ function playSound (typ, command = 'play') {
             let savedVolume = G.sound[k].volume
             G.sound[k].volume = 0.001
             playSound(k1)
-            setTimeout(()=>{playSound(k1,'pause');G.sound[k1].volume = savedVolume ; L(G.sound[k1])},1200)
+            setTimeout(()=>{playSound(k1,'pause');G.sound[k1].volume = savedVolume ; },1200)
         })
 
     }
@@ -1189,8 +1185,6 @@ function storeInLocal (command){
     }
 }
 function setQuestion (num) {
-    playSound ('Consoletyping', 'loop')
-
 
 
     function blinkCursor(){
@@ -1269,6 +1263,7 @@ function setQuestion (num) {
     function noMorequestions () {
         blackScreen('endGame')
     }
+    playSound ('Consoletyping', 'loop')
     if (G.Q[num]){} else if (num < 500) {noMorequestions ()}
 
     let fontSize;
@@ -1289,8 +1284,12 @@ function setQuestion (num) {
     let elements = [];
     let t = 1;
     let position = 1;
-    if (G.mgmt.qNumber < 499) {G.hacks.lastqNumber = G.mgmt.qNumber;}
     G.mgmt.qNumber = num;
+
+    if (G.mgmt.qNumber < 499) {G.hacks.lastqNumber = G.mgmt.qNumber;}
+    L( G.hacks.lastqNumber )
+
+
 
     elements[1] = G.divs.infoText
     fulltextArray[1] = G.Q[num][1]
@@ -1341,7 +1340,7 @@ function blackScreen (com) {
             return new Promise(resolve => {
                 const img = new Image();
                 img.onload = () => {
-                    let rnd = getRandomInt (9000)
+                    let rnd = getRandomInt (6000)
                     setTimeout(()=> {resolve(path); updateLoader ()},rnd)}
                 img.onerror = () => {resolve("pathNotFound")};
                 img.src = path;
@@ -1993,25 +1992,20 @@ function IpadGrahpic (type0) {
                 G.Q [500][1] = tx3 + '<br><p dir=rtl style="text-align: right">'
                 G.Q [500][2] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
                 G.Q [500][3] = "<br>"
-
-
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 //G.divs.textBlock2.remove()
                 G.mgmt.isFinalAnsInChapter = true;
-                setQuestion (500); return; }
+                setQuestion (500); return;}
             G.mgmt.isFinalAnsInChapter = false;
             let tb = Id('textBlock2');
             let tc = Id('textContainer');
             G.divs.textContainer.appendChild(G.divs.textBlock2 )
             G.divs.textBlock2.style.overflow = "hidden";
-
             //tb.style.color =  G.css.textcolor
             var ipArray = [];
             var ipTxtArray = [];
             for (let i =0 ; i < 100 ; i++){
                 let ipTxt = '';
-
-
                     let t = '<br>0x20004fff '; if(G.hacks.NamesOfPiecesOfFirewall[i] !== undefined) { t =G.hacks.NamesOfPiecesOfFirewall[i]}
                     t = t.slice(0,9) + " " + G.hacks.NamesOfPiecesOfFirewall[i-5] ;
                     ipTxt +=  t //ipArray[i][l];
@@ -2061,8 +2055,8 @@ function IpadGrahpic (type0) {
                     G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                     G.Q [500][G.mgmt.solutionCol] = 1;
                     G.mgmt.isChapterCheckout = true;
-
                     G.divs.textBlock2.remove()
+                    G.hacks.lastqNumber++;
                     setQuestion (500)
 
                 };
@@ -2333,7 +2327,11 @@ function IpadGrahpic (type0) {
                 G.mgmt.isChapterCheckout = true;
 
 
-                G.divs.textBlock2.remove()
+                G.divs.textBlock2.remove();
+                L("G.hacks.lastqNumber")
+
+                G.hacks.lastqNumber++;
+                L("G.hacks.lastqNumber")
 
                 setQuestion (500)
             }
@@ -2845,6 +2843,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
         }
         function revealvirus (numberToreveal){
+            L("G.mgmt.numOfsuccess" , "G.mgmt.max_Tofind.virus")
 
             let isVirusFinished = false;
             if (G.mgmt.numOfsuccess >= G.mgmt.max_Tofind.virus) {isVirusFinished = true }
@@ -3154,15 +3153,15 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-//G.mgmt.totalNumOfQuestions = 3  //kill should be 20
+G.mgmt.totalNumOfQuestions = 19//kill should be 20
 
 buildBoard ();
 playSound ('BuildSounds')
 if(storeInLocal ('check')){storeInLocal ('load') }
 //G.saves.stage = 'user'
-//IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
+IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
 holoMenu();
-blackScreen ()
+//blackScreen ()
 }
 
 
