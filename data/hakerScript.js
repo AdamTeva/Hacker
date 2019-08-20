@@ -1,4 +1,4 @@
-//haker code
+
 //"use strict";
  var G = {}
 function fullScriptWrapper() {
@@ -73,7 +73,7 @@ function fullScriptWrapper() {
      G.divs = {};
      G.hacks = {};
 
-      // getIp // firewall
+
      G.hacks.firewallCodeId = 'FWhacksId';
      G.hacks.firewallFinishText = 'ההגנה נעקפה.'
      G.hacks.firewallScrambleColor = 'yellow'
@@ -195,13 +195,13 @@ function fullScriptWrapper() {
         p_elem.onselectstart = function(){ return false };
     }
     function Pre2Num (precent){
-        // this function convert precent text to number
+
         return Number(precent.replace("%", ''))
     }
     function getRandomInt(max) {
         return (Math.floor(Math.random() * Math.floor(max))) + 1
     }
-    function sinusOne (num){ // gets sinus function results from 0 to 1
+    function sinusOne (num){
         let r =  Math.round(Math.sin(num/10)*100 + 100)/200
         return r;
     }
@@ -438,9 +438,8 @@ function playSound (typ, command = 'play') {
         }
         if (command === 'pause' || command === 'stop') {pause (sound); return }
         sound.currentTime = 0
+        if ((sound.volume > 0.002) && !G.mgmt.soundIsOn) {return}
         var promise = sound.play();
-        //G.sound.clickSound.volume = 0.07
-        //sound.autoplay = true
         if (command === 'loop'){sound.loop = true}
         if (promise !== undefined) {
           promise.then(_ => {}).catch(error => {});
@@ -1216,7 +1215,7 @@ function setQuestion (num) {
 
 
         if (fulltextArray[t] && (fulltextArray[t].length < position - 1)){t++; position = 0 }
-        //L(t,fulltextArray[t] )
+
 
         if (t > 6 || loopControl > 950 || !fulltextArray[t]  ) {playSound ('Consoletyping', 'pause'); return}
 
@@ -1287,7 +1286,7 @@ function setQuestion (num) {
     G.mgmt.qNumber = num;
 
     if (G.mgmt.qNumber < 499) {G.hacks.lastqNumber = G.mgmt.qNumber;}
-    L( G.hacks.lastqNumber )
+
 
 
 
@@ -2325,14 +2324,8 @@ function IpadGrahpic (type0) {
                 G.Q [500][4] = "ביצוע הסוואה של הפעילות"
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 G.mgmt.isChapterCheckout = true;
-
-
                 G.divs.textBlock2.remove();
-                L("G.hacks.lastqNumber")
-
                 G.hacks.lastqNumber++;
-                L("G.hacks.lastqNumber")
-
                 setQuestion (500)
             }
 
@@ -2843,8 +2836,6 @@ let rnd = getRandomInt(asciArr.length - 1);
 
         }
         function revealvirus (numberToreveal){
-            L("G.mgmt.numOfsuccess" , "G.mgmt.max_Tofind.virus")
-
             let isVirusFinished = false;
             if (G.mgmt.numOfsuccess >= G.mgmt.max_Tofind.virus) {isVirusFinished = true }
             var saftyCounter = 0;
@@ -2879,17 +2870,17 @@ let rnd = getRandomInt(asciArr.length - 1);
          }
 
 
-        const ascispanId = 'asciSpan'; //
+        const ascispanId = 'asciSpan';
         var ipadCover = Id('ipadCover');
-        let gradientColor2 = ` radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(76,76,76,1) 0%, rgba(28,28,28,1) 57%, rgba(19,19,19,1) 80%, rgba(71,71,71,1) 100%)`//"linear-gradient(135deg, rgba(98,125,77,1) 0%,rgba(31,59,8,1) 100%);"
+        let gradientColor2 = ` radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(76,76,76,1) 0%, rgba(28,28,28,1) 57%, rgba(19,19,19,1) 80%, rgba(71,71,71,1) 100%)`
         stl (ipadCover, {backgroundImage:gradientColor2,  'borderRadius': '2vmin'})
-        if (answeris === 'right') { rightAnswer ()} else if (answeris === 'wrong') {wrongAnser ()} else{//blankIpad ();
+        if (answeris === 'right') { rightAnswer ()} else if (answeris === 'wrong') {wrongAnser ()} else{
              BuildVirus ()};
     }
     function webSite () {
         function consoleHackedWebsite(stage = 1) {
 
-            //G.mgmt.isFinalAnsInChapter = false;
+
             let tb = Id('textBlock2');
             let tc = Id('textContainer');
             G.divs.textContainer.appendChild(G.divs.textBlock2 )
@@ -2902,10 +2893,9 @@ let rnd = getRandomInt(asciArr.length - 1);
                 txt += "אפליקציות חשודות." + '<br>'
                 txt += 'כדי לסרוק אותן ולגלות את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>'
                 txt += 'לחצו על הכפתור המהבהב.' + "<br>" + "<br>"
-                txt +=  'בתפריט בחרו תוכנת סריקה.' // txt += "בתפריט בחרו - שלח וירוס."
+                txt +=  'בתפריט בחרו תוכנת סריקה.'
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
-                //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
-                //G.divs.textBlock2.innerHTML += 'Aplications Origin: ' +  Id('userName').data + '<br><br>';
+
                 setTimeout(()=>{playSound ('Consoletyping', 'pause')},1500);
                  holoMenu('scanner');
 
@@ -3008,10 +2998,10 @@ let rnd = getRandomInt(asciArr.length - 1);
                 return  svgHTML}
         function blinkApp (counter = 0) {
             let spread = (Math.sin(counter)+1);
-            let ms = 50;// if (G.testMode){ms = 5}
+            let ms = 50;
             stl(viralWare, {boxShadow: `0vmin 0vmin 1.5vmin ${spread}vmin red`});
             counter++;
-            if (counter < 30) {setTimeout(()=>{blinkApp (counter)},ms);} else {focusApp()} // blink ms = 50
+            if (counter < 30) {setTimeout(()=>{blinkApp (counter)},ms);} else {focusApp()}
 
         }
         function focusApp() {
@@ -3057,7 +3047,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
         }
         function scrollPromise (){
-            let delta = ((getRandomInt(10) + 1) / 10) + 2 // +2 for test 6
+            let delta = ((getRandomInt(10) + 1) / 10) + 2
             let promise1 = new Promise((resolve, reject) => {
                 function scrollApps (h = -300){
                     appContainer.style.top = h + '%';
@@ -3116,12 +3106,6 @@ let rnd = getRandomInt(asciArr.length - 1);
               }
          })
 
-        //stl(viralWare, {boxShadow: '0vmin 0vmin 1.5vmin 1.5vmin red'}) // rgba(0,0,0,0.8)
-
-
-
-
-
 
 
     }
@@ -3153,7 +3137,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 
 // main:
-G.mgmt.totalNumOfQuestions = 19//kill should be 20
+//G.mgmt.totalNumOfQuestions = 13//kill should be 20
 
 buildBoard ();
 playSound ('BuildSounds')
@@ -3166,3 +3150,9 @@ holoMenu();
 
 
 fullScriptWrapper()
+/*
+need to take care of:
+english userName
+decaprecate testing;
+copyright
+ */
