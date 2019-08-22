@@ -1,9 +1,10 @@
 
 //"use strict";
- var G = {}
-function fullScriptWrapper() {
 
- //
+function fullScriptWrapper() {
+     var G = {}
+
+
  globalObject:{
      G.Q = _Q_object.QuestionsArray; // question object
      G.css = {};
@@ -14,7 +15,7 @@ function fullScriptWrapper() {
      G.css.isMouseOutTimer = false;
      G.css.lastHoverEvent = 0;
      G.css.backGroundtextcolor = 'black'
-     G.css.textFontSize = 2;
+     G.css.textFontSize = 4.5;
      G.css.resizeFontScale = 0.6;
      G.css.canvasBackground = 'black'//"#00284d";
      G.css.breakAfterQuestion = '<br><br>'
@@ -80,7 +81,7 @@ function fullScriptWrapper() {
      G.hacks.visrusNumberOfrows = 0;
      G.hacks.lastqNumber = 1;
      G.hacks.ipLocations = [];
-     G.testMode = true; // fast wrting // also cancel space option
+     G.testMode = false; // fast wrting // also cancel space option
 
 
  }
@@ -140,7 +141,15 @@ function fullScriptWrapper() {
 
 
     }
-    function test (typ){
+    function test (typ, num0){
+        function cutQuestions (){
+            while (G.Q.length > num0 + 1) {
+            G.Q.pop()
+            }
+            G.mgmt.totalNumOfQuestions = G.Q.length - 1
+
+
+        }
         switch (typ) {
             case 'holo':
             G.divs.ipadContainer.style.top = "10%"
@@ -148,6 +157,8 @@ function fullScriptWrapper() {
             fakeevent.type = "click";
             ledEvent (fakeevent);
             break;
+            case 'cutQuestions':
+            cutQuestions(); break;
             case "right":
             IpadGrahpic ('right');
             break;
@@ -823,7 +834,7 @@ function buildBoard (){
 
 
 
-        if (e.charCode == 32  && !G.mgmt.isFinalAnsInChapter) { // && G.testMode
+        if (e.charCode == 32  && !G.mgmt.isFinalAnsInChapter && G.testMode) { // && G.testMode
             clickAnswer ('rightAnswerClick');
 
         }
@@ -1131,7 +1142,7 @@ function progressText (){
 
     }
     let qTotal = G.mgmt.totalNumOfQuestions || 0;
-    let qAnswered = G.saves.progressArray.length || 0 ; qAnswered--;
+    let qAnswered = G.saves.progressArray.length || 0 ; qAnswered--; if (qAnswered <0) {qAnswered = 0}
     let qNumBytry = [];
     let qprecent = preCent (qAnswered,qTotal)
     let namePlayer = ''; if (G.saves.nameOfplayer) { namePlayer = G.saves.nameOfplayer + ", "}
@@ -1247,15 +1258,26 @@ function setQuestion (num) {
 
     }
     function resizeText (){
+        function rounder (size) {
+            let round = size * 4
+            round =  Math.round(round) / 4;
+            return round;
+
+        }
+
         fontSize = G.css.textFontSize;
         let fullText = "";
+        let fontResizer =  G.css.resizeFontScale
         for (let i = 1; i < 8; i++){ fullText += G.Q[num][i]};
 
         let length01 = fullText.length
+        let precentOfText = Math.sqrt(fullText.length / 500) // 500 size of normal view
+        fontSize = G.css.textFontSize / precentOfText
+        if ( precentOfText < 1) {fontSize = G.css.textFontSize }
 
+        fontSize = rounder(fontSize)
 
-        if (length01 > 700){fontSize = G.css.textFontSize *  G.css.resizeFontScale }
-        G.divs.textBlock.style.fontSize = fontSize + "vmax"
+        G.divs.textBlock.style.fontSize = fontSize + "vmin" // current
 
 
     }
@@ -1601,7 +1623,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         let subject1 = ''
         let subject2 = G.mgmt.nameOfGame;
             let nameOfplayer0 = ''; if (G.saves.nameOfplayer) {nameOfplayer0 = G.saves.nameOfplayer + ', '};
-        let iAmNotPlayer = ''; if (G.saves.nameOfplayer) {iAmNotPlayer = 'אני לא ' + G.saves.nameOfplayer}
+        let iAmNotPlayer = ''; if (G.saves.nameOfplayer) {iAmNotPlayer = 'אני לא ' + G.saves.nameOfplayer + " , התחל משחק  חדש"}
         let startOrContinue = "שלב ראשון - החל " ; if  (G.saves.nameOfplayer) {startOrContinue = "המשך בתהליך "}
         let asci0 = `  _   _            _
  | | | | __ _  ___| | _____ _ __         ${subject1}
@@ -3139,13 +3161,14 @@ let rnd = getRandomInt(asciArr.length - 1);
 // main:
 //G.mgmt.totalNumOfQuestions = 13//kill should be 20
 
+//test ('cutQuestions', 10)
 buildBoard ();
 playSound ('BuildSounds')
 if(storeInLocal ('check')){storeInLocal ('load') }
 //G.saves.stage = 'user'
-IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
+//IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
 holoMenu();
-//blackScreen ()
+blackScreen ()
 }
 
 
