@@ -1,6 +1,5 @@
-
+/*© 2018 Chen Peleg All Rights Reserved */
 //"use strict";
-
 function fullScriptWrapper() {
      var G = {}
 
@@ -3170,12 +3169,4 @@ if(storeInLocal ('check')){storeInLocal ('load') }
 holoMenu();
 blackScreen ()
 }
-
-
 fullScriptWrapper()
-/*
-need to take care of:
-english userName
-decaprecate testing;
-copyright
- */
