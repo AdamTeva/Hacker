@@ -1,4 +1,4 @@
-/*© 2018 Chen Peleg All Rights Reserved */
+/*© 2019 Chen Peleg All Rights Reserved */
 //"use strict";
 function fullScriptWrapper() {
      var G = {}
