@@ -1,0 +1,3 @@
+[submodule "MemoryMaster"]
+	path = memory
+	url = https://github.com/PelegChen/MemoryMaster
