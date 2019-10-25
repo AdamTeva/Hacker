@@ -1,3 +1,6 @@
 [submodule "MemoryMaster"]
 	path = memory
 	url = https://github.com/PelegChen/MemoryMaster
+[submodule "Shooter"]
+	path = Shooter
+	url = git@github.com:PelegChen/Shooter.git
