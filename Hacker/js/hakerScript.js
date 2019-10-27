@@ -1,9 +1,6 @@
 /*© 2019 Chen Peleg All Rights Reserved */
 //"use strict";
-function fullScriptWrapper() {
-     var G = {}
-
-
+G = G || {}
  globalObject:{
      G.Q = _Q_object.QuestionsArray; // question object
      G.css = {};
@@ -80,11 +77,10 @@ function fullScriptWrapper() {
      G.hacks.visrusNumberOfrows = 0;
      G.hacks.lastqNumber = 1;
      G.hacks.ipLocations = [];
-     G.testMode = false; // fast wrting // also cancel space option
+     G.dev_mode = G.dev_mode || false; // fast wrting // also cancel space option
 
 
  }
-
 //util_functions:
     function L (...args){
         let txtcolor1 = 'black';
@@ -330,7 +326,7 @@ function clickAnswer (elem){
 
         function typeSolution () {
             let ms = 100;
-            if (G.testMode) ms = 3
+            if (G.dev_mode) ms = 1
 
             let str = text.substring(e, 0);
             if (text.length + 1 <= e ){ nextQuesion () ;playSound ('Consoletyping', 'pause');
@@ -831,9 +827,7 @@ function buildBoard (){
     }
     function keyPressFunc (e) {
 
-
-
-        if (e.charCode == 32  && !G.mgmt.isFinalAnsInChapter && G.testMode) { // && G.testMode
+        if (e.charCode == 49 && !G.mgmt.isFinalAnsInChapter && G.dev_mode) { // && G.dev_mode
             clickAnswer ('rightAnswerClick');
 
         }
@@ -1232,7 +1226,7 @@ function setQuestion (num) {
         if (G.Q[num -1] !== undefined && G.Q[num][1] === G.Q[num -1][1] && t === 1) {position = fulltextArray[t].length}
         if (typeof fulltextArray[t] === 'string') {elements[t].innerHTML = fulltextArray[t].substring(position, 0);};
         let speed0 = 20
-        if (G.testMode) {speed0 = 10 }
+        if (G.dev_mode) {speed0 = 3 }
 
         position++; position++;
         setTimeout(()=>{typeWriterEfct (isCorect)},speed0 ); // 2 for testing  20 normal
@@ -1454,7 +1448,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
     }
     function fadeOutPromise1 (element0, tm = 30){
-        if (G.testMode) { tm = 5}
+        if (G.dev_mode) { tm = 2}
 
         let opct = 1;
          let delta = 0.01;
@@ -1650,7 +1644,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
         setQuestion (503);
         let speed0 = 10000;
-        if (G.testMode){speed0 = 10000}
+        if (G.dev_mode){speed0 = 10000}
         let pathsOfimages = ['data/mother-board (1).png','data/pagebackround.png','data/keyboard.png','data/hol1.svg','data/holoUI2.png', 'data/ipad_wallpaper.svg', 'data/ipad_wallpaper2.svg', 'data/led.png','data/map.svg', 'data/pointer.png','data/White-Noise (1).jpg']
 
         imagesLoader(pathsOfimages, 'loadingPrecent',G.Q [503][2]).then(()=>{finishLoading ()})
@@ -1681,7 +1675,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
         setQuestion (504);
         let speed0 = 7000;
-        if (G.testMode){speed0 = 100}
+        if (G.dev_mode){speed0 = 100}
 
 
     }
@@ -2639,7 +2633,7 @@ function IpadGrahpic (type0) {
                 let siteDiv = Id('precentVirus');
                 let tm = 100
                 let tm2 = 100
-                if (G.testMode){tm = 3; tm2 = 100}
+                if (G.dev_mode){tm = 3; tm2 = 100}
                 function findSite (n){
                     let precent= Math.floor(n)
 
@@ -2944,7 +2938,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                         }
                     return result;
                 }
-                let tm = 100; if (G.testMode) {tm = 5 }
+                let tm = 100; if (G.dev_mode) {tm = 3 }
                 let txt = "סורק ישומים בחיפוש אחר האתר של הארגון." + "<br>" + "אתרים ברשת האפילה:" + "<br>"
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + "</p>"
                 G.divs.textBlock2.innerHTML += '<div id="irgunSite"></div>'
@@ -3168,5 +3162,3 @@ if(storeInLocal ('check')){storeInLocal ('load') }
 //IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
 holoMenu();
 blackScreen ()
-}
-fullScriptWrapper()
