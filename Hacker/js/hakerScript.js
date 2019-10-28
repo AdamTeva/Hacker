@@ -407,24 +407,19 @@ G = G || {}
              suspiciusApps : "אפליקציות חשודות.",
              toScanThemAndFidSite:  'כדי לסרוק אותן ולגלות את האתר של \"הארגון\" פתחו את ההולוגרמה.',
              pressFlickeringButton :  'לחצו על הכפתור המהבהב.',
-             onMenuChooseScan :  'בתפריט בחרו תוכנת סריקה.'
+             onMenuChooseScan :  'בתפריט בחרו תוכנת סריקה.',
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+             userLogIn: 'כניסת משתמש',
+             scanningAppa: 'סורק ישומים',
+             scanningAppsInsearchFor:  "סורק ישומים בחיפוש אחר האתר של הארגון.",
+             siteInDarkWeb : "אתרים ברשת האפילה:",
+             allAppsWereScaned: "כל הישומים נסרקו.",
+             byTheScanTheSiteFound:  "על ידי הסריקה נמצא האתר של הארגון:",
+             likeToContinue :  'האם להמשיך ?',
+             reportToTheAuthoroties : "דיווח לרשויות על האתר",
+             searchingForBadApps:  "מחפש אפליקציות חשודות ",
+             theCannerFound : `נמצאו `,
+             suspiciusApps2:  `אפליקציות חשודות`
 
 
          };
@@ -2754,10 +2749,7 @@ function IpadGrahpic (type0) {
             ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin','backgroundColor': G.css.formBackColor
             });
-            /*
-            userLogIn: 'כניסת משתמש'
 
-            */
             ipadCover.innerHTML = '<br><font style="color:black;"> &nbsp' + G.TXT.userLogIn  +'<br><br>'
             ipadCover.style.background = G.css.formBackColor;
             var userForm = document.createElement('form'); stl (userForm, myStyle ('text'), {'fontSize': '1vmin', 'padding-right':'0vmin', 'textAlign': 'center'});
@@ -3133,7 +3125,8 @@ let rnd = getRandomInt(asciArr.length - 1);
 
                 function wasScannerStarted () {
                     if (Id('scanApps')) {
-                        if (Id('scanApps').innerHTML === 'סורק ישומים') {stage2 ()} else {setTimeout(()=>{wasScannerStarted () },500)}
+
+                        if (Id('scanApps').innerHTML === G.TXT.scanningAppa) {stage2 ()} else {setTimeout(()=>{wasScannerStarted () },500)}
                     } else {setTimeout(()=>{wasScannerStarted () },500)}
 
                 }
@@ -3156,7 +3149,8 @@ let rnd = getRandomInt(asciArr.length - 1);
                     return result;
                 }
                 let tm = 100; if (G.dev_mode) {tm = 3 }
-                let txt = "סורק ישומים בחיפוש אחר האתר של הארגון." + "<br>" + "אתרים ברשת האפילה:" + "<br>"
+
+                let txt = scanningAppsInsearchFor + "<br>" + G.TXT.siteInDarkWeb + "<br>"
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + "</p>"
                 G.divs.textBlock2.innerHTML += '<div id="irgunSite"></div>'
                 let siteDiv = Id('irgunSite');
@@ -3183,11 +3177,12 @@ let rnd = getRandomInt(asciArr.length - 1);
 
                 G.Q [500] = ["", "","","","","","","",""]
                 G.Q [500][1] =  '<br><p dir=rtl style="text-align: right"> All Applications Scanned'
-                G.Q [500][2] = "כל הישומים נסרקו." + "<br>" + "על ידי הסריקה נמצא האתר של הארגון:" + "<br><br>" + address + "<br><br>" ;
-                G.Q [500][2] += 'האם להמשיך ?'
+
+                G.Q [500][2] = G.TXT.allAppsWereScaned + "<br>" + G.TXT.byTheScanTheSiteFound + "<br><br>" + address + "<br><br>" ;
+                G.Q [500][2] += G.TXT.likeToContinue
                 let theNextStage = G.mgmt.stageNames[G.saves.stageNumber + 1 ]
                 G.Q [500][3] = G.TXT.continue + G.mgmt.stagesInfo[theNextStage]
-                G.Q [500][4] = "דיווח לרשויות על האתר"
+                G.Q [500][4] = G.TXT.reportToTheAuthoroties
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 G.mgmt.isChapterCheckout = true;
 
@@ -3303,8 +3298,12 @@ let rnd = getRandomInt(asciArr.length - 1);
         let ipad = Id('ipad')
         ipad.style.backgroundImage = 'url( data/ipad_wallpaper.svg)' /////
         ipad.style.backgroundSize ='cover'
-        let foundText =  `נמצאו ${G.mgmt.numOfsuccess } אפליקציות חשודות`
-        appHeader.innerHTML =   "מחפש אפליקציות חשודות "  + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
+
+
+
+
+        let foundText =  `${G.TXT.theCannerFound}${G.mgmt.numOfsuccess }${G.TXT.suspiciusApps2}`
+        appHeader.innerHTML =  G.TXT.searchingForBadApps  + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
         stl (appHeader, {position: 'relative', color:'white', fontFamily: 'consolas', fontSize: '4.5vmin', textAlign: 'center', zIndex: '19', backgroundColor: 'rgba(20,10,70,0.8)', hieght: '130%', overflow:'hidden', borderRadius:"30vmin"})
         stl (appContainer, { paddingLeft :'3vmin'})
         ipadCover.appendChild(appHeader) ;         ipadCover.appendChild(appContainer)
@@ -3332,8 +3331,8 @@ let rnd = getRandomInt(asciArr.length - 1);
              if (answeris === 'right') {
 
                  blinkApp();
-                 let foundText =  `נמצאו ${G.mgmt.numOfsuccess } אפליקציות חשודות`
-                 appHeader.innerHTML =   "מחפש אפליקציות חשודות "  + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
+                 let foundText =  `${G.TXT.theCannerFound}${G.mgmt.numOfsuccess }${G.TXT.suspiciusApps2}`
+                 appHeader.innerHTML =  G.TXT.searchingForBadApps + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
 
               }
          })
