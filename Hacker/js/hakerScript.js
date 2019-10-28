@@ -34,13 +34,14 @@ G = G || {}
 
      /* STAGE */
 
+
      G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
      G.mgmt.stagesInfo = {
-         'getIp' : 'למציאת כתובת הרשת ',
-         'firewall': ' לזיהוי חולשות בחומת האש',
-         'user' : ' לחדירה למערכת באמצעות שם משתמש',
-         'webSite': 'מציאת האתר דרך סריקת אפליקציות',
-         'virus': 'לבניית וירוס תקיפה נגד האתר',
+         'getIp' : G.TXT.findAndgetIp,
+         'firewall': G.TXT.findWeaknessFirewall,
+         'user' :  G.TXT.enterWithUser,
+         'webSite':  G.TXT.findThewebSiteScanApps,
+         'virus':  G.TXT.BuildAttacvirusAgainst
 
      }
      G.mgmt.numOfsuccess = 0;
@@ -72,12 +73,13 @@ G = G || {}
 
 
      G.hacks.firewallCodeId = 'FWhacksId';
-     G.hacks.firewallFinishText = 'ההגנה נעקפה.'
+     G.hacks.firewallFinishText = G.TXT.defenceWasBypassed
      G.hacks.firewallScrambleColor = 'yellow'
      G.hacks.visrusNumberOfrows = 0;
      G.hacks.lastqNumber = 1;
      G.hacks.ipLocations = [];
      G.dev_mode = G.dev_mode || false; // fast wrting // also cancel space option
+     G.TXT = {};
 
 
  }
@@ -291,6 +293,28 @@ G = G || {}
 
         }
     }
+    function langSet (){
+         G.TXT = {
+
+             scannigApps: 'סורק ישומים',
+             upLoadingVirus: 'מעלה וירוס',
+             saveWasNotFoundRefreshThewindow : 'לא נמצא מידע שמור. ניתן להתחיל משחק חדש על ידי רענון החלון.',
+             nameMustHave2chars: 'שם צריך להכיל לפחות 2 אותיות',
+             fromNowtourProgWillBeSaved : ", מעכשיו ההתקדמות שלך במשחק תישמר בסיום כל שלב",
+             ableTosave :'  ניתן לשמור את ההתקדמות על המחשב הזה',
+             yourAdvanceIsSavedAtEachLevel: ' ההתקדמות שלך במשחק נשמרת בסיום כל שלב',
+             loading : 'טוען ',
+             IAmNot: 'אני לא   ',
+             beginNewGame: " , התחל משחק  חדש",
+             firstStageBegin: "שלב ראשון - החל ",
+             continueinTheProcces : "המשך בתהליך ",
+
+
+
+
+         };
+
+    }
 
 function clickAnswer (elem){
     if (G.mgmt.qNumber === 504) {storeInLocal('confirmReset'); return}
@@ -465,10 +489,11 @@ function holoMenu (r) {
     // creats the menue inside the holo;
     //G.divs.holoMenuoptions = G.divs.holoMenuoptions || [];
     function scanApps () {
-        if (Id('scanApps').innerHTML === 'סורק ישומים') {return}
+
+        if (Id('scanApps').innerHTML === G.TXT.scannigApps) {return}
         if (G.saves.stage !== 'webSite') {Id('scanApps').innerHTML = ''}
         let scanAppDiv = Id('scanApps');
-        scanAppDiv.innerHTML ='סורק ישומים';
+        scanAppDiv.innerHTML = G.TXT.scannigApps;
         scanAppDiv.style.color = 'blue'
 
         function blinker (b) {
@@ -482,9 +507,10 @@ function holoMenu (r) {
 
     }
     function sendVirus () {
-        if (Id('sendVirus').innerHTML === 'מעלה וירוס') {return}
+
+        if (Id('sendVirus').innerHTML === G.TXT.upLoadingVirus) {return}
         let sendVirusDiv = Id('sendVirus');
-        sendVirusDiv.innerHTML ='מעלה וירוס';
+        sendVirusDiv.innerHTML = G.TXT.upLoadingVirus;
         sendVirusDiv.style.color = '#6B202F'
         function blinker (b) {
             let o = Math.sin (b) + 1;
@@ -498,19 +524,20 @@ function holoMenu (r) {
     function submitF(formArray) {
         let Formtext = Id('Formtext');
        if (formArray === 'clear'){
-           if (!storeInLocal ('check')){ Formtext.innerHTML = 'לא נמצא מידע שמור. ניתן להתחיל משחק חדש על ידי רענון החלון.' ;
+
+           if (!storeInLocal ('check')){ Formtext.innerHTML = G.TXT.saveWasNotFoundRefreshThewindow ;
            return;
        }
            storeInLocal('confirmReset');
            return
        }
        let input = Id('input').value
-       if (input.length < 2){Formtext.innerHTML = 'שם צריך להכיל לפחות 2 אותיות' + '<br>'; return}
+       if (input.length < 2){Formtext.innerHTML = G.TXT.nameMustHave2chars + '<br>'; return}
        G.saves.nameOfplayer = input;
        //visuaGamelLoader (true);
        Formtext.innerHTML = '&nbsp';
        let inputName = input;
-       inputName += ", מעכשיו ההתקדמות שלך במשחק תישמר בסיום כל שלב"
+       inputName += G.TXT.fromNowtourProgWillBeSaved
        setTimeout(()=>{StylelFader (Formtext,50,true)
        Formtext.innerHTML = inputName;},50 )
        storeInLocal ('save')
@@ -518,13 +545,16 @@ function holoMenu (r) {
 
 
     }
+
+
+
     function saveMenu () {
-        let userMessage = '  ניתן לשמור את ההתקדמות על המחשב הזה';
+        let userMessage = G.TXT.ableTosave;
         //let
         let formStyle = `font-family: david; font-size: 4vmin; color:rgba(3,100,100); opacity:0.7; text-shadow :6px 2px 8px yellow ; border-radius:1vmin;font-weight:bold;`
 
        if (storeInLocal ('check')){userMessage = G.saves.nameOfplayer + ', ';
-       userMessage  += ' ההתקדמות שלך במשחק נשמרת בסיום כל שלב'
+       userMessage  += G.TXT.yourAdvanceIsSavedAtEachLevel
        }
        userMessage += ' <br>'
 
@@ -535,10 +565,10 @@ function holoMenu (r) {
 
   <br>
 
-  <input id="saveButton" type="submit" value="שמירה" style=" ${formStyle}font-size: 4vmin">&nbsp&nbsp
- <input id="clear" type="submit" value="משחק חדש" style=" ${formStyle}font-size: 4vmin">
+  <input id="saveButton" type="submit" value="${G.TXT.newGame}" style=" ${formStyle}font-size: 4vmin">&nbsp&nbsp
+ <input id="clear" type="submit" value="${G.TXT. save}" style=" ${formStyle}font-size: 4vmin">
 </form><br><br>`
-let op = [ ['form' , form],['mainMenu', 'חזרה']]
+let op = [ ['form' , form],['mainMenu', G.TXT.back ]]
 createMenu (op)
 
 
@@ -611,7 +641,8 @@ createMenu (op)
     }
     function progressMenu () {
         function checkForUpdate (tim = 4000) {
-            let txt0 = 'אחרי נסיון שני'
+
+            let txt0 = G.TXT.afterSecondAttempt
             let qAnswered = G.saves.progressArray.length || 0 ; qAnswered--
             if(G.divs.holoScreen.innerHTML.includes(txt0)){
                 // if (qAnswered === G.saves.progressArray.length){setTimeout(()=>{checkForUpdate (5000)},4000 )} else {progressMenu ()}
@@ -623,19 +654,37 @@ createMenu (op)
 
         let progTxt = progressText ();
 
-        let op = [ ['text' , progTxt],['mainMenu', 'חזרה']]
+        let op = [ ['text' , progTxt],['mainMenu', G.TXT.back]]
         createMenu (op)
         setTimeout(()=>{checkForUpdate (3000)},4000 )
 
     }
     function helpMenu  (){
-        let helpText = `ענו על השאלות כדי להתקדם במשחק.כדי לענות על השאלות יש ללחוץ על התשובה הנכונה.
-לכל שאלה יש רק תשובה אחת נכונה. אם לא עניתם על התשובה הנכונה, תוכלו לנסות שוב.
-<br><br>
-על ידי פתיחת תפריט ההולוגרמה תוכלו:<br>
-לשמור את המשחק על המחשב הזה,  לראות את ההתקדמות שלכם במשחק ולהפעיל ולהשתיק את הקול. <br><br>
+        /*
+        findAndgetIp  : 'למציאת כתובת הרשת ',
+         findWeaknessFirewall : ' לזיהוי חולשות בחומת האש',
+         enterWithUser  : ' לחדירה למערכת באמצעות שם משתמש',
+        findThewebSiteScanApps : 'מציאת האתר דרך סריקת אפליקציות',
+         BuildAttacvirusAgainst : 'לבניית וירוס תקיפה נגד האתר',
+         defenceWasBypassed : 'ההגנה נעקפה.',
+         newGame:"משחק חדש",
+         save:"שמירה",
+         back : 'חזרה',
+         afterSecondAttempt: 'אחרי נסיון שני',
+         fullHelpText1: 'ענו על השאלות כדי להתקדם במשחק.כדי לענות על השאלות יש ללחוץ על התשובה הנכונה.
+ לכל שאלה יש רק תשובה אחת נכונה. אם לא עניתם על התשובה הנכונה, תוכלו לנסות שוב.',
+         fullHelpText2: 'על ידי פתיחת תפריט ההולוגרמה תוכלו:',
+         fullHelpText3: 'לשמור את המשחק על המחשב הזה,  לראות את ההתקדמות שלכם במשחק ולהפעיל ולהשתיק את הקול.'
+
+
+
+        */
+        let helpText = `${G.TXT.fullHelpText1}
+${G.TXT.fullHelpText2}<br><br>
+<br> ${G.TXT.fullHelpText3}
+ <br><br>
 `
-        let op = [ ['text' , helpText],['mainMenu', 'חזרה']]
+        let op = [ ['text' , helpText],['mainMenu', G.TXT.back]]
         createMenu (op)
 
     }
@@ -1156,6 +1205,35 @@ function progressText (){
 
 }
 function storeInLocal (command){
+    function storeInLocalFROMSHOOTER (command){
+        var createEvent  = (actionType, key, value)  => {let ev = new Event ('storage'); ev.key = key; ev.value = value
+        ev.actionType = actionType; return window.dispatchEvent(ev)}
+
+
+        switch (command){
+            case 'save':
+            localStorage.setItem(G.saveInLocalStorageKey, JSON.stringify(G.upgrade));
+            createEvent  ('save',G.saveInLocalStorageKey , JSON.stringify(G.upgrade));
+            break;
+            case 'check':
+            if (G.upgrade.nameOfplayer) {return true} else {return false}
+
+            break;
+
+            case 'load':
+            var retrievedObject = localStorage.getItem(G.saveInLocalStorageKey);
+            console.log(retrievedObject)
+            if (retrievedObject) {G.upgrade = JSON.parse(retrievedObject); }
+
+            break;
+
+            case 'reset':
+            if (G.isClickGameSaveInLocalStore) {alert (G.TXT.cantResteGameDoWithClicl); break}
+            localStorage.removeItem(G.saveInLocalStorageKey);
+
+            break;
+        }
+    }
     let myFileName = location.pathname //.split("/").slice(-1)
     let htmlFileName = myFileName ;//[0];
     switch (command){
@@ -1610,14 +1688,18 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
             G.Q [503][2] =G.Q [503][2].replace (t1,t2);
             G.Q [503][2] =G.Q [503][2].replace ("100%","")
         }
-        let isLoadingText = 'טוען '
+
+
+
+
+        let isLoadingText = G.TXT.loading
         let preLoadingText = '<span id="loadingPrecent"></span>'
 
         let subject1 = ''
         let subject2 = G.mgmt.nameOfGame;
             let nameOfplayer0 = ''; if (G.saves.nameOfplayer) {nameOfplayer0 = G.saves.nameOfplayer + ', '};
-        let iAmNotPlayer = ''; if (G.saves.nameOfplayer) {iAmNotPlayer = 'אני לא ' + G.saves.nameOfplayer + " , התחל משחק  חדש"}
-        let startOrContinue = "שלב ראשון - החל " ; if  (G.saves.nameOfplayer) {startOrContinue = "המשך בתהליך "}
+        let iAmNotPlayer = ''; if (G.saves.nameOfplayer) {iAmNotPlayer = G.TXT.IAmNot + G.saves.nameOfplayer + G.TXT.beginNewGame}
+        let startOrContinue =  G.TXT.firstStageBegin ; if  (G.saves.nameOfplayer) {startOrContinue = G.TXT.continueinTheProcces}
         let asci0 = `  _   _            _
  | | | | __ _  ___| | _____ _ __         ${subject1}
  | |_| |/ _' |/ __| |/ / _ \\ v__|
@@ -3155,6 +3237,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 //G.mgmt.totalNumOfQuestions = 13//kill should be 20
 
 //test ('cutQuestions', 10)
+langSet ()
 buildBoard ();
 playSound ('BuildSounds')
 if(storeInLocal ('check')){storeInLocal ('load') }
