@@ -308,6 +308,55 @@ G = G || {}
              beginNewGame: " , התחל משחק  חדש",
              firstStageBegin: "שלב ראשון - החל ",
              continueinTheProcces : "המשך בתהליך ",
+             findAndgetIp  : 'למציאת כתובת הרשת ',
+              findWeaknessFirewall : ' לזיהוי חולשות בחומת האש',
+              enterWithUser  : ' לחדירה למערכת באמצעות שם משתמש',
+             findThewebSiteScanApps : 'מציאת האתר דרך סריקת אפליקציות',
+              BuildAttacvirusAgainst : 'לבניית וירוס תקיפה נגד האתר',
+              defenceWasBypassed : 'ההגנה נעקפה.',
+              newGame:"משחק חדש",
+              save:"שמירה",
+              back : 'חזרה',
+              afterSecondAttempt: 'אחרי נסיון שני',
+              fullHelpText1: `ענו על השאלות כדי להתקדם במשחק.כדי לענות על השאלות יש ללחוץ על התשובה הנכונה.
+      לכל שאלה יש רק תשובה אחת נכונה. אם לא עניתם על התשובה הנכונה, תוכלו לנסות שוב`.,
+              fullHelpText2: 'על ידי פתיחת תפריט ההולוגרמה תוכלו:',
+              fullHelpText3: 'לשמור את המשחק על המחשב הזה,  לראות את ההתקדמות שלכם במשחק ולהפעיל ולהשתיק את הקול.',
+             turnsoundOff: 'השתק צלילים',
+             turnsoundOn: 'הפעל צלילים',
+             help: 'עזרה',
+             options: 'אפשרויות',
+             progress: 'התקדמות',
+             sacnApp: 'תוכנת סריקה',
+             gameProgressData: 'נתוני ההתקדמות במשחק:',
+             youHaveAnswered: `ענית על ` ,
+             outOf: ' מתוך ',
+             questionsWichAre : ' שאלות, שהן ',
+             ofAllQuestion : 'מכלל השאלות.',
+             typeOfAnswer: 'סוג המענה'
+             inNumbers: `במספרים`,
+             inPrecent: `באחוזים`,
+             withoutErrors: `ללא טעויות`,
+             onSecondTry: ` בנסיון שני `,
+             afterSecondTry: ` אחרי נסיון שני `,
+             allFilesWereLoadedContinue: `כל הקבצים נטענו. האם להמשיך? `,
+             youMustPlantVirusEveryAnswer: `עליך לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
+             כל תשובה נכונה תקדם שלב בתהליך הפריצה.
+            `,
+            summary: ' סיכום',
+            following: `להלן `,
+            replay: `משחק חוזר`,
+            allProgressOf : `(כל ההתקדמות של `,
+            willBeDeleted : ` תימחק)`,
+            youFinishedTheGame: 'סיימתם את המשחק. תוכלו לשחק שוב כדי לנסות ולשפר את התוצאות שלכם.',
+            ifYouSavedItWillBeDeleted: 'אם שמרתם את המשחק, התחלת משחק חדש תמחק ותאפס את ההתקדמות שלכם.',
+            youHaveWonWellDone: `ניצחתם את "הארגון" הרשע ! כל הכבוד !`,
+
+
+
+
+
+
 
 
 
@@ -660,25 +709,7 @@ createMenu (op)
 
     }
     function helpMenu  (){
-        /*
-        findAndgetIp  : 'למציאת כתובת הרשת ',
-         findWeaknessFirewall : ' לזיהוי חולשות בחומת האש',
-         enterWithUser  : ' לחדירה למערכת באמצעות שם משתמש',
-        findThewebSiteScanApps : 'מציאת האתר דרך סריקת אפליקציות',
-         BuildAttacvirusAgainst : 'לבניית וירוס תקיפה נגד האתר',
-         defenceWasBypassed : 'ההגנה נעקפה.',
-         newGame:"משחק חדש",
-         save:"שמירה",
-         back : 'חזרה',
-         afterSecondAttempt: 'אחרי נסיון שני',
-         fullHelpText1: 'ענו על השאלות כדי להתקדם במשחק.כדי לענות על השאלות יש ללחוץ על התשובה הנכונה.
- לכל שאלה יש רק תשובה אחת נכונה. אם לא עניתם על התשובה הנכונה, תוכלו לנסות שוב.',
-         fullHelpText2: 'על ידי פתיחת תפריט ההולוגרמה תוכלו:',
-         fullHelpText3: 'לשמור את המשחק על המחשב הזה,  לראות את ההתקדמות שלכם במשחק ולהפעיל ולהשתיק את הקול.'
 
-
-
-        */
         let helpText = `${G.TXT.fullHelpText1}
 ${G.TXT.fullHelpText2}<br><br>
 <br> ${G.TXT.fullHelpText3}
@@ -689,9 +720,10 @@ ${G.TXT.fullHelpText2}<br><br>
 
     }
     function optionsMenu () {
+
         let sound;
-        if (G.mgmt.soundIsOn) { sound = ['soundOff','השתק צלילים']} else { sound = ['soundOn','הפעל צלילים']}
-        let op = [sound,['mainMenu', 'חזרה']]
+        if (G.mgmt.soundIsOn) { sound = ['soundOff',G.TXT.turnsoundOff]} else { sound = ['soundOn', G.TXT.turnsoundOn]}
+        let op = [sound,['mainMenu', G.TXT.back]]
         createMenu (op)
     }
     function clickSubMenu () {
@@ -712,9 +744,10 @@ ${G.TXT.fullHelpText2}<br><br>
         }
     }
     function mainMenu (){
-         let optionArray = [['optionsMenu','אפשרויות'],['progressMenu', 'התקדמות'] ,['saveMenu','שמירה'],['helpMenu','עזרה']]
+
+         let optionArray = [['optionsMenu',G.TXT.options],['progressMenu',G.TXT.progress ] ,['saveMenu',G.TXT.save],['helpMenu',G.TXT.help]]
          if (G.mgmt.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.mgmt.current === 'webSite')) {
-             optionArray.push(['scanApps','תוכנת סריקה'])
+             optionArray.push(['scanApps',G.TXT.sacnApp])
          }
          if (G.mgmt.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.mgmt.current === 'virus')) {
              optionArray.push(['sendVirus','שלח וירוס'])
@@ -1196,9 +1229,10 @@ function progressText (){
     let q0=0, q1=0, q23=0, p0='0%', p1='0%', p23='0%';
     q0 = qNumBytry[0]; q1 = qNumBytry[1]; q23 = qNumBytry[2] + qNumBytry[3]
     p0 = preCent(q0,qAnswered); p1 =  preCent(q1,qAnswered); p23=  preCent(q23,qAnswered)
-    let txt0 =  'נתוני ההתקדמות במשחק:';
-    let txt1 = `<br><br>` + namePlayer + `ענית על ` +  qAnswered + ' מתוך ' + qTotal + ' שאלות, שהן ' + qprecent + '&nbsp'+ 'מכלל השאלות.'
-    let table = `<table style="width:100% ; border: solid 0.2vmin;  border-collapse: collapse; ; text-align: center ;margin-top:3vmin"> <tr style="border:solid 0.2vmin">   <th  style="border:solid 0.2vmin" >סוג המענה</th>   <th  style="border: solid 0.2vmin">במספרים</th>   <th  style="border: solid 0.2vmin">באחוזים</th> </tr> <tr  style="border: solid 0.2vmin">  <td>ללא טעויות</td>   <td>${q0}</td> <td>${p0}</td> </tr> <tr>   <td>בנסיון שני</td>   <td>${q1}</td> <td>${p1}</td> </tr> <tr style="border: solid 0.2vmin">   <td> אחרי נסיון שני</td>   <td>${q23}</td> <td>${p23}</td> </tr></table>`
+
+    let txt0 = G.TXT. gameProgressData ;
+    let txt1 = `<br><br>` + namePlayer + G.TXT.youHaveAnswered +  qAnswered + G.TXT.outOf + qTotal +  G.TXT.questionsWichAre + qprecent + '&nbsp'+ ofAllQuestion;
+    let table = `<table style="width:100% ; border: solid 0.2vmin;  border-collapse: collapse; ; text-align: center ;margin-top:3vmin"> <tr style="border:solid 0.2vmin">   <th  style="border:solid 0.2vmin"> ${G.TXT.typeOfAnswer}</th>   <th  style="border: solid 0.2vmin"> ${G.TXT.inNumbers}  </th>   <th  style="border: solid 0.2vmin">  ${G.TXT.inPrecent}      </th> </tr> <tr  style="border: solid 0.2vmin">  <td>${G.TXT.withoutErrors} </td>   <td>${q0}</td> <td>${p0}</td> </tr> <tr>   <td> ${G.TXT.onSecondTry}     </td>   <td>${q1}</td> <td>${p1}</td> </tr> <tr style="border: solid 0.2vmin">   <td>${ G.TXT.afterSecondTry}</td>   <td>${q23}</td> <td>${p23}</td> </tr></table>`
 
     let txt = txt0 + txt1 + table;
     return txt
@@ -1683,8 +1717,9 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
     function setStartText () {
         function finishLoading () {
 
+
             let t1 = isLoadingText //
-            let t2 = `כל הקבצים נטענו. האם להמשיך? `;
+            let t2 = G.TXT.allFilesWereLoadedContinue;
             G.Q [503][2] =G.Q [503][2].replace (t1,t2);
             G.Q [503][2] =G.Q [503][2].replace ("100%","")
         }
@@ -1708,13 +1743,15 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         asci0 = asci0.replace(/\n/g, '<br>')
         //asci0 = asci0.replace(/\s/g, '&nbsp')
         let txt1 = "<pre>" + asci0
+
+
+
+
         G.Q [503] = ["", "","","","","","","",""]
         G.Q [503][1] = txt1 //+ preLoadingText;
         G.Q [503][2] = "<pre>" + `       <font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b></font>
 
-     ${nameOfplayer0}עליך לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
-     כל תשובה נכונה תקדם שלב בתהליך הפריצה.
-     ${isLoadingText}${preLoadingText}`
+     ${nameOfplayer0}${G.TXT.youMustPlantVirusEveryAnswer} ${isLoadingText}${preLoadingText}`
         let theNextStage = G.mgmt.stageNames[G.saves.stageNumber]
         G.Q [503][3] = startOrContinue + G.mgmt.stagesInfo[theNextStage]
 
@@ -1734,18 +1771,21 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
 
     }
     function setEndText () {
+
+
+
         let style2 = '<font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:3vmin">'
-        let subject2 = G.mgmt.nameOfGame + ' סיכום';
-        let summary ='<br>' + `להלן ` +progressText ()
-        let newgameTxt = `משחק חוזר`
-        if (G.saves.nameOfplayer) {newgameTxt += `(כל ההתקדמות של ${G.saves.nameOfplayer} תימחק)`}
+        let subject2 = G.mgmt.nameOfGame + G.TXT.summary;
+        let summary ='<br>' + G.TXT.following +progressText ()
+        let newgameTxt = G.TXT.replay;
+        if (G.saves.nameOfplayer) {newgameTxt += `${G.TXT.allProgressOf}${G.saves.nameOfplayer}${G.TXT.willBeDeleted}`}
         //asci0 = asci0.replace(/\n/g, '<br>')
-        let sumexplain = 'סיימתם את המשחק. תוכלו לשחק שוב כדי לנסות ולשפר את התוצאות שלכם.' + '<br>'
-        sumexplain += 'אם שמרתם את המשחק, התחלת משחק חדש תמחק ותאפס את ההתקדמות שלכם.'
+        let sumexplain =  G.TXT.youFinishedTheGame + '<br>'
+        sumexplain += G.TXT.ifYouSavedItWillBeDeleted
         let txt1 = "<pre>"
         G.Q [504] = ["", "","","","","","","",""]
         G.Q [504][1] = txt1;
-        G.Q [504][2] = "<pre>" + `<font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b><br></font>`  + style2  +  `ניצחתם את "הארגון" הרשע ! כל הכבוד !` + summary + sumexplain
+        G.Q [504][2] = "<pre>" + `<font style="text-shadow: 0vmin 0vmin 3vmin 3vmin ; font-size:8vmin"><b>` + subject2 + `</b><br></font>`  + style2  +  G.TXT.youHaveWonWellDone + summary + sumexplain
         let theNextStage = G.mgmt.stageNames[G.saves.stageNumber + 1 ]
         G.Q [504][3] = newgameTxt
 
