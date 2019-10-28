@@ -632,6 +632,7 @@ function holoMenu (r) {
         blinker (1)
 } // sendVirus ()
     function submitF(formArray) {
+
         let Formtext = Id('Formtext');
        if (formArray === 'clear'){
 
@@ -675,8 +676,8 @@ function holoMenu (r) {
 
   <br>
 
-  <input id="saveButton" type="submit" value="${G.TXT.newGame}" style=" ${formStyle}font-size: 4vmin">&nbsp&nbsp
- <input id="clear" type="submit" value="${G.TXT. save}" style=" ${formStyle}font-size: 4vmin">
+  <input id="saveButton" type="submit" value="${G.TXT. save}" style=" ${formStyle}font-size: 4vmin">&nbsp&nbsp
+ <input id="clear" type="submit" value="${G.TXT.newGame}" style=" ${formStyle}font-size: 4vmin">
 </form><br><br>`
 let op = [ ['form' , form],['mainMenu', G.TXT.back ]]
 createMenu (op)
@@ -1308,18 +1309,18 @@ function storeInLocal (command){
 
         switch (command){
             case 'save':
-            localStorage.setItem(G.saveInLocalStorageKey, JSON.stringify(G.upgrade));
-            createEvent  ('save',G.saveInLocalStorageKey , JSON.stringify(G.upgrade));
+            localStorage.setItem(G.saveInLocalStorageKey, JSON.stringify(G.saves));
+            createEvent  ('save',G.saveInLocalStorageKey , JSON.stringify(G.saves));
             break;
             case 'check':
-            if (G.upgrade.nameOfplayer) {return true} else {return false}
+            if (G.saves.nameOfplayer) {return true} else {return false}
 
             break;
 
             case 'load':
             var retrievedObject = localStorage.getItem(G.saveInLocalStorageKey);
             console.log(retrievedObject)
-            if (retrievedObject) {G.upgrade = JSON.parse(retrievedObject); }
+            if (retrievedObject) {G.saves = JSON.parse(retrievedObject); }
 
             break;
 
@@ -1328,8 +1329,17 @@ function storeInLocal (command){
             localStorage.removeItem(G.saveInLocalStorageKey);
 
             break;
+
+            case 'confirmReset':
+            if (G.isClickGameSaveInLocalStore) {alert (G.TXT.cantResteGameDoWithClicl); break}
+            let tx = G.TXT.wouldYouLikeToReset
+            if (confirm(tx)) { storeInLocal ('reset'); location.reload()};
+            break;
         }
     }
+    return  storeInLocalFROMSHOOTER (command)
+/*
+
     let myFileName = location.pathname //.split("/").slice(-1)
     let htmlFileName = myFileName ;//[0];
     switch (command){
@@ -1362,6 +1372,7 @@ function storeInLocal (command){
         if (confirm(tx)) { storeInLocal ('reset'); location.reload()};
         break;
     }
+    */
 }
 function setQuestion (num) {
 
@@ -3150,7 +3161,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                 }
                 let tm = 100; if (G.dev_mode) {tm = 3 }
 
-                let txt = scanningAppsInsearchFor + "<br>" + G.TXT.siteInDarkWeb + "<br>"
+                let txt = G.TXT.scanningAppsInsearchFor + "<br>" + G.TXT.siteInDarkWeb + "<br>"
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + "</p>"
                 G.divs.textBlock2.innerHTML += '<div id="irgunSite"></div>'
                 let siteDiv = Id('irgunSite');
@@ -3372,9 +3383,9 @@ let rnd = getRandomInt(asciArr.length - 1);
 
 //test ('cutQuestions', 10)
 langSet ()
+storeInLocal ('load')
 buildBoard ();
 playSound ('BuildSounds')
-if(storeInLocal ('check')){storeInLocal ('load') }
 //G.saves.stage = 'user'
 //IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
 holoMenu();
