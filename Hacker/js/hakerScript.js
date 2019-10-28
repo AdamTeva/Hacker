@@ -30,7 +30,7 @@ G = G || {}
      G.saves.progressArray = [];
      G.saves.stageNumber = 1; //the stage number to begin /* safd */
      G.saves.lastSavedQuestion = 1;
-     G.saves.nameOfplayer = G.clickFullNameOfUser || ''
+     G.saves.nameOfplayer = G.clickFullNameOfUser || '';
 
 
      /* STAGE */
@@ -67,8 +67,12 @@ G = G || {}
      G.mgmt.isFinalAnsInChapter = false;
      G.mgmt.soundIsOn = true;
 
-     G.mgmt.nextStage = function () {G.saves.stageNumber++ ; G.saves.stage = G.mgmt.stageNames [G.saves.stageNumber]; G.mgmt.current = G.saves.stage ; G.mgmt.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;
+     G.mgmt.nextStage = function () {
+         G.saves.stageNumber++ ; G.saves.stage = G.mgmt.stageNames [G.saves.stageNumber]; G.mgmt.current = G.saves.stage ; G.mgmt.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;
      G.saves.lastSavedQuestion = G.mgmt.qNumber;
+     if (storeInLocal ('check')){storeInLocal ('save')}
+ }
+
      G.divs = {};
      G.hacks = {};
 
@@ -1308,6 +1312,7 @@ function storeInLocal (command){
 
         switch (command){
             case 'save':
+            console.log ('saving')
             localStorage.setItem(G.saveInLocalStorageKey, JSON.stringify(G.saves));
             createEvent  ('save',G.saveInLocalStorageKey , JSON.stringify(G.saves));
             break;
@@ -1908,7 +1913,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
             fadeOutPromise1(fullBlackScreen , 50).then(()=>{fullBlackScreen.remove()
                 G.mgmt.qNumber = G.hacks.lastqNumber;
 
-
+                console.log (G.mgmt.qNumber,G.saves.stage )
                 setQuestion (G.mgmt.qNumber)
                  IpadGrahpic (G.saves.stage)
 
