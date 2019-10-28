@@ -370,7 +370,52 @@ G = G || {}
             identifingFireWall: 'זיהוי חומת אש',
             serachIngComponenet: "מחפש רכיבים",
             identifingComponenet :  'מזהה רכיבים:',
-            componentsFound: 'הרכיבים שזוהו:'
+            componentsFound: 'הרכיבים שזוהו:',
+
+             allDefencesAreDownPressTo : 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.',
+             youcanIfeltrateThesystem: "ניתן כעת לקיים חדירה מוצלחת למערכת, באמצעות המשתמש :",
+             signInAproved: ` כניסה אושרה`,
+             ableToMackeChangesAndScan :  "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש .",
+             shoudYouContinue :  'האם להמשיך ?',
+             makingAhiddingOftheActivity : "ביצוע הסוואה של הפעילות",
+             pressToenter: 'לחץ לכניסה',
+             oneOrMoreInputsAreWrong:  'אחד או יותר מהנתונים שגוי.' ,
+             entryIsforBidden:  'הכניסה אסורה. ',
+             everyThingIs : 'כל הפרטים נכונים,',
+             hello2 : 'שלום,',
+             welcomeToTheSite: 'ברוכים הבאים למערכת.',
+             firstName:  'שם פרטי',
+             lastName: 'שם משפחה',
+             userName : 'שם משתמש',
+             securityCode: 'קוד אבטחה',
+             entry: 'כניסה',
+
+             aVirusWasBuiltToFight : "נבנה וירוס  להפלת המחשבים של ה\"ארגון\".",
+             bySendingThevirusTheOrgenazation : "על ידי שליחת הוירוס הפעילות של הארגון תתפרק לזמן רב.",
+             toSendTheVirusOpen : 'כדי לשלוח את הוירוס ולהפיל את האתר של \"הארגון\" פתחו את ההולוגרמה.',
+             pressTheBlinkingButton : 'לחצו על הכפתור המהבהב.',
+             onTheMenuChooseVirus:   "בתפריט בחרו - שלח וירוס.",
+             uploadIngVirus: 'מעלה וירוס',
+             uploadingVirusToserver : "מעלה וירוס לשרתים של הארגון.",
+             uploadVirusProgress : "התקדמות שליחת הוירוס:",
+             youMangedToWinOver : "הצלחת להעלות את הוירוס למחשבים של הארגון ולהפיל את הארגון לתקופה הקרובה.",
+             goodJobPressToSeeResults: "כל הכבוד ! לחץ לסיום בשביל לראות את התוצאה שלך.",
+             wouldYouLikeToFInish :  'האם לסיים ?',
+             finishAndViewResults:  "סיום וצפייה בתוצאות",
+             builingAttackVirus : ` בונה וירוס תקיפה `,
+             therWereFound: "נמצאו ",
+             suspiciusApps : "אפליקציות חשודות.",
+             toScanThemAndFidSite:  'כדי לסרוק אותן ולגלות את האתר של \"הארגון\" פתחו את ההולוגרמה.',
+             pressFlickeringButton :  'לחצו על הכפתור המהבהב.',
+             onMenuChooseScan :  'בתפריט בחרו תוכנת סריקה.'
+
+
+
+
+
+
+
+
 
 
 
@@ -2624,25 +2669,11 @@ function IpadGrahpic (type0) {
             function submittingForm (){
                 function DenyEntry () {
                     var deny = Elm ('deny');
-                    /*
-                     allDefencesAreDownPressTo : 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.',
-                     youcanIfeltrateThesystem: "ניתן כעת לקיים חדירה מוצלחת למערכת, באמצעות המשתמש :",
-                     signInAproved: ` כניסה אושרה`,
-                     ableToMackeChangesAndScan :  "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש .",
-                     shoudYouContinue :  'האם להמשיך ?',
-                     makingAhiddingOftheActivity : "ביצוע הסוואה של הפעילות",
-                     pressToenter: 'לחץ לכניסה'
-                     oneOrMoreInputsAreWrong:  'אחד או יותר מהנתונים שגוי.' ,
 
-
-
-
-
-                     */
                     let ipadCover = Id ('ipadCover') ; ipadCover.appendChild (deny)
                     stl (deny , myStyle ('text'), {'position': 'absolute', 'top' : '25%', 'right': '5%' , 'textAlign': 'center', 'backgroundColor': 'red', 'color' : 'black', 'padding' : '0.5vmin', 'fontWeight': 'bolder', 'border' : 'solid black 0.3vmin'});
                     deny.innerHTML = G.TXT.oneOrMoreInputsAreWrong;
-                    deny.innerHTML += '<br>' + 'הכניסה אסורה. '
+                    deny.innerHTML += '<br>' + G.TXT.entryIsforBidden
                     setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
                 }
                 if (G.mgmt.numOfsuccess === G.mgmt.max_Tofind.user) {
@@ -2654,7 +2685,8 @@ function IpadGrahpic (type0) {
                         let spn = Id("formP-2");
                         spn.style = 'font-size: 4vmin; color: black; font-weight: bolder'
                         spn.style.opacity = 0 ;
-                        spn.innerHTML = '<br><br>' + 'שלום, ' + '<br>' + 'כל הפרטים נכונים,' + '<br>' + 'ברוכים הבאים למערכת.'
+
+                        spn.innerHTML = '<br><br>' +   G.TXT.hello2 + '<br>' + G.TXT. everyThingIs + '<br>' + G.TXT.welcomeToTheSite
                         function fadingin (n) {
                             spn.style.opacity = n / 100 ;
                             ipadCover.style.backgroundColor = 'lightgreen';
@@ -2684,11 +2716,12 @@ function IpadGrahpic (type0) {
                 return newInput;
             }
             blankIpad ()
-            var firstName = addInput ('firstName', 'text', 'שם פרטי', {'width': '45%'});
-            var familyName = addInput ('familyName', 'text', 'שם משפחה', {'width': '45%'});
-            var userName =  addInput ('userName', 'text', 'שם משתמש', {'width': '85%'});
-            var codephrase =  addInput ('codephrase', 'password', 'קוד אבטחה', {'width': '85%'});
-            var submitButton =  addInput ('submitButton', 'button', 'קוד אבטחה', {'backgroundColor' : 'rgb(238,174,238)', 'border': 'solid black'}); submitButton.value = 'כניסה' ;
+
+            var firstName = addInput ('firstName', 'text',G.TXT.firstName, {'width': '45%'});
+            var familyName = addInput ('familyName', 'text',G.TXT.lastName , {'width': '45%'});
+            var userName =  addInput ('userName', 'text', G.TXT.userName, {'width': '85%'});
+            var codephrase =  addInput ('codephrase', 'password', G.TXT.securityCode, {'width': '85%'});
+            var submitButton =  addInput ('submitButton', 'button',  G.TXT.securityCode, {'backgroundColor' : 'rgb(238,174,238)', 'border': 'solid black'}); submitButton.value = G.TXT.entry  ;
             submitButton.addEventListener('click', submittingForm );
             submitButton.style.cursor = 'pointer'
             G.css.formBackColor = 'rgba(219, 250, 89 ,0.99)'
@@ -2721,7 +2754,11 @@ function IpadGrahpic (type0) {
             ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin','backgroundColor': G.css.formBackColor
             });
-            ipadCover.innerHTML = '<br><font style="color:black;"> &nbsp' + 'כניסת משתמש' +'<br><br>'
+            /*
+            userLogIn: 'כניסת משתמש'
+
+            */
+            ipadCover.innerHTML = '<br><font style="color:black;"> &nbsp' + G.TXT.userLogIn  +'<br><br>'
             ipadCover.style.background = G.css.formBackColor;
             var userForm = document.createElement('form'); stl (userForm, myStyle ('text'), {'fontSize': '1vmin', 'padding-right':'0vmin', 'textAlign': 'center'});
             ipadCover.appendChild(userForm)
@@ -2776,19 +2813,19 @@ function IpadGrahpic (type0) {
             G.divs.textBlock2.style.overflow = "hidden";
 
 
+
             function stage1 (){
-                let txt = "נבנה וירוס  להפלת המחשבים של ה\"ארגון\"." + '<br>'
-                txt += "על ידי שליחת הוירוס הפעילות של הארגון תתפרק לזמן רב." + '<br>'
-                txt += 'כדי לשלוח את הוירוס ולהפיל את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>';
-                txt += 'לחצו על הכפתור המהבהב.' + '<br>';
-                txt += "בתפריט בחרו - שלח וירוס."
+                let txt = G.TXT.aVirusWasBuiltToFight + '<br>'
+                txt += G.TXT.bySendingThevirusTheOrgenazation + '<br>'
+                txt += G.TXT.toSendTheVirusOpen + '<br>';
+                txt += G.TXT.pressTheBlinkingButton + '<br>';
+                txt += G.TXT.onTheMenuChooseVirus;
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
-                //G.divs.textBlock2.innerHTML += 'Aplications Id: <br><br>';
-                //G.divs.textBlock2.innerHTML += 'Aplications Origin: ' +  Id('userName').data + '<br><br>';
+
                 function wasVirusLoaderStarted () {
                     if (Id('precentVirus')) return
                     if (Id('sendVirus')) {
-                        if (Id('sendVirus').innerHTML === 'מעלה וירוס') {stage2 (); return} else {setTimeout(()=>{wasVirusLoaderStarted  () },500)}
+                        if (Id('sendVirus').innerHTML === G.TXT.uploadIngVirus) {stage2 (); return} else {setTimeout(()=>{wasVirusLoaderStarted  () },500)}
                     } else {setTimeout(()=>{wasVirusLoaderStarted  () },500)}
 
                 }
@@ -2801,7 +2838,8 @@ function IpadGrahpic (type0) {
                 playSound('virusUpload', 'loop');
 
 
-                let txt = "מעלה וירוס לשרתים של הארגון." + "<br>" + "התקדמות שליחת הוירוס:"
+
+                let txt =  G.TXT.uploadingVirusToserver + "<br>" + G.TXT.uploadVirusProgress
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + ""
                 G.divs.textBlock2.innerHTML += '<p dir = "rtl"  align="right" id="precentVirus"></p> </p>'
                 let siteDiv = Id('precentVirus');
@@ -2834,11 +2872,14 @@ function IpadGrahpic (type0) {
                  ledEvent (madeUpEvent) }
 
                 G.Q [505] = ["", "","","","","","","",""]
-                G.Q [505][1] =  '<p dir=rtl style="text-align: right"> Virus Upload 100%.'
-                G.Q [505][2] =  "הצלחת להעלות את הוירוס למחשבים של הארגון ולהפיל את הארגון לתקופה הקרובה." + "<br>" + "כל הכבוד ! לחץ לסיום בשביל לראות את התוצאה שלך." + "<br>" + "<br>";
-                G.Q [505][2] += 'האם לסיים ?'
 
-                G.Q [505][3] = "סיום " + " וצפייה בתוצאות"
+
+
+                G.Q [505][1] =  '<p dir=rtl style="text-align: right"> Virus Upload 100%.'
+                G.Q [505][2] =  G.TXT.youMangedToWinOver + "<br>" + + "<br>" + "<br>";
+                G.Q [505][2] += G.TXT.wouldYouLikeToFInish
+
+                G.Q [505][3] =
                 G.Q [505][4] = ""
                 G.Q [505][G.mgmt.solutionCol] = 1;
                 G.mgmt.isChapterCheckout = true;
@@ -2977,7 +3018,9 @@ let rnd = getRandomInt(asciArr.length - 1);
         }
         function asciRending (asc) {
             asc = asc.replace(' ', '&nbsp')
-            asc = '<pre><p style="text-align: center"> <font style="font-size: 3vmin"> בונה וירוס תקיפה </font></p>' + asc;
+
+
+            asc = `<pre><p style="text-align: center"> <font style="font-size: 3vmin">${G.TXT.builingAttackVirus}</font></p>` + asc;
             return asc
         }
         function asciPasrseToSpan (txt0){
@@ -3078,11 +3121,11 @@ let rnd = getRandomInt(asciArr.length - 1);
 
             function stage1 (){
 
-                let txt = "נמצאו " + G.mgmt.numOfsuccess + " "
-                txt += "אפליקציות חשודות." + '<br>'
-                txt += 'כדי לסרוק אותן ולגלות את האתר של \"הארגון\" פתחו את ההולוגרמה.' + '<br>'
-                txt += 'לחצו על הכפתור המהבהב.' + "<br>" + "<br>"
-                txt +=  'בתפריט בחרו תוכנת סריקה.'
+                let txt = G.TXT.therWereFound  + G.mgmt.numOfsuccess + " "
+                txt += G.TXT.suspiciusApps + '<br>'
+                txt += G.TXT.toScanThemAndFidSite + '<br>'
+                txt += G.TXT.pressFlickeringButton + "<br>" + "<br>"
+                txt += G.TXT.onMenuChooseScan
                 G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
 
                 setTimeout(()=>{playSound ('Consoletyping', 'pause')},1500);
