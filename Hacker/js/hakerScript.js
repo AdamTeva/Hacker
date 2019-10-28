@@ -36,6 +36,8 @@ G = G || {}
 
 
      G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
+     G.TXT = {};
+     langSet ()
      G.mgmt.stagesInfo = {
          'getIp' : G.TXT.findAndgetIp,
          'firewall': G.TXT.findWeaknessFirewall,
@@ -79,7 +81,7 @@ G = G || {}
      G.hacks.lastqNumber = 1;
      G.hacks.ipLocations = [];
      G.dev_mode = G.dev_mode || false; // fast wrting // also cancel space option
-     G.TXT = {};
+
 
 
  }
@@ -319,7 +321,7 @@ G = G || {}
               back : 'חזרה',
               afterSecondAttempt: 'אחרי נסיון שני',
               fullHelpText1: `ענו על השאלות כדי להתקדם במשחק.כדי לענות על השאלות יש ללחוץ על התשובה הנכונה.
-      לכל שאלה יש רק תשובה אחת נכונה. אם לא עניתם על התשובה הנכונה, תוכלו לנסות שוב`.,
+      לכל שאלה יש רק תשובה אחת נכונה. אם לא עניתם על התשובה הנכונה, תוכלו לנסות שוב`,
               fullHelpText2: 'על ידי פתיחת תפריט ההולוגרמה תוכלו:',
               fullHelpText3: 'לשמור את המשחק על המחשב הזה,  לראות את ההתקדמות שלכם במשחק ולהפעיל ולהשתיק את הקול.',
              turnsoundOff: 'השתק צלילים',
@@ -333,7 +335,7 @@ G = G || {}
              outOf: ' מתוך ',
              questionsWichAre : ' שאלות, שהן ',
              ofAllQuestion : 'מכלל השאלות.',
-             typeOfAnswer: 'סוג המענה'
+             typeOfAnswer: 'סוג המענה',
              inNumbers: `במספרים`,
              inPrecent: `באחוזים`,
              withoutErrors: `ללא טעויות`,
@@ -351,6 +353,25 @@ G = G || {}
             youFinishedTheGame: 'סיימתם את המשחק. תוכלו לשחק שוב כדי לנסות ולשפר את התוצאות שלכם.',
             ifYouSavedItWillBeDeleted: 'אם שמרתם את המשחק, התחלת משחק חדש תמחק ותאפס את ההתקדמות שלכם.',
             youHaveWonWellDone: `ניצחתם את "הארגון" הרשע ! כל הכבוד !`,
+
+            sendVirus: 'שלח וירוס',
+            wouldYouLikeToReset:  'האם אתם מעוניינים למחוק את כל ההתקדמות ולהתחיל משחק חדש ?',
+            seachingNetWorkAddress:"מחפש כתובת רשת :",
+            IPfoundShouldContinue :  "כתובת רשת נמצאה. להמשיך ?",
+            continue: "המשך ",
+            anotherCheck: "בדיקה נוספת",
+            identifyingIPAdrress:  " זיהוי כתובת רשת ",
+            fireWallComponnentsFound: "נמצאו מספר רכיבים בחומת האש.",
+            mustBypassAllDefences:  "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית.",
+            fireWallBeingScanned:  "חומת האש נסרקת, מחפש חולשות ופרצות אבטחה:",
+            breachFoundInmemory : "נמצאה פרצה ברכיב הזיכרון:",
+            AllDefencesDown :  "כל ההגנות נעקפו ונמצאה חולשה מרכזית. להמשיך ?",
+            hidingActivity: "ביצוע הסוואה של הפעילות",
+            identifingFireWall: 'זיהוי חומת אש',
+            serachIngComponenet: "מחפש רכיבים",
+            identifingComponenet :  'מזהה רכיבים:',
+            componentsFound: 'הרכיבים שזוהו:'
+
 
 
 
@@ -749,8 +770,9 @@ ${G.TXT.fullHelpText2}<br><br>
          if (G.mgmt.numOfsuccess  >=G.mgmt.max_Tofind.webSite && (G.mgmt.current === 'webSite')) {
              optionArray.push(['scanApps',G.TXT.sacnApp])
          }
+
          if (G.mgmt.numOfsuccess  >=G.mgmt.max_Tofind.virus && (G.mgmt.current === 'virus')) {
-             optionArray.push(['sendVirus','שלח וירוס'])
+             optionArray.push(['sendVirus',G.TXT.sendVirus])
          }
 
          createMenu (optionArray)
@@ -1231,7 +1253,7 @@ function progressText (){
     p0 = preCent(q0,qAnswered); p1 =  preCent(q1,qAnswered); p23=  preCent(q23,qAnswered)
 
     let txt0 = G.TXT. gameProgressData ;
-    let txt1 = `<br><br>` + namePlayer + G.TXT.youHaveAnswered +  qAnswered + G.TXT.outOf + qTotal +  G.TXT.questionsWichAre + qprecent + '&nbsp'+ ofAllQuestion;
+    let txt1 = `<br><br>` + namePlayer + G.TXT.youHaveAnswered +  qAnswered + G.TXT.outOf + qTotal +  G.TXT.questionsWichAre + qprecent + '&nbsp'+ G.TXT.ofAllQuestion;
     let table = `<table style="width:100% ; border: solid 0.2vmin;  border-collapse: collapse; ; text-align: center ;margin-top:3vmin"> <tr style="border:solid 0.2vmin">   <th  style="border:solid 0.2vmin"> ${G.TXT.typeOfAnswer}</th>   <th  style="border: solid 0.2vmin"> ${G.TXT.inNumbers}  </th>   <th  style="border: solid 0.2vmin">  ${G.TXT.inPrecent}      </th> </tr> <tr  style="border: solid 0.2vmin">  <td>${G.TXT.withoutErrors} </td>   <td>${q0}</td> <td>${p0}</td> </tr> <tr>   <td> ${G.TXT.onSecondTry}     </td>   <td>${q1}</td> <td>${p1}</td> </tr> <tr style="border: solid 0.2vmin">   <td>${ G.TXT.afterSecondTry}</td>   <td>${q23}</td> <td>${p23}</td> </tr></table>`
 
     let txt = txt0 + txt1 + table;
@@ -1294,7 +1316,9 @@ function storeInLocal (command){
         break;
 
         case 'confirmReset':
-        let tx = 'האם אתם מעוניינים למחוק את כל ההתקדמות ולהתחיל משחק חדש ?'
+
+
+        let tx = G.TXT.wouldYouLikeToReset
         if (confirm(tx)) { storeInLocal ('reset'); location.reload()};
         break;
     }
@@ -1953,7 +1977,8 @@ function IpadGrahpic (type0) {
             }
             //var x = 200;
             function runIps (x){
-                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + "מחפש כתובת רשת :" + "</p>"
+
+                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + G.TXT.seachingNetWorkAddress + "</p>"
                 G.divs.textBlock2.innerHTML += 'Tracing route to 267.1.0.1 over Ip hops:' + (x + 212) + ' <br><br>';
                 for (let i = 0 ; i < 19; i++){
                     if (i + x > 99) { continue}
@@ -1987,11 +2012,11 @@ function IpadGrahpic (type0) {
 
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = G.divs.textBlock2.innerHTML;
-                    G.Q [500][2] = "כתובת רשת נמצאה. להמשיך ?";
+                    G.Q [500][2] = G.TXT.IPfoundShouldContinue;
                     let theNextStage = G.mgmt.stageNames[G.saves.stageNumber + 1 ]
-                    G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
+                    G.Q [500][3] = G.TXT.continue + G.mgmt.stagesInfo[theNextStage]
 
-                    G.Q [500][4] = "בדיקה נוספת";
+                    G.Q [500][4] = G.TXT.anotherCheck;
                     G.Q [500][G.mgmt.solutionCol] = 1;
                     G.mgmt.isChapterCheckout = true;
 
@@ -2051,7 +2076,10 @@ function IpadGrahpic (type0) {
               ctx.drawImage(img, G.hacks.ipMapLocation [0],  G.hacks.ipMapLocation [1]);
               ctx.font = "7vmin Miriam";
               ctx.fillStyle = "white";
-              let text =   " זיהוי כתובת רשת "
+
+
+
+              let text =  G.TXT.identifyingIPAdrress
               ctx.save();
               ctx.shadowOffsetY = 4;
               ctx.shadowOffsetX = 4;
@@ -2123,10 +2151,11 @@ function IpadGrahpic (type0) {
     function fireWall (){
         function consoleHackedFirewall(isWaitingCrack = false) {
             if (isWaitingCrack){
-                let tx3 = '<p dir = "rtl" align="right">' + "נמצאו מספר רכיבים בחומת האש." + "</p>";
+
+                let tx3 = '<p dir = "rtl" align="right">' + G.TXT.fireWallComponnentsFound + "</p>";
                 G.Q [500] = ["", "","","","","","","",""]
                 G.Q [500][1] = tx3 + '<br><p dir=rtl style="text-align: right">'
-                G.Q [500][2] = "יש לעקוף את כל ההגנות כדי למצוא חולשה מרכזית."
+                G.Q [500][2] = G.TXT.mustBypassAllDefences
                 G.Q [500][3] = "<br>"
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 //G.divs.textBlock2.remove()
@@ -2152,7 +2181,9 @@ function IpadGrahpic (type0) {
             }
             //var x = 200;
             function runDefences (x){
-                let tx1 = '<p dir = "rtl" align="right">' + "חומת האש נסרקת, מחפש חולשות ופרצות אבטחה:" + "</p>";
+
+
+                let tx1 = '<p dir = "rtl" align="right">' +  G.TXT.fireWallBeingScanned + "</p>";
                 let tx2 = 'Stack buffer Address: x000fff' + (x + 212) + ' <br><br>';
                  G.divs.textBlock2.innerHTML = tx1 + tx2
                 for (let i = 0 ; i < 19; i++){
@@ -2182,13 +2213,14 @@ function IpadGrahpic (type0) {
                 }
                 x++
                 if (x < 100) { setTimeout(()=>{runDefences (x)},30)} else {
-                    let tx3 = '<p dir = "rtl" align="right">' + "נמצאה פרצה ברכיב הזיכרון:" + "</p>";
+
+                    let tx3 = '<p dir = "rtl" align="right">' + G.TXT.breachFoundInmemory  + "</p>";
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = tx3 + tx2 + ipTxtArray[6] + '<br><p dir=rtl style="text-align: right">'
-                    G.Q [500][2] = "כל ההגנות נעקפו ונמצאה חולשה מרכזית. להמשיך ?"
+                    G.Q [500][2] = G.TXT.AllDefencesDown
                     let theNextStage = G.mgmt.stageNames[G.saves.stageNumber + 1 ]
-                    G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
-                    G.Q [500][4] = "ביצוע הסוואה של הפעילות"
+                    G.Q [500][3] = G.TXT.continue + G.mgmt.stagesInfo[theNextStage]
+                    G.Q [500][4] = G.TXT.hidingActivity
                     G.Q [500][G.mgmt.solutionCol] = 1;
                     G.mgmt.isChapterCheckout = true;
                     G.divs.textBlock2.remove()
@@ -2259,14 +2291,15 @@ function IpadGrahpic (type0) {
             let col2 = 'rgba(10,10,10,0.3)'
             var textStl = `color: black; font-size: 4.5vmin; font-weight: bolder; text-shadow:0.05vmin 0.05vmin ${col2}, 0.10vmin 0.10vmin ${col2},0.20vmin 0.20vmin ${col2}, 2vmin 0vmin 2.5vmin ${col}, 0vmin 2vmin 2.5vmin ${col},-2vmin -2vmin 2.5vmin ${col}, 0vmin -2vmin 2.5vmin ${col}, -1vmin 0vmin 2.5vmin ${col}, 1vmin 1vmin 4.5vmin ${col},0vmin -1vmin 3.5vmin ${col}, -1vmin 0vmin 3.5vmin ${col}, 0vmin 0vmin 3.5vmin ${col}`
 
+
             var ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
                 'fontFamily': 'ariel', 'textAlign': 'center', 'lineHeight' : '3vmin'
             });
-            ipadCover.innerHTML = `<br><br><font style="${textStl}">&nbsp` + 'זיהוי חומת אש'
-            if (G.mgmt.numOfsuccess == 0){ipadCover.innerHTML += `<br><br><font style="${textStl}">` + "מחפש רכיבים" + "</font>"; setBG (ipadFireWallBGColor) ;
+            ipadCover.innerHTML = `<br><br><font style="${textStl}">&nbsp` + G.TXT. identifingFireWall
+            if (G.mgmt.numOfsuccess == 0){ipadCover.innerHTML += `<br><br><font style="${textStl}">` + G.TXT.serachIngComponenet + "</font>"; setBG (ipadFireWallBGColor) ;
             } else {
                 ipadCover.style.opacity = '1';
-                ipadCover.innerHTML += `<br><br><font style="${textStl}">` + 'מזהה רכיבים:' + '<br> '
+                ipadCover.innerHTML += `<br><br><font style="${textStl}">` +  G.TXT.identifingComponenet  + '<br> '
                 ipadCover.innerHTML += '<div style="line-height:10px">';
 
             }
@@ -2373,8 +2406,8 @@ function IpadGrahpic (type0) {
 
                     if (ipadCover.style.opacity < 0.2 || ipadCover.style.opacity > 0.8) {
                         StylelFader(ipadCover,30,true)
-                        var textToReplace = 'מזהה רכיבים:'
-                        var altText = 'הרכיבים שזוהו:'
+                        var textToReplace = G.TXT.identifingComponenet;
+                        var altText = G.TXT.componentsFound;
                         var origin = ipadCover.innerHTML;
                         ipadCover.innerHTML = ipadCover.innerHTML.replace(textToReplace,altText)
                     } else {setTimeout(()=>{fadIntext ()},500)}
@@ -2402,7 +2435,8 @@ function IpadGrahpic (type0) {
                             fadIntext();
                             if (G.mgmt.numOfsuccess >=G.mgmt.max_Tofind.firewall ){
                                 consoleHackedFirewall(true)
-                                let txt = 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.'
+
+                                let txt = G.TXT.allDefencesAreDownPressTo
                             ipadCover.innerHTML += '<br><br><div id = "defMessage"'  + ' style = "font-size:4.3vmin; background-color:rgb(0,191,255); font-weight: bold; color:black;width:90% ;margin: 0 auto; margin-top:3%; padding:2% ;border: 0.3vmin solid black;border-radius: 1vmin ; overflow: hidden">' +  txt + '</div>';}
                             let  breakForeach = false
                             ipadCover.childNodes.forEach(a=>{
@@ -2445,7 +2479,8 @@ function IpadGrahpic (type0) {
 
             function stage1 (){
 
-                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + "ניתן כעת לקיים חדירה מוצלחת למערכת, באמצעות המשתמש :" + "</p>"
+
+                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + G.TXT.youcanIfeltrateThesystem + "</p>"
                 G.divs.textBlock2.innerHTML += 'user_Name: ' + familyName.data +', '+ firstName.data + ' <br><br>';
                 G.divs.textBlock2.innerHTML += 'user_Id: ' +  Id('userName').data + '<br><br>';
                 G.divs.textBlock2.innerHTML += 'user_codephrase: ' +  Id('codephrase').data + '<br><br>';
@@ -2453,13 +2488,14 @@ function IpadGrahpic (type0) {
             }
             function stage2 (){
                 G.Q [500] = ["", "","","","","","","",""]
-                G.Q [500][1] =  '<br><p dir=rtl style="text-align: right">--- כניסה אושרה ----'
-                G.Q [500][2] = "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש ." + "<br>"
-                G.Q [500][2] += 'האם להמשיך ?'
+
+                G.Q [500][1] =  `<br><p dir=rtl style="text-align: right">---${G.TXT.signInAproved} ----`
+                G.Q [500][2] = G.TXT.ableToMackeChangesAndScan + "<br>"
+                G.Q [500][2] += G.TXT.shoudYouContinue
                 let theNextStage = G.mgmt.stageNames[G.saves.stageNumber + 1 ]
-                G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
-                G.Q [500][4] = "ביצוע הסוואה של הפעילות"
-                G.Q [500][G.mgmt.solutionCol] = 1;
+                G.Q [500][3] = G.TXT.continue + G.mgmt.stagesInfo[theNextStage]
+                G.Q [500][4] = G.TXT.makingAhiddingOftheActivity
+                G.Q [500][G.mgmt.solutiool] = 1;
                 G.mgmt.isChapterCheckout = true;
                 G.divs.textBlock2.remove();
                 G.hacks.lastqNumber++;
@@ -2555,7 +2591,8 @@ function IpadGrahpic (type0) {
             Id('userName').data = Id('firstName').data + "_" + makeid(7)
             Id('codephrase').data  = makeid(20, true);
             Id('codephrase').data1  = makeid(130, true);
-            Id('submitButton').data = "✓ " + 'לחץ לכניסה'
+
+            Id('submitButton').data = "✓ " + G.TXT.pressToenter
             Id('passportIMG').data =  'data/passports/passport ('+getRandomInt(19)+').jpg';
             // seting the number of questions per stageNames
 
@@ -2587,6 +2624,19 @@ function IpadGrahpic (type0) {
             function submittingForm (){
                 function DenyEntry () {
                     var deny = Elm ('deny');
+                    /*
+                     allDefencesAreDownPressTo : 'כל ההגנות נמצאו. לחצו על ההגנות כדי לעקוף אותן.',
+                     youcanIfeltrateThesystem: "ניתן כעת לקיים חדירה מוצלחת למערכת, באמצעות המשתמש :",
+                     signInAproved: ` כניסה אושרה`,
+                     ableToMackeChangesAndScan :  "ניתן לקיים שינויים ולסרוק את המערכת בתור משתמש .",
+                     shoudYouContinue :  'האם להמשיך ?',
+                     makingAhiddingOftheActivity : "ביצוע הסוואה של הפעילות",
+                     pressToenter: 'לחץ לכניסה'
+
+
+
+
+                     */
                     let ipadCover = Id ('ipadCover') ; ipadCover.appendChild (deny)
                     stl (deny , myStyle ('text'), {'position': 'absolute', 'top' : '25%', 'right': '5%' , 'textAlign': 'center', 'backgroundColor': 'red', 'color' : 'black', 'padding' : '0.5vmin', 'fontWeight': 'bolder', 'border' : 'solid black 0.3vmin'});
                     deny.innerHTML = 'אחד או יותר מהנתונים שגוי.' ;
@@ -3091,7 +3141,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                 G.Q [500][2] = "כל הישומים נסרקו." + "<br>" + "על ידי הסריקה נמצא האתר של הארגון:" + "<br><br>" + address + "<br><br>" ;
                 G.Q [500][2] += 'האם להמשיך ?'
                 let theNextStage = G.mgmt.stageNames[G.saves.stageNumber + 1 ]
-                G.Q [500][3] = "המשך " + G.mgmt.stagesInfo[theNextStage]
+                G.Q [500][3] = G.TXT.continue + G.mgmt.stagesInfo[theNextStage]
                 G.Q [500][4] = "דיווח לרשויות על האתר"
                 G.Q [500][G.mgmt.solutionCol] = 1;
                 G.mgmt.isChapterCheckout = true;
