@@ -2632,6 +2632,8 @@ function IpadGrahpic (type0) {
                      shoudYouContinue :  'האם להמשיך ?',
                      makingAhiddingOftheActivity : "ביצוע הסוואה של הפעילות",
                      pressToenter: 'לחץ לכניסה'
+                     oneOrMoreInputsAreWrong:  'אחד או יותר מהנתונים שגוי.' ,
+
 
 
 
@@ -2639,7 +2641,7 @@ function IpadGrahpic (type0) {
                      */
                     let ipadCover = Id ('ipadCover') ; ipadCover.appendChild (deny)
                     stl (deny , myStyle ('text'), {'position': 'absolute', 'top' : '25%', 'right': '5%' , 'textAlign': 'center', 'backgroundColor': 'red', 'color' : 'black', 'padding' : '0.5vmin', 'fontWeight': 'bolder', 'border' : 'solid black 0.3vmin'});
-                    deny.innerHTML = 'אחד או יותר מהנתונים שגוי.' ;
+                    deny.innerHTML = G.TXT.oneOrMoreInputsAreWrong;
                     deny.innerHTML += '<br>' + 'הכניסה אסורה. '
                     setTimeout (()=>{StylelFader (deny, 40,false,true)}, 2500 )
                 }
