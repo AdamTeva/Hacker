@@ -30,6 +30,7 @@ G = G || {}
      G.saves.progressArray = [];
      G.saves.stageNumber = 1; //the stage number to begin /* safd */
      G.saves.lastSavedQuestion = 1;
+     G.saves.nameOfplayer = G.clickFullNameOfUser || ''
 
 
      /* STAGE */
@@ -68,8 +69,6 @@ G = G || {}
 
      G.mgmt.nextStage = function () {G.saves.stageNumber++ ; G.saves.stage = G.mgmt.stageNames [G.saves.stageNumber]; G.mgmt.current = G.saves.stage ; G.mgmt.numOfsuccess = 0 ;G.mgmt.isChapterCheckout = false;
      G.saves.lastSavedQuestion = G.mgmt.qNumber;
-     if(storeInLocal ('check')) {storeInLocal ('save'); }
-      }
      G.divs = {};
      G.hacks = {};
 
@@ -1319,7 +1318,6 @@ function storeInLocal (command){
 
             case 'load':
             var retrievedObject = localStorage.getItem(G.saveInLocalStorageKey);
-            console.log(retrievedObject)
             if (retrievedObject) {G.saves = JSON.parse(retrievedObject); }
 
             break;
@@ -1327,7 +1325,7 @@ function storeInLocal (command){
             case 'reset':
             if (G.isClickGameSaveInLocalStore) {alert (G.TXT.cantResteGameDoWithClicl); break}
             localStorage.removeItem(G.saveInLocalStorageKey);
-
+``
             break;
 
             case 'confirmReset':
