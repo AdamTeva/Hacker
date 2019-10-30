@@ -420,7 +420,8 @@ G = G || {}
              searchingForBadApps:  "מחפש אפליקציות חשודות ",
              theCannerFound : `נמצאו `,
              suspiciusApps2:  `אפליקציות חשודות`,
-             cantResteGameDoWithClicl : "מחובר דרך האתר. יש לאפס משחק דרך ממשק האתר."
+             cantResteGameDoWithClicl : "מחובר דרך האתר. יש לאפס משחק דרך ממשק האתר.",
+             cantSaveGameDoWithClicl : "מחובר דרך האתר. כדי לשמור בשם אחר, יש להתנתק דרך האתר."
 
 
 
@@ -642,8 +643,17 @@ function holoMenu (r) {
            if (!storeInLocal ('check')){ Formtext.innerHTML = G.TXT.saveWasNotFoundRefreshThewindow ;
            return;
        }
+       if (G.isTheGameConnectedToClick) {
+           Formtext.innerHTML = '<span style="color:red;">' +  G.TXT.cantResteGameDoWithClicl + "</span>";
+           return;
+       }
+
            storeInLocal('confirmReset');
            return
+       }
+       if (G.isTheGameConnectedToClick) {
+           Formtext.innerHTML = '<span style="color:red;">' +  G.TXT.cantSaveGameDoWithClicl + "</span>";
+           return;
        }
        let input = Id('input').value
        if (input.length < 2){Formtext.innerHTML = G.TXT.nameMustHave2chars + '<br>'; return}
@@ -1304,7 +1314,7 @@ function storeInLocal (command){
 
         switch (command){
             case 'save':
-            console.log ('saving')
+
             localStorage.setItem(G.saveInLocalStorageKey, JSON.stringify(G.saves));
             createEvent  ('save',G.saveInLocalStorageKey , JSON.stringify(G.saves));
             break;
@@ -1805,7 +1815,8 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         let subject2 = G.mgmt.nameOfGame;
             let nameOfplayer0 = ''; if (G.saves.nameOfplayer) {nameOfplayer0 = G.saves.nameOfplayer + ', '};
         let iAmNotPlayer = ''; if (G.saves.nameOfplayer) {iAmNotPlayer = G.TXT.IAmNot + G.saves.nameOfplayer + G.TXT.beginNewGame}
-        let startOrContinue =  G.TXT.firstStageBegin ; if  (G.saves.nameOfplayer) {startOrContinue = G.TXT.continueinTheProcces}
+        let startOrContinue =  G.TXT.firstStageBegin ;
+        if  (G.saves.nameOfplayer && (G.saves.lastSavedQuestion > 1))  {startOrContinue = G.TXT.continueinTheProcces}
         let asci0 = `  _   _            _
  | | | | __ _  ___| | _____ _ __         ${subject1}
  | |_| |/ _' |/ __| |/ / _ \\ v__|
@@ -1906,7 +1917,6 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
             fadeOutPromise1(fullBlackScreen , 50).then(()=>{fullBlackScreen.remove()
                 G.mgmt.qNumber = G.hacks.lastqNumber;
 
-                //console.log (G.mgmt.qNumber,G.saves.stage )
                 setQuestion (G.mgmt.qNumber)
                  IpadGrahpic (G.saves.stage)
 
@@ -3380,12 +3390,8 @@ let rnd = getRandomInt(asciArr.length - 1);
 //test ('cutQuestions', 10)
 
 langSet ()
-console.log (G.saves.lastSavedQuestion)
 storeInLocal ('load')
-console.log (G.saves.lastSavedQuestion)
 buildBoard ();
 playSound ('BuildSounds')
 holoMenu();
-console.log (G.saves.lastSavedQuestion)
 blackScreen ();
-console.log (G.saves.lastSavedQuestion)
