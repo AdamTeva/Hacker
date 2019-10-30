@@ -419,7 +419,9 @@ G = G || {}
              reportToTheAuthoroties : "דיווח לרשויות על האתר",
              searchingForBadApps:  "מחפש אפליקציות חשודות ",
              theCannerFound : `נמצאו `,
-             suspiciusApps2:  `אפליקציות חשודות`
+             suspiciusApps2:  `אפליקציות חשודות`,
+             cantResteGameDoWithClicl : "מחובר דרך האתר. יש לאפס משחק דרך ממשק האתר."
+
 
 
          };
@@ -1319,13 +1321,13 @@ function storeInLocal (command){
             break;
 
             case 'reset':
-            if (G.isClickGameSaveInLocalStore) {alert (G.TXT.cantResteGameDoWithClicl); break}
+            if (G.isTheGameConnectedToClick) {alert (G.TXT.cantResteGameDoWithClicl); break}
             localStorage.removeItem(G.saveInLocalStorageKey);
 ``
             break;
 
             case 'confirmReset':
-            if (G.isClickGameSaveInLocalStore) {alert (G.TXT.cantResteGameDoWithClicl); break}
+            if (G.isTheGameConnectedToClick) {alert (G.TXT.cantResteGameDoWithClicl); break}
             let tx = G.TXT.wouldYouLikeToReset
             if (confirm(tx)) { storeInLocal ('reset'); location.reload()};
             break;
