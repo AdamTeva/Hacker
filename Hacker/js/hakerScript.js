@@ -31,12 +31,9 @@ G = G || {}
      G.saves.stageNumber = 1; //the stage number to begin /* safd */
      G.saves.lastSavedQuestion = 1;
      G.saves.nameOfplayer = G.clickFullNameOfUser || '';
-
-
      /* STAGE */
-
-
      G.mgmt.stageNames = ["",'webSite','getIp','firewall','user','virus'];
+     G.saves.stage = G.mgmt.stageNames [G.saves.stageNumber]
      G.TXT = {};
      langSet ()
      G.mgmt.stagesInfo = {
@@ -603,6 +600,7 @@ function holoMenu (r) {
     //G.divs.holoMenuoptions = G.divs.holoMenuoptions || [];
     function scanApps () {
 
+
         if (Id('scanApps').innerHTML === G.TXT.scannigApps) {return}
         if (G.saves.stage !== 'webSite') {Id('scanApps').innerHTML = ''}
         let scanAppDiv = Id('scanApps');
@@ -964,14 +962,6 @@ function buildBoard (){
 
         }
 
-        G.saves.stage = G.mgmt.stageNames [1];
-
-
-        //G.mgmt.max_Tofind['user']
-
-
-
-
     }
     function keyPressFunc (e) {
 
@@ -1324,6 +1314,7 @@ function storeInLocal (command){
             case 'load':
             var retrievedObject = localStorage.getItem(G.saveInLocalStorageKey);
             if (retrievedObject) {G.saves = JSON.parse(retrievedObject); }
+            G.mgmt.qNumber = G.saves.lastSavedQuestion;
 
             break;
 
@@ -1913,7 +1904,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
             fadeOutPromise1(fullBlackScreen , 50).then(()=>{fullBlackScreen.remove()
                 G.mgmt.qNumber = G.hacks.lastqNumber;
 
-                console.log (G.mgmt.qNumber,G.saves.stage )
+                //console.log (G.mgmt.qNumber,G.saves.stage )
                 setQuestion (G.mgmt.qNumber)
                  IpadGrahpic (G.saves.stage)
 
@@ -3385,11 +3376,14 @@ let rnd = getRandomInt(asciArr.length - 1);
 //G.mgmt.totalNumOfQuestions = 13//kill should be 20
 
 //test ('cutQuestions', 10)
+
 langSet ()
+console.log (G.saves.lastSavedQuestion)
 storeInLocal ('load')
+console.log (G.saves.lastSavedQuestion)
 buildBoard ();
 playSound ('BuildSounds')
-//G.saves.stage = 'user'
-//IpadGrahpic ( G.saves.stage); setQuestion(G.mgmt.qNumber)
 holoMenu();
-blackScreen ()
+console.log (G.saves.lastSavedQuestion)
+blackScreen ();
+console.log (G.saves.lastSavedQuestion)
