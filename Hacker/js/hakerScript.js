@@ -296,7 +296,8 @@ G = G || {}
         }
     }
     function langSet (){
-         G.textDir = 'rtl'
+         G.textDir = "rtl"
+         G.textAlign = "right"
          G.TXT = {
 
              scannigApps: 'סורק ישומים',
@@ -343,9 +344,10 @@ G = G || {}
              onSecondTry: ` בנסיון שני `,
              afterSecondTry: ` אחרי נסיון שני `,
              allFilesWereLoadedContinue: `כל הקבצים נטענו. האם להמשיך? `,
-             youMustPlantVirusEveryAnswer: `עליך לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
-             כל תשובה נכונה תקדם שלב בתהליך הפריצה.
-            `,
+             youMustPlantVirusEveryAnswer:
+`עליך לפרוץ ולשתול וירוס במחשבים של "הארגון" הרשע.
+     כל תשובה נכונה תקדם שלב בתהליך הפריצה.
+    `,
             summary: ' סיכום',
             following: `להלן `,
             replay: `משחק חוזר`,
@@ -428,10 +430,11 @@ G = G || {}
 
          };
          if (!G.EN) return
-         G.textDir = 'ltr'
+         G.textDir = "ltr"
+         G.textAlign = "left"
          G.TXT = {
 
-             scannigApps:  " Scanning apps  ",
+             scannigApps:  "app scanning",
              upLoadingVirus:  " Uploading the virus  ",
 
              saveWasNotFoundRefreshThewindow :  " Saved data was not found. You can start a new game by refreshing the tab.  ",
@@ -465,7 +468,7 @@ G = G || {}
              help:  " Help  ",
              options:  " Options  ",
              progress:  " Progress  ",
-             sacnApp:  " Scanning application  ",
+             sacnApp:  "Scanning application",
              gameProgressData:  " Your game progress:  ",
              youHaveAnswered:  " You've answered  ",
              outOf:  " out of  ",
@@ -549,7 +552,7 @@ youMustPlantVirusEveryAnswer: `You are going to hack the computers of the evil
              onMenuChooseScan :   " On the menu choose the App scanner.  ",
 
              userLogIn:  " user login  ",
-             scanningAppa:  " scanning application  ",
+             scanningAppa:  "app scanning",
              scanningAppsInsearchFor:   " searching applications for criminal activity  ",
              siteInDarkWeb :  " sites on the Darkweb  ",
              allAppsWereScaned:  " all applications were scanned  ",
@@ -1578,7 +1581,7 @@ function setQuestion (num) {
             if (matchArryHebrew !== null && matchArryHebrew.length >  matchArryEnglsh.length ){ return true} else {return false}
 
         }
-        if (isHebrew(text)) {element.style.direction = G.textDir; element.style.textAlign = "right"} else {
+        if (isHebrew(text)) {element.style.direction = 'rtl'; element.style.textAlign = 'right'} else {
             {element.style.direction = "ltr"; element.style.textAlign = "left"}
         }
 
@@ -2175,7 +2178,7 @@ function IpadGrahpic (type0) {
             //var x = 200;
             function runIps (x){
 
-                G.divs.textBlock2.innerHTML = `<p dir =${G.textDir} align="right"> `+ G.TXT.seachingNetWorkAddress + "</p>"
+                G.divs.textBlock2.innerHTML = `<p dir =${G.textDir} align=${G.textAlign}> `+ G.TXT.seachingNetWorkAddress + "</p>"
                 G.divs.textBlock2.innerHTML += 'Tracing route to 267.1.0.1 over Ip hops:' + (x + 212) + ' <br><br>';
                 for (let i = 0 ; i < 19; i++){
                     if (i + x > 99) { continue}
@@ -2350,7 +2353,7 @@ function IpadGrahpic (type0) {
             if (isWaitingCrack){
 
 
-                let tx3 = `<p dir = ${G.textDir} align="right">` + G.TXT.fireWallComponnentsFound + "</p>";
+                let tx3 = `<p dir = ${G.textDir} align=${G.textAlign}>` + G.TXT.fireWallComponnentsFound + "</p>";
                 G.Q [500] = ["", "","","","","","","",""]
                 G.Q [500][1] = tx3 + '<br><p dir=rtl style="text-align: right">'
                 G.Q [500][2] = G.TXT.mustBypassAllDefences
@@ -2381,7 +2384,7 @@ function IpadGrahpic (type0) {
             function runDefences (x){
 
 
-                let tx1 = `<p dir = "rtl" align="right">` +  G.TXT.fireWallBeingScanned + "</p>";
+                let tx1 = `<p dir = ${G.textDir} align=${G.textAlign}>` +  G.TXT.fireWallBeingScanned + "</p>";
                 let tx2 = 'Stack buffer Address: x000fff' + (x + 212) + ' <br><br>';
                  G.divs.textBlock2.innerHTML = tx1 + tx2
                 for (let i = 0 ; i < 19; i++){
@@ -2412,7 +2415,7 @@ function IpadGrahpic (type0) {
                 x++
                 if (x < 100) { setTimeout(()=>{runDefences (x)},30)} else {
 
-                    let tx3 = '<p dir = ${G.textDir} align="right">' + G.TXT.breachFoundInmemory  + "</p>";
+                    let tx3 = `<p dir = ${G.textDir} align=${G.textAlign}>` + G.TXT.breachFoundInmemory  + "</p>";
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = tx3 + tx2 + ipTxtArray[6] + '<br><p dir=rtl style="text-align: right">'
                     G.Q [500][2] = G.TXT.AllDefencesDown
@@ -2487,7 +2490,8 @@ function IpadGrahpic (type0) {
             blankIpad ()
             let col = 'yellow'
             let col2 = 'rgba(10,10,10,0.3)'
-            var textStl = `color: black; font-size: 4.5vmin; font-weight: bolder; text-shadow:0.05vmin 0.05vmin ${col2}, 0.10vmin 0.10vmin ${col2},0.20vmin 0.20vmin ${col2}, 2vmin 0vmin 2.5vmin ${col}, 0vmin 2vmin 2.5vmin ${col},-2vmin -2vmin 2.5vmin ${col}, 0vmin -2vmin 2.5vmin ${col}, -1vmin 0vmin 2.5vmin ${col}, 1vmin 1vmin 4.5vmin ${col},0vmin -1vmin 3.5vmin ${col}, -1vmin 0vmin 3.5vmin ${col}, 0vmin 0vmin 3.5vmin ${col}`
+            let fontS = '4.5vmin'; if (G.EN){fontS = '2.5vmin' }
+            var textStl = `color: black; font-size: ${fontS}; font-weight: bolder; text-shadow:0.05vmin 0.05vmin ${col2}, 0.10vmin 0.10vmin ${col2},0.20vmin 0.20vmin ${col2}, 2vmin 0vmin 2.5vmin ${col}, 0vmin 2vmin 2.5vmin ${col},-2vmin -2vmin 2.5vmin ${col}, 0vmin -2vmin 2.5vmin ${col}, -1vmin 0vmin 2.5vmin ${col}, 1vmin 1vmin 4.5vmin ${col},0vmin -1vmin 3.5vmin ${col}, -1vmin 0vmin 3.5vmin ${col}, 0vmin 0vmin 3.5vmin ${col}`
 
 
             var ipadCover = Id ('ipadCover'); stl (ipadCover,myStyle ('text'),{
@@ -2678,7 +2682,7 @@ function IpadGrahpic (type0) {
             function stage1 (){
 
 
-                G.divs.textBlock2.innerHTML = `<p dir = ${G.textDir} align="right">`+ G.TXT.youcanIfeltrateThesystem + "</p>"
+                G.divs.textBlock2.innerHTML = `<p dir = ${G.textDir} align=${G.textAlign}>`+ G.TXT.youcanIfeltrateThesystem + "</p>"
                 G.divs.textBlock2.innerHTML += 'user_Name: ' + familyName.data +', '+ firstName.data + ' <br><br>';
                 G.divs.textBlock2.innerHTML += 'user_Id: ' +  Id('userName').data + '<br><br>';
                 G.divs.textBlock2.innerHTML += 'user_codephrase: ' +  Id('codephrase').data + '<br><br>';
@@ -2970,7 +2974,7 @@ function IpadGrahpic (type0) {
                 txt += G.TXT.toSendTheVirusOpen + '<br>';
                 txt += G.TXT.pressTheBlinkingButton + '<br>';
                 txt += G.TXT.onTheMenuChooseVirus;
-                G.divs.textBlock2.innerHTML = '<p dir = ${G.textDir} align="right">'  + txt + "</p>"
+                G.divs.textBlock2.innerHTML = `<p dir = ${G.textDir} align=${G.textAlign}> ` + txt + "</p>"
 
                 function wasVirusLoaderStarted () {
                     if (Id('precentVirus')) return
@@ -2990,8 +2994,8 @@ function IpadGrahpic (type0) {
 
 
                 let txt =  G.TXT.uploadingVirusToserver + "<br>" + G.TXT.uploadVirusProgress
-                G.divs.textBlock2.innerHTML += `<p dir = ${G.textDir} align="right">`  + txt + ""
-                G.divs.textBlock2.innerHTML += `<p dir = ${G.textDir}  align="right "             id="precentVirus"></p> </p>`
+                G.divs.textBlock2.innerHTML += `<p dir = ${G.textDir} align=${G.textAlign}>`  + txt + ""
+                G.divs.textBlock2.innerHTML += `<p dir = ${G.textDir}  align=${G.textAlign}             id="precentVirus"></p> </p>`
                 let siteDiv = Id('precentVirus');
                 let tm = 100
                 let tm2 = 100
@@ -3271,12 +3275,13 @@ let rnd = getRandomInt(asciArr.length - 1);
 
             function stage1 (){
 
+
                 let txt = G.TXT.therWereFound  + G.mgmt.numOfsuccess + " "
                 txt += G.TXT.suspiciusApps + '<br>'
                 txt += G.TXT.toScanThemAndFidSite + '<br>'
                 txt += G.TXT.pressFlickeringButton + "<br>" + "<br>"
                 txt += G.TXT.onMenuChooseScan
-                G.divs.textBlock2.innerHTML = '<p dir = ${G.textDir} align="right">'  + txt + "</p>"
+                G.divs.textBlock2.innerHTML = `<p dir = ${G.textDir} align=${G.textAlign}>`  + txt + "</p>"
 
                 setTimeout(()=>{playSound ('Consoletyping', 'pause')},1500);
                  holoMenu('scanner');
@@ -3294,6 +3299,7 @@ let rnd = getRandomInt(asciArr.length - 1);
 
             }
             function stage2 (){
+                console.log ('stage two')
                 playSound('scannerEffect');
                 function makeid(length, isPass = false) {
                         var result           = '';
@@ -3309,7 +3315,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                 let tm = 100; if (G.dev_mode) {tm = 3 }
 
                 let txt = G.TXT.scanningAppsInsearchFor + "<br>" + G.TXT.siteInDarkWeb + "<br>"
-                G.divs.textBlock2.innerHTML += `<p dir = ${G.textDir} align="right">`  + txt + "</p>"
+                G.divs.textBlock2.innerHTML += `<p dir = ${G.textDir} align=${G.textAlign}>`  + txt + "</p>"
                 G.divs.textBlock2.innerHTML += '<div id="irgunSite"></div>'
                 let siteDiv = Id('irgunSite');
                 function findSite (n){
