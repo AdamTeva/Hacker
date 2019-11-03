@@ -7,7 +7,7 @@ G = {}; // the global data object
    G.name_of_game = "האקר"
    G.name_of_gameEN = 'Hacker';
    G.dev_mode = 1; //change back to 0
-   G.isLanguageEnglish = 0;
+   G.EN = 0; // english
 
    G.fileName = location.pathname.split("/").slice(-1)[0].replace(/\.html/ig,"")
    G.saveInLocalStorageKey = G.fileName

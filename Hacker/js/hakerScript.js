@@ -232,7 +232,7 @@ G = G || {}
                 'fontSize': '4vmin',
                 'fontFamily':G.css.font_0,
                 'textAlign': 'right',
-                 'direction': 'rtl',
+                 'direction': G.textDir,
                 'color': G.css.textcolor,
                 'fontWeight':'',
 
@@ -296,6 +296,7 @@ G = G || {}
         }
     }
     function langSet (){
+         G.textDir = 'rtl'
          G.TXT = {
 
              scannigApps: 'סורק ישומים',
@@ -422,6 +423,145 @@ G = G || {}
              suspiciusApps2:  `אפליקציות חשודות`,
              cantResteGameDoWithClicl : "מחובר דרך האתר. יש לאפס משחק דרך ממשק האתר.",
              cantSaveGameDoWithClicl : "מחובר דרך האתר. כדי לשמור בשם אחר, יש להתנתק דרך האתר."
+
+
+
+         };
+         if (!G.EN) return
+         G.textDir = 'ltr'
+         G.TXT = {
+
+             scannigApps:  " Scanning apps  ",
+             upLoadingVirus:  " Uploading the virus  ",
+
+             saveWasNotFoundRefreshThewindow :  " Saved data was not found. You can start a new game by refreshing the tab.  ",
+
+             nameMustHave2chars:  " Name must contain at least two characters  ",
+
+             fromNowtourProgWillBeSaved :  " From now on, you progress would be saved at the end of each level.  ",
+             ableTosave : " You can save your progress on this pc.    ",
+             yourAdvanceIsSavedAtEachLevel:  " Your progress is saved at the end of each level.  ",
+             loading :  " Loading  ",
+             IAmNot:  " I am not  ",
+             beginNewGame:  " Start a new game  ",
+             firstStageBegin:  " First level - begin   ",
+             continueinTheProcces :  " Continue  " ,
+             findAndgetIp  :  " finding the IP  ",
+              findWeaknessFirewall :  " searching weakness in the firewall  ",
+              enterWithUser  :  " Entering the system with a user  ",
+
+             findThewebSiteScanApps :  " searching the website through app scanning  ",
+              BuildAttacvirusAgainst :  " building an attack virus  ",
+              defenceWasBypassed :  " defence bypassed  ",
+              newGame: " New game  ",
+              save: " Save  ",
+              back :  " Back  ",
+              afterSecondAttempt:  " After a second attempt  ",
+              fullHelpText1:  " Answer the questions to advance in the game. To answer a question press the right answer. Each question has only one correct answer. If you answered wrong, you could try again.  ",
+              fullHelpText2:  " By opening the hologram menu you can   ",
+              fullHelpText3:  " save the game on this pc, view your progress, and turn the sound on or off.  ",
+             turnsoundOff:  " Turn sound On.  ",
+             turnsoundOn:  " Turn sound Off.  ",
+             help:  " Help  ",
+             options:  " Options  ",
+             progress:  " Progress  ",
+             sacnApp:  " Scanning application  ",
+             gameProgressData:  " Your game progress:  ",
+             youHaveAnswered:  " You've answered  ",
+             outOf:  " out of  ",
+             questionsWichAre :  " questions, which are  ",
+             ofAllQuestion :  " of all the questions  ",
+             typeOfAnswer:  " type of answer  ",
+             inNumbers:  " in numbers  ",
+             inPrecent:  " in percent  ",
+             withoutErrors:  " without errors  ",
+             onSecondTry:  " on second attempt  ",
+             afterSecondTry:  " after second attempt  ",
+             allFilesWereLoadedContinue:   `All files were loaded. Would you like to continue?`,
+youMustPlantVirusEveryAnswer: `You are going to hack the computers of the evil
+   Organisation. Every correct answer will help you to
+   advance the hacking process.  `,
+            summary:  " Game summary  ",
+            following:   "  ",
+            replay:  " replay  ",
+            allProgressOf :  "(All of your progress   ",
+            willBeDeleted :  " will be deleted)",
+            youFinishedTheGame:  " You've finished the game! You can play again to try improve your score.  ",
+
+            ifYouSavedItWillBeDeleted:  " If you've saved game, starting a new game will delete all your progress.  ",
+            youHaveWonWellDone:  " You have won over the evil Organisation! Well done!  ",
+
+
+            sendVirus:  " Uploading virus  ",
+            wouldYouLikeToReset:   " Are you sure you want to delete all your progress and start a new game ?",
+            seachingNetWorkAddress: " Scanning for network address  ",
+            IPfoundShouldContinue :   " IP address was found. Would you like to continue?",
+            continue:  " Continue  ",
+            anotherCheck:  " Another search  ",
+            identifyingIPAdrress:   " Identifying IP address  ",
+            fireWallComponnentsFound:  " Firewall components were found.  ",
+            mustBypassAllDefences:   " You must bypass all defences to find the main weaknesses.  ",
+            fireWallBeingScanned:   " Firewall is being scanned, searching for weak points.   ",
+            breachFoundInmemory :  " Security breach was found in memory component:  ",
+            AllDefencesDown :   " All defenses were bypassed. Would you like to continue ?",
+            hidingActivity:  " deleting activity cyber  tracks.   ",
+            identifingFireWall:  " Identifying firewall defences  ",
+            serachIngComponenet:  " searching  for components  ",
+            identifingComponenet :   " Identifying components  ",
+            componentsFound:  " Components found:  ",
+
+             allDefencesAreDownPressTo :  " All defenses were found. Click on each defence to neutralise it.  ",
+             youcanIfeltrateThesystem:  " You can now login to  the the system  ",
+             signInAproved:  " Login approved  ",
+             ableToMackeChangesAndScan :   " You can now make changes as a system user.  ",
+             shoudYouContinue :   " Would you like to continue ?",
+             makingAhiddingOftheActivity :  " deleting activity cyber  tracks.  ",
+             pressToenter:  " press to login  ",
+             oneOrMoreInputsAreWrong:  " one or more of the values is incorrect.  ",
+             entryIsforBidden:   " login unapproved  ",
+             everyThingIs :  " all of the input is correct  ",
+             hello2 :  " Hello, ",
+             welcomeToTheSite:  " welcome.  ",
+             firstName:   " first name  ",
+             lastName:  " last name  ",
+
+             userName :  " user name  ",
+             securityCode:  " security code  ",
+             entry:  " login  ",
+
+             aVirusWasBuiltToFight : " an attack  virus against the Organization was built.  ",
+             bySendingThevirusTheOrgenazation :  " By sending the virus the Organization would be paralyzed for some time.  ",
+             toSendTheVirusOpen : " To send the virus open   ",
+             pressTheBlinkingButton :  " press the flashing button.  ",
+             onTheMenuChooseVirus:    " At the menu choose - send virus.  ",
+             uploadIngVirus:  " uploading virus  ",
+             uploadingVirusToserver :  " uploading virus to servers  ",
+             uploadVirusProgress :  " virus upload progress  ",
+             youMangedToWinOver : `You have managed to paralyzed the Organization for some time!`,
+             goodJobPressToSeeResults:  " Well done! press finish, to see your results  ",
+             wouldYouLikeToFInish :   " Would you like to fInish  ",
+             finishAndViewResults:   " finish and view results  ",
+             builingAttackVirus :  " building an attack virus  ",
+             therWereFound:  " The scanner found  ",
+             suspiciusApps :  " suspicious apps.  ",
+             toScanThemAndFidSite:   " to scan and search for the Organization website open the hologram  ",
+             pressFlickeringButton :   " press the flashing button.  ",
+             onMenuChooseScan :   " On the menu choose the App scanner.  ",
+
+             userLogIn:  " user login  ",
+             scanningAppa:  " scanning application  ",
+             scanningAppsInsearchFor:   " searching applications for criminal activity  ",
+             siteInDarkWeb :  " sites on the Darkweb  ",
+             allAppsWereScaned:  " all applications were scanned  ",
+             byTheScanTheSiteFound:   " the Dark Web website was found:  ",
+             likeToContinue :   " would you like to continue?",
+             reportToTheAuthoroties :  " report site to authorities  ",
+             searchingForBadApps:   " Searching for criminal applications  ",
+             theCannerFound :  " The scan found  ",
+             suspiciusApps2:   " suspicious apps.  ",
+
+
+
 
 
 
@@ -1438,7 +1578,7 @@ function setQuestion (num) {
             if (matchArryHebrew !== null && matchArryHebrew.length >  matchArryEnglsh.length ){ return true} else {return false}
 
         }
-        if (isHebrew(text)) {element.style.direction = "rtl"; element.style.textAlign = "right"} else {
+        if (isHebrew(text)) {element.style.direction = G.textDir; element.style.textAlign = "right"} else {
             {element.style.direction = "ltr"; element.style.textAlign = "left"}
         }
 
@@ -1678,7 +1818,7 @@ Mx0MMMM00000111MMMWX0xoc:,,'''''',,:cox0XWMMM00100011xM0MMMM
         }
 
         ipadCover.innerHTML = '<pre><div id = "scullDiv" dit="rtl"'  + txt2;
-        stl(ipadCover,{backgroundColor:'black', fontSize:"1.6vmin", color:G.css.textcolor, textAlign:"right",direction: 'rtl'})
+        stl(ipadCover,{backgroundColor:'black', fontSize:"1.6vmin", color:G.css.textcolor, textAlign:"right",direction: G.textDir})
         return rowsarray
     }
     function changeShieldOrScull(rows) {
@@ -2035,7 +2175,7 @@ function IpadGrahpic (type0) {
             //var x = 200;
             function runIps (x){
 
-                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + G.TXT.seachingNetWorkAddress + "</p>"
+                G.divs.textBlock2.innerHTML = `<p dir =${G.textDir} align="right"> `+ G.TXT.seachingNetWorkAddress + "</p>"
                 G.divs.textBlock2.innerHTML += 'Tracing route to 267.1.0.1 over Ip hops:' + (x + 212) + ' <br><br>';
                 for (let i = 0 ; i < 19; i++){
                     if (i + x > 99) { continue}
@@ -2209,7 +2349,8 @@ function IpadGrahpic (type0) {
         function consoleHackedFirewall(isWaitingCrack = false) {
             if (isWaitingCrack){
 
-                let tx3 = '<p dir = "rtl" align="right">' + G.TXT.fireWallComponnentsFound + "</p>";
+
+                let tx3 = `<p dir = ${G.textDir} align="right">` + G.TXT.fireWallComponnentsFound + "</p>";
                 G.Q [500] = ["", "","","","","","","",""]
                 G.Q [500][1] = tx3 + '<br><p dir=rtl style="text-align: right">'
                 G.Q [500][2] = G.TXT.mustBypassAllDefences
@@ -2240,7 +2381,7 @@ function IpadGrahpic (type0) {
             function runDefences (x){
 
 
-                let tx1 = '<p dir = "rtl" align="right">' +  G.TXT.fireWallBeingScanned + "</p>";
+                let tx1 = `<p dir = "rtl" align="right">` +  G.TXT.fireWallBeingScanned + "</p>";
                 let tx2 = 'Stack buffer Address: x000fff' + (x + 212) + ' <br><br>';
                  G.divs.textBlock2.innerHTML = tx1 + tx2
                 for (let i = 0 ; i < 19; i++){
@@ -2271,7 +2412,7 @@ function IpadGrahpic (type0) {
                 x++
                 if (x < 100) { setTimeout(()=>{runDefences (x)},30)} else {
 
-                    let tx3 = '<p dir = "rtl" align="right">' + G.TXT.breachFoundInmemory  + "</p>";
+                    let tx3 = '<p dir = ${G.textDir} align="right">' + G.TXT.breachFoundInmemory  + "</p>";
                     G.Q [500] = ["", "","","","","","","",""]
                     G.Q [500][1] = tx3 + tx2 + ipTxtArray[6] + '<br><p dir=rtl style="text-align: right">'
                     G.Q [500][2] = G.TXT.AllDefencesDown
@@ -2537,7 +2678,7 @@ function IpadGrahpic (type0) {
             function stage1 (){
 
 
-                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">' + G.TXT.youcanIfeltrateThesystem + "</p>"
+                G.divs.textBlock2.innerHTML = `<p dir = ${G.textDir} align="right">`+ G.TXT.youcanIfeltrateThesystem + "</p>"
                 G.divs.textBlock2.innerHTML += 'user_Name: ' + familyName.data +', '+ firstName.data + ' <br><br>';
                 G.divs.textBlock2.innerHTML += 'user_Id: ' +  Id('userName').data + '<br><br>';
                 G.divs.textBlock2.innerHTML += 'user_codephrase: ' +  Id('codephrase').data + '<br><br>';
@@ -2829,7 +2970,7 @@ function IpadGrahpic (type0) {
                 txt += G.TXT.toSendTheVirusOpen + '<br>';
                 txt += G.TXT.pressTheBlinkingButton + '<br>';
                 txt += G.TXT.onTheMenuChooseVirus;
-                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
+                G.divs.textBlock2.innerHTML = '<p dir = ${G.textDir} align="right">'  + txt + "</p>"
 
                 function wasVirusLoaderStarted () {
                     if (Id('precentVirus')) return
@@ -2849,8 +2990,8 @@ function IpadGrahpic (type0) {
 
 
                 let txt =  G.TXT.uploadingVirusToserver + "<br>" + G.TXT.uploadVirusProgress
-                G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + ""
-                G.divs.textBlock2.innerHTML += '<p dir = "rtl"  align="right" id="precentVirus"></p> </p>'
+                G.divs.textBlock2.innerHTML += `<p dir = ${G.textDir} align="right">`  + txt + ""
+                G.divs.textBlock2.innerHTML += `<p dir = ${G.textDir}  align="right "             id="precentVirus"></p> </p>`
                 let siteDiv = Id('precentVirus');
                 let tm = 100
                 let tm2 = 100
@@ -3135,7 +3276,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                 txt += G.TXT.toScanThemAndFidSite + '<br>'
                 txt += G.TXT.pressFlickeringButton + "<br>" + "<br>"
                 txt += G.TXT.onMenuChooseScan
-                G.divs.textBlock2.innerHTML = '<p dir = "rtl" align="right">'  + txt + "</p>"
+                G.divs.textBlock2.innerHTML = '<p dir = ${G.textDir} align="right">'  + txt + "</p>"
 
                 setTimeout(()=>{playSound ('Consoletyping', 'pause')},1500);
                  holoMenu('scanner');
@@ -3168,7 +3309,7 @@ let rnd = getRandomInt(asciArr.length - 1);
                 let tm = 100; if (G.dev_mode) {tm = 3 }
 
                 let txt = G.TXT.scanningAppsInsearchFor + "<br>" + G.TXT.siteInDarkWeb + "<br>"
-                G.divs.textBlock2.innerHTML += '<p dir = "rtl" align="right">'  + txt + "</p>"
+                G.divs.textBlock2.innerHTML += `<p dir = ${G.textDir} align="right">`  + txt + "</p>"
                 G.divs.textBlock2.innerHTML += '<div id="irgunSite"></div>'
                 let siteDiv = Id('irgunSite');
                 function findSite (n){
