@@ -441,7 +441,7 @@ G = G || {}
 
              nameMustHave2chars:  " Name must contain at least two characters  ",
 
-             fromNowtourProgWillBeSaved :  " From now on, you progress would be saved at the end of each level.  ",
+             fromNowtourProgWillBeSaved :  " From now on, you're progress will be saved at the end of each level.  ",
              ableTosave : " You can save your progress on this pc.    ",
              yourAdvanceIsSavedAtEachLevel:  " Your progress is saved at the end of each level.  ",
              loading :  " Loading  ",
@@ -472,8 +472,8 @@ G = G || {}
              gameProgressData:  " Your game progress:  ",
              youHaveAnswered:  " You've answered  ",
              outOf:  " out of  ",
-             questionsWichAre :  " questions, which are  ",
-             ofAllQuestion :  " of all the questions  ",
+             questionsWichAre :  " questions, <br> which are  ",
+             ofAllQuestion :  " of all the questions.",
              typeOfAnswer:  " type of answer  ",
              inNumbers:  " in numbers  ",
              inPrecent:  " in percent  ",
@@ -894,7 +894,8 @@ createMenu (op)
          var option = Elm (text[0]);
          var extraStyle = {};
          G.divs.holoScreen.appendChild (option) ;
-         stl (option, { 'fontFamily': 'david', 'fontSize': '5vmin', 'color' : 'rgba(3,100,100)', 'opacity' : 0.7, 'textShadow' : "6px 2px 8px yellow",}, extraStyle)
+         let fontS = '5vmin'; if (G.EN){fontS = '4.5vmin' }
+         stl (option, { 'fontFamily': 'david', 'fontSize': fontS, 'color' : 'rgba(3,100,100)', 'opacity' : 0.7, 'textShadow' : "6px 2px 8px yellow",}, extraStyle)
          option.innerHTML = text[1] ;
          if (text[0] === 'form') {
              let save = Id('saveButton');  save.addEventListener('click',(f)=>{submitF(f)})
@@ -3468,7 +3469,8 @@ let rnd = getRandomInt(asciArr.length - 1);
 
         let foundText =  `${G.TXT.theCannerFound}${G.mgmt.numOfsuccess }${G.TXT.suspiciusApps2}`
         appHeader.innerHTML =  G.TXT.searchingForBadApps  + `<font style="font-size: 2.2vmin"><br>${foundText}</font>`
-        stl (appHeader, {position: 'relative', color:'white', fontFamily: 'consolas', fontSize: '4.5vmin', textAlign: 'center', zIndex: '19', backgroundColor: 'rgba(20,10,70,0.8)', hieght: '130%', overflow:'hidden', borderRadius:"30vmin"})
+        let fontS = '4.5vmin'; if (G.EN){fontS = '2.5vmin' }
+        stl (appHeader, {position: 'relative', color:'white', fontFamily: 'consolas', fontSize: fontS, textAlign: 'center', zIndex: '19', backgroundColor: 'rgba(20,10,70,0.8)', hieght: '130%', overflow:'hidden', borderRadius:"30vmin"})
         stl (appContainer, { paddingLeft :'3vmin'})
         ipadCover.appendChild(appHeader) ;         ipadCover.appendChild(appContainer)
         let SVGs = getSVGs ()
