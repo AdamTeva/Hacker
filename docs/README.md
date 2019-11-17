@@ -1,4 +1,2 @@
-## Educational Games - 
-
-# this site is an explenation and an exapmle of educational games that can help children and adults learn better.
-
+at this repo you can view (and play!) three
+educational games. The goal of these games are to help children lean English (mostly, but not only, vocabulary)
