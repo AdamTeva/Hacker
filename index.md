@@ -8,6 +8,4 @@ educational games. The goal of these games are to help children lean English (mo
 [Shooter]({{ site.baseurl }}{% link Shooter/ShooterMarket.html %})
 [Hacker]({{ site.baseurl }}{% link hacker/Hacker.html %})
 
-
-
-at master branch;
+ 
