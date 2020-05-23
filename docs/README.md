@@ -13,7 +13,7 @@ current teaching subjects.
 
 -[Hacker](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/Hacker/Hacker.html)
 
-![Classup](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/lesson.mp4)
+![Lesson][(https://click123.s3.eu-west-2.amazonaws.com/GamesExample/lesson.gif)](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/lesson.mp4)
  
 
 
