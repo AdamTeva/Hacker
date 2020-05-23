@@ -13,8 +13,9 @@ current teaching subjects.
 
 -[Hacker](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/Hacker/Hacker.html)
 
-![Lesson][(https://click123.s3.eu-west-2.amazonaws.com/GamesExample/lesson.gif)](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/lesson.mp4)
- 
+A lesson with Educational games and Learning software at a school in Karmiel, Israel:
+
+![Lesson](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/lesson.gif)
 
 
  
