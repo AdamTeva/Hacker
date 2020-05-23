@@ -7,11 +7,11 @@ current teaching subjects.
 
 ### Try it!
  
--[Memory-game](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/memory/memoryActions.html)
+-[Memory-game](https://chenpeleg.github.io/Games/memory/memoryActions.html)
 
--[Shooter](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/Shooter/ShooterMarket.html)
+-[Shooter](https://chenpeleg.github.io/Games/Shooter/ShooterMarket.html)
 
--[Hacker](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/Hacker/Hacker.html)
+-[Hacker](https://chenpeleg.github.io/Games/Hacker/Hacker.html)
 
 A lesson with Educational games and Learning software at a school in Karmiel, Israel:
 
