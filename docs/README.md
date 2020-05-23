@@ -8,10 +8,12 @@ current teaching subjects.
 ### Try it!
  
 -[Memory-game](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/memory/memoryActions.html)
+
 -[Shooter](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/Shooter/ShooterMarket.html)
+
 -[Hacker](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/Hacker/Hacker.html)
 
-[Lesson](https://i.imgur.com/vKb2F1B.png)](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/lesson.mp4)
+[Lesson][(https://i.imgur.com/vKb2F1B.png)](https://click123.s3.eu-west-2.amazonaws.com/GamesExample/lesson.mp4)
 
 
  
