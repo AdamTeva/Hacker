@@ -7,7 +7,7 @@ current teaching subjects.
 
 ### Try it!
  
--[Memory-game](https://chenpeleg.github.io/Games/memory/memoryActions.html)
+-[Memory-game](https://chenpeleg.github.io/Games/Memory/index.html)
 
 -[Shooter](https://chenpeleg.github.io/Games/Shooter/ShooterMarket.html)
 
