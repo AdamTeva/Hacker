@@ -1,6 +1,6 @@
 [submodule "Memory"]
 	path = Memory
-	url = https://github.com/PelegChen/Memory
+	url = https://github.com/PelegChen/Memory.git
 
 [submodule "Shooter"]
 	path = Shooter
